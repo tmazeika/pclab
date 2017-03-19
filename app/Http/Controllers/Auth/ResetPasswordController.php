@@ -1,8 +1,8 @@
 <?php
 
-namespace pcforge\Http\Controllers\Auth;
+namespace PCForge\Http\Controllers\Auth;
 
-use pcforge\Http\Controllers\Controller;
+use PCForge\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 
 class ResetPasswordController extends Controller

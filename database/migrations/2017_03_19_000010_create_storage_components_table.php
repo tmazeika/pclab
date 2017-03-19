@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMemoryComponentsTable extends Migration
+class CreateStorageComponentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateMemoryComponentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('memory_components', function(Blueprint $table) {
+        Schema::create('storage_components', function(Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('component_id');
+            $table->integer('component_id')->unsigned();
             $table->foreign('component_id')->references('id')->on('components')->onDelete('cascade');
-            $table->unsignedTinyInteger('ddr_gen');
-            $table->unsignedSmallInteger('frequency');
-            $table->unsignedBigInteger('size');
+
+            // specs
+            $table->smallInteger('size')->unsigned();
+
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ class CreateMemoryComponentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('memory_components');
+        Schema::dropIfExists('storage_components');
     }
 }

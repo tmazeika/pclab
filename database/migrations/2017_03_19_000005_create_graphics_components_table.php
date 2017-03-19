@@ -15,13 +15,19 @@ class CreateGraphicsComponentsTable extends Migration
     {
         Schema::create('graphics_components', function(Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('component_id');
+            $table->integer('component_id')->unsigned();
             $table->foreign('component_id')->references('id')->on('components')->onDelete('cascade');
-            $table->boolean('is_sli_allowed');
-            $table->boolean('has_hdmi_out');
+
+            // features
             $table->boolean('has_displayport_out');
-            $table->boolean('has_vga_out');
             $table->boolean('has_dvi_out');
+            $table->boolean('has_hdmi_out');
+            $table->boolean('has_vga_out');
+            $table->boolean('supports_sli');
+
+            // physical
+            $table->smallInteger('size_x')->unsigned();
+
             $table->timestamps();
         });
     }

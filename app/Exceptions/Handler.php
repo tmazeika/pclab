@@ -1,6 +1,6 @@
 <?php
 
-namespace pcforge\Exceptions;
+namespace PCForge\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;

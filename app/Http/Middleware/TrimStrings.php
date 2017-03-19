@@ -1,6 +1,6 @@
 <?php
 
-namespace pcforge\Http\Middleware;
+namespace PCForge\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\TrimStrings as BaseTrimmer;
 

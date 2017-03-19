@@ -15,8 +15,12 @@ Route::get('/', function() {
     return view('home');
 });
 
-Route::get('admin', function() {
-    return view('admin');
+Route::group(['prefix' => 'admin'], function() {
+    Route::get('/', 'AdminController@index');
+
+    Route::get('create/{table}/{id}', 'AdminController@create');
+    Route::get('update/{table}/{id}', 'AdminController@update');
+    Route::get('delete/{table}/{id}', 'AdminController@delete');
 });
 
 Route::group(['prefix' => 'build'], function() {

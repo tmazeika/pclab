@@ -30,7 +30,7 @@ return [
     ],
 
     'stripe' => [
-        'model' => pcforge\User::class,
+        'model' => PCForge\User::class,
         'key' => env('STRIPE_KEY'),
         'secret' => env('STRIPE_SECRET'),
     ],

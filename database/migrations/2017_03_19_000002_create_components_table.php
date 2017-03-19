@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCoolingComponentsTable extends Migration
+class CreateComponentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateCoolingComponentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('cooling_components', function(Blueprint $table) {
+        Schema::create('components', function(Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('component_id');
-            $table->foreign('component_id')->references('id')->on('components')->onDelete('cascade');
-            $table->unsignedSmallInteger('size');
+
+            $table->string('asin');
+            $table->string('name');
+            $table->smallInteger('watts_usage')->unsigned();
+            $table->tinyInteger('weight')->unsigned();
+
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ class CreateCoolingComponentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cooling_components');
+        Schema::dropIfExists('components');
     }
 }

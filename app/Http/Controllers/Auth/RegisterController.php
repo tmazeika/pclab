@@ -1,9 +1,9 @@
 <?php
 
-namespace pcforge\Http\Controllers\Auth;
+namespace PCForge\Http\Controllers\Auth;
 
-use pcforge\User;
-use pcforge\Http\Controllers\Controller;
+use PCForge\User;
+use PCForge\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 

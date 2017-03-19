@@ -12,7 +12,7 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(pcforge\User::class, function (Faker\Generator $faker) {
+$factory->define(PCForge\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [

@@ -1,6 +1,6 @@
 <?php
 
-namespace pcforge\Providers;
+namespace PCForge\Providers;
 
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -13,8 +13,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'pcforge\Events\SomeEvent' => [
-            'pcforge\Listeners\EventListener',
+        'PCForge\Events\SomeEvent' => [
+            'PCForge\Listeners\EventListener',
         ],
     ];
 

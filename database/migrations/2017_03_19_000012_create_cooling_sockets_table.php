@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMiscComponentTypesTable extends Migration
+class CreateCoolingSocketsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,13 @@ class CreateMiscComponentTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('misc_component_types', function(Blueprint $table) {
+        Schema::table('cooling_sockets', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('cooling_component_id')->unsigned();
+            $table->foreign('cooling_component_id')->references('id')->on('cooling_components');
+
             $table->string('name');
+            $table->timestamps();
         });
     }
 
@@ -26,6 +30,6 @@ class CreateMiscComponentTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('misc_component_types');
+        Schema::dropIfExists('cooling_sockets');
     }
 }

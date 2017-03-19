@@ -20,7 +20,7 @@
             "database"
         ],
         "psr-4": {
-            "pcforge\\": "app/"
+            "PCForge\\": "app/"
         }
     },
     "autoload-dev": {

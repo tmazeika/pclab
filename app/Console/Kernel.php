@@ -1,6 +1,6 @@
 <?php
 
-namespace pcforge\Console;
+namespace PCForge\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;

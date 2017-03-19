@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStorageComponentsTable extends Migration
+class CreateProcessorComponentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,16 @@ class CreateStorageComponentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('storage_components', function(Blueprint $table) {
+        Schema::create('processor_components', function(Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('component_id');
+            $table->integer('component_id')->unsigned();
             $table->foreign('component_id')->references('id')->on('components')->onDelete('cascade');
-            $table->unsignedBigInteger('size');
+
+            // features
+            $table->boolean('has_apu');
+            $table->string('socket');
+            $table->float('speed');
+
             $table->timestamps();
         });
     }
@@ -29,6 +34,6 @@ class CreateStorageComponentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('storage_components');
+        Schema::dropIfExists('processor_components');
     }
 }

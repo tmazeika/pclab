@@ -171,11 +171,11 @@ return [
         /*
          * Application Service Providers...
          */
-        pcforge\Providers\AppServiceProvider::class,
-        pcforge\Providers\AuthServiceProvider::class,
-        // pcforge\Providers\BroadcastServiceProvider::class,
-        pcforge\Providers\EventServiceProvider::class,
-        pcforge\Providers\RouteServiceProvider::class,
+        PCForge\Providers\AppServiceProvider::class,
+        PCForge\Providers\AuthServiceProvider::class,
+        // PCForge\Providers\BroadcastServiceProvider::class,
+        PCForge\Providers\EventServiceProvider::class,
+        PCForge\Providers\RouteServiceProvider::class,
 
     ],
 
