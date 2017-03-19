@@ -1,5 +1,5 @@
 <footer>
     <div class="content footer-content">
-        <span class="footer-item">&copy; {{ date('Y') }} PCForge</span>
+        <span class="footer-item">&copy; {{ strftime('%Y') }} PCForge</span>
     </div>
 </footer>
