@@ -1,9 +1,33 @@
 .header-content {
+  border-bottom: 1px solid $dim-element-color;
+
   max-width: $content-width;
   margin: auto;
   padding: 1em;
+
+  // flexbox
+  display: flex;
+  align-items: center;
 }
 
 .header-logo {
   width: 10em;
+}
+
+.header-button {
+  background-color: $accent-color;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font: 4em/1 $header-font;
+  outline: none;
+  text-transform: uppercase;
+
+  transition: background-color 0.2s;
+
+  padding: 0 1rem;
+
+  &:hover {
+    background-color: darken($accent-color, 2%);
+  }
 }

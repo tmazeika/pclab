@@ -1,6 +1,11 @@
 @import "variables";
+@import "helpers";
 
 @import "header";
+
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;

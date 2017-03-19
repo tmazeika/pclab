@@ -14,8 +14,13 @@
 
     <style>
         @font-face {
-            font-family: 'Source Sans Pro';
-            src: url({{ asset('font/source-sans-pro.ttf') }}) format('truetype');
+            font-family: Ravenscroft;
+            src: url({{ asset('fonts/ravenscroft.ttf') }}) format('truetype');
+        }
+
+        @font-face {
+            font-family: Source Sans Pro;
+            src: url({{ asset('fonts/source-sans-pro.ttf') }}) format('truetype');
         }
     </style>
 
