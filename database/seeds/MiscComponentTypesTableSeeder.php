@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class MiscComponentTypesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(MiscComponentTypesTableSeeder::class);
+        DB::table('misc_component_types')->insert([
+            ['name' => 'cablemods'],
+        ]);
     }
 }

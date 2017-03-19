@@ -15,6 +15,10 @@ Route::get('/', function() {
     return view('home');
 });
 
+Route::get('admin', function() {
+    return view('admin');
+});
+
 Route::group(['prefix' => 'build'], function() {
     Route::get('/', function() {
         return view('build.index');
