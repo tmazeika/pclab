@@ -17,6 +17,8 @@
     <title>@yield('title') &mdash; PCForge</title>
 </head>
 <body>
+    @include('partials.header')
+
     @yield('content')
 </body>
 </html>
