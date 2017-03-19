@@ -13,7 +13,7 @@ class CreateChassisFormFactorsTable extends Migration
      */
     public function up()
     {
-        Schema::table('chassis_form_factors', function(Blueprint $table) {
+        Schema::create('chassis_form_factors', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('chassis_component_id')->unsigned();
             $table->foreign('chassis_component_id')->references('id')->on('chassis_components');

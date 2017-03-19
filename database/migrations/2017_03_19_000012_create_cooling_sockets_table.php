@@ -13,7 +13,7 @@ class CreateCoolingSocketsTable extends Migration
      */
     public function up()
     {
-        Schema::table('cooling_sockets', function (Blueprint $table) {
+        Schema::create('cooling_sockets', function(Blueprint $table) {
             $table->increments('id');
             $table->integer('cooling_component_id')->unsigned();
             $table->foreign('cooling_component_id')->references('id')->on('cooling_components');
