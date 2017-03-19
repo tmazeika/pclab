@@ -12,6 +12,13 @@
     <link rel="mask-icon" href="{{ asset('safari-pinned-tab.svg') }}" color="#5bbad5">
     <meta name="theme-color" content="#ffffff">
 
+    <style>
+        @font-face {
+            font-family: 'Source Sans Pro';
+            src: url({{ asset('font/source-sans-pro.ttf') }}) format('truetype');
+        }
+    </style>
+
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <title>@yield('title') &mdash; PCForge</title>
