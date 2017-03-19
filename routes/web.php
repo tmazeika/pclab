@@ -11,6 +11,20 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function() {
     return view('home');
+});
+
+Route::group(['prefix' => 'build'], function() {
+    Route::get('/', function() {
+        return view('build.index');
+    });
+
+    Route::get('custom', function() {
+        return view('build.custom');
+    });
+
+    Route::get('preset', function() {
+        return view('build.preset');
+    });
 });

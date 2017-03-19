@@ -1,3 +1,20 @@
+.content {
+  max-width: $content-width;
+  margin: auto;
+  padding: 1em;
+}
+
 .flex-spacer {
   flex-grow: 1;
+}
+
+.link {
+  color: $accent-color;
+  text-decoration: none;
+
+  transition: color 0.2s;
+
+  &:hover {
+    color: lighten($accent-color, 2%);
+  }
 }
