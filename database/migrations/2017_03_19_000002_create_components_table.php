@@ -19,7 +19,7 @@ class CreateComponentsTable extends Migration
             $table->string('asin');
             $table->string('name');
             $table->smallInteger('watts_usage')->unsigned();
-            $table->tinyInteger('weight')->unsigned();
+            $table->float('weight');
 
             $table->timestamps();
         });

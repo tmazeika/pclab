@@ -18,8 +18,12 @@ Route::get('/', function() {
 Route::group(['prefix' => 'admin'], function() {
     Route::get('/', 'AdminController@index');
 
-    Route::get('create/{table}/{id}', 'AdminController@create');
-    Route::get('update/{table}/{id}', 'AdminController@update');
+    Route::get('create/{table}', 'AdminController@showCreate');
+    Route::get('update/{table}/{id}', 'AdminController@showUpdate');
+
+    Route::post('create/{table}', 'AdminController@create');
+    Route::post('update/{table}/{id}', 'AdminController@update');
+
     Route::get('delete/{table}/{id}', 'AdminController@delete');
 });
 

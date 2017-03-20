@@ -24,7 +24,7 @@
                     @foreach($items as $item)
                         <tr>
                             @foreach($columns as $column)
-                                <td>{{ $item->getAttribute($column) }}</td>
+                                <td>{{ $item->$column }}</td>
                             @endforeach
 
                             <td>
