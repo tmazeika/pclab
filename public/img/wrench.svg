@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="2.5em" version="1.1" viewBox="0 0 26.458333 26.458334" xmlns="http://www.w3.org/2000/svg"
+     xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <g transform="translate(0 -270.54)">
+        <path d="m5.2856 271a7.9507 7.9501 0 0 1 8.279 1.8637 7.9507 7.9501 0 0 1 1.6275 8.8788l10.946 10.945c0.42715 0.42712 0.42715 1.1151 0 1.5422l-2.4493 2.4491c-0.42715 0.42712-1.1152 0.42713-1.5424 1e-5l-10.951-10.95a7.9507 7.9501 0 0 1 -8.8747 -1.6225 7.9507 7.9501 0 0 1 -1.8617 -8.2762l5.8793 5.8788c0.31875 0.31873 0.83209 0.31927 1.1509 5.3e-4l3.6783-3.678c0.31877-0.31874 0.31823-0.83203-5.4e-4 -1.1508z"
+              fill="#fff" style="paint-order:stroke fill markers"/>
+    </g>
+</svg>

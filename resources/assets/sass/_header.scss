@@ -6,24 +6,26 @@
   align-items: center;
 }
 
-.header-logo {
-  width: 10em;
+#pcforge-highlight {
+  transition: fill 0.2s;
+
+  @at-root .header-logo:hover & {
+    fill: lighten($accent-color, 5%);
+  }
 }
 
 .header-button {
-  background-color: $accent-color;
+  background-color: $dark-element-color;
   border: none;
-  color: #fff;
+  border-radius: 5px;
   cursor: pointer;
-  font: 4em/1 $heading-font;
   outline: none;
-  text-transform: uppercase;
 
   transition: background-color 0.2s;
 
-  padding: 0 1rem;
+  padding: 0.5rem;
 
   &:hover {
-    background-color: darken($accent-color, 2%);
+    background-color: lighten($dark-element-color, 2%);
   }
 }
