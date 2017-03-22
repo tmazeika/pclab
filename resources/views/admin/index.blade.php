@@ -6,9 +6,11 @@
 <main class="content">
     @each('partials.admin.table', [
         'PCForge\ChassisComponent',
+        'PCForge\ChassisComponentsFormFactor',
         'PCForge\ChassisComponentsRadiator',
         'PCForge\Component',
         'PCForge\CoolingComponent',
+        'PCForge\CoolingComponentsSocket',
         'PCForge\FormFactor',
         'PCForge\GraphicsComponent',
         'PCForge\MemoryComponent',

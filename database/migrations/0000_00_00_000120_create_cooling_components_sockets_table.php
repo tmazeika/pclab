@@ -13,16 +13,12 @@ class CreateCoolingComponentsSocketsTable extends Migration
      */
     public function up()
     {
-        Schema::create('cooling_sockets', function(Blueprint $table) {
-            $table->increments('id');
-
+        Schema::create('cooling_components_sockets', function(Blueprint $table) {
             $table->integer('cooling_component_id')->unsigned();
             $table->foreign('cooling_component_id')->references('id')->on('cooling_components')->onDelete('cascade');
 
             $table->integer('socket_id')->unsigned();
             $table->foreign('socket_id')->references('id')->on('sockets')->onDelete('restrict');
-
-            $table->timestamps();
         });
     }
 
@@ -33,6 +29,6 @@ class CreateCoolingComponentsSocketsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cooling_sockets');
+        Schema::dropIfExists('cooling_components_sockets');
     }
 }

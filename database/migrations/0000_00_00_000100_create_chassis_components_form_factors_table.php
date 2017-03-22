@@ -14,15 +14,11 @@ class CreateChassisComponentsFormFactorsTable extends Migration
     public function up()
     {
         Schema::create('chassis_components_form_factors', function(Blueprint $table) {
-            $table->increments('id');
-
             $table->integer('chassis_component_id')->unsigned();
             $table->foreign('chassis_component_id')->references('id')->on('chassis_components')->onDelete('cascade');
 
             $table->integer('form_factor_id')->unsigned();
             $table->foreign('form_factor_id')->references('id')->on('form_factors')->onDelete('restrict');
-
-            $table->timestamps();
         });
     }
 
