@@ -37,7 +37,7 @@ class CreateMotherboardComponentsTable extends Migration
             $table->smallInteger('dimm_frequency')->unsigned();
             $table->smallInteger('dimm_pins')->unsigned();
             $table->tinyInteger('dimm_slots')->unsigned();
-            $table->smallInteger('max_memory_size')->unsigned();
+            $table->smallInteger('max_memory_capacity')->unsigned();
 
             // processor
             $table->string('processor_socket');

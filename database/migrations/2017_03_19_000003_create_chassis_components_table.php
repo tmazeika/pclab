@@ -19,6 +19,7 @@ class CreateChassisComponentsTable extends Migration
             $table->foreign('component_id')->references('id')->on('components')->onDelete('cascade');
 
             // cooling
+            $table->smallInteger('max_fan_z')->unsigned();
             $table->smallInteger('max_radiator_x')->unsigned();
             $table->smallInteger('max_radiator_z')->unsigned();
 

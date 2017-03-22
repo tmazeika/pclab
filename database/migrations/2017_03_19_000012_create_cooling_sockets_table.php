@@ -19,6 +19,7 @@ class CreateCoolingSocketsTable extends Migration
             $table->foreign('cooling_component_id')->references('id')->on('cooling_components');
 
             $table->string('name');
+
             $table->timestamps();
         });
     }

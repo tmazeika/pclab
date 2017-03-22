@@ -19,7 +19,7 @@ class CreateStorageComponentsTable extends Migration
             $table->foreign('component_id')->references('id')->on('components')->onDelete('cascade');
 
             // specs
-            $table->smallInteger('size')->unsigned();
+            $table->string('size');
 
             $table->timestamps();
         });

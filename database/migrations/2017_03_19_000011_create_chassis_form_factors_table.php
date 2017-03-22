@@ -19,6 +19,7 @@ class CreateChassisFormFactorsTable extends Migration
             $table->foreign('chassis_component_id')->references('id')->on('chassis_components');
 
             $table->string('name');
+
             $table->timestamps();
         });
     }
