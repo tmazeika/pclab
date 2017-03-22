@@ -27,6 +27,7 @@ class CoolingComponent extends Model
         'fan_z'        => 'required|integer|min:0',
         'radiator_x'   => 'required|integer|min:0',
         'radiator_z'   => 'required|integer|min:0',
+        'max_memory_z' => 'required|integer|min:0',
     ];
 
     private $updateRules = [
@@ -37,6 +38,7 @@ class CoolingComponent extends Model
         'fan_z'        => 'nullable|integer|min:0',
         'radiator_x'   => 'nullable|integer|min:0',
         'radiator_z'   => 'nullable|integer|min:0',
+        'max_memory_z' => 'nullable|integer|min:0',
     ];
 
     public function sockets()

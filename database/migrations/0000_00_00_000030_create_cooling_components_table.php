@@ -24,9 +24,9 @@ class CreateCoolingComponentsTable extends Migration
             // physical
             $table->smallInteger('fan_xy')->unsigned();
             $table->smallInteger('fan_z')->unsigned();
-            $table->smallInteger('radiator_x')->unsigned()->nullable();
-            $table->smallInteger('radiator_z')->unsigned()->nullable();
-            $table->tinyInteger('max_memory_z')->unsigned()->nullable();
+            $table->smallInteger('radiator_x')->unsigned();
+            $table->smallInteger('radiator_z')->unsigned();
+            $table->SmallInteger('max_memory_z')->unsigned();
 
             $table->timestamps();
         });

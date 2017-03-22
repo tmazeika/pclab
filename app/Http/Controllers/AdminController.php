@@ -49,7 +49,7 @@ class AdminController extends Controller
         $model->fill($request->all());
         $model->save();
 
-        return 'Success';
+        return redirect('admin');
     }
 
     public function update(Request $request, string $table, $id)
@@ -61,7 +61,7 @@ class AdminController extends Controller
         $model->fill($changes);
         $model->save();
 
-        return 'Success';
+        return redirect('admin');
     }
 
     public function delete(string $table, int $id)

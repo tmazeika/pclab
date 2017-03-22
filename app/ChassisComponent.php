@@ -12,6 +12,7 @@ class ChassisComponent extends Model
         'id',
         'component_id',
         'max_fan_z',
+        'chassis_components_radiator_id',
         'max_graphics_size_x_blocked',
         'max_graphics_size_x_full',
         'audio_headers',
