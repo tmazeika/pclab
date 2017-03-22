@@ -10,17 +10,18 @@ use Illuminate\Support\Facades\DB;
 class AdminController extends Controller
 {
     const TABLE_MODEL_DICT = [
-        'chassis_components'     => 'PCForge\ChassisComponent',
-        'chassis_form_factors'   => 'PCForge\ChassisFormFactor',
-        'components'             => 'PCForge\Component',
-        'cooling_components'     => 'PCForge\CoolingComponent',
-        'cooling_sockets'        => 'PCForge\CoolingSocket',
-        'graphics_components'    => 'PCForge\GraphicsComponent',
-        'memory_components'      => 'PCForge\MemoryComponent',
-        'motherboard_components' => 'PCForge\MotherboardComponent',
-        'power_components'       => 'PCForge\PowerComponent',
-        'processor_components'   => 'PCForge\ProcessorComponent',
-        'storage_components'     => 'PCForge\StorageComponent',
+        'chassis_components'           => 'PCForge\ChassisComponent',
+        'chassis_components_radiators' => 'PCForge\ChassisComponentsRadiator',
+        'components'                   => 'PCForge\Component',
+        'cooling_components'           => 'PCForge\CoolingComponent',
+        'form_factors'                 => 'PCForge\FormFactor',
+        'graphics_components'          => 'PCForge\GraphicsComponent',
+        'memory_components'            => 'PCForge\MemoryComponent',
+        'motherboard_components'       => 'PCForge\MotherboardComponent',
+        'power_components'             => 'PCForge\PowerComponent',
+        'processor_components'         => 'PCForge\ProcessorComponent',
+        'sockets'                      => 'PCForge\Socket',
+        'storage_components'           => 'PCForge\StorageComponent',
     ];
 
     public function index()
