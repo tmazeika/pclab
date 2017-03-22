@@ -33,9 +33,6 @@ class CreateChassisComponentsTable extends Migration
             $table->tinyInteger('usb2_headers')->unsigned();
             $table->tinyInteger('usb3_headers')->unsigned();
 
-            // physical
-            $table->string('form_factor');
-
             // power
             $table->boolean('uses_sata_power');
 
