@@ -63,4 +63,9 @@ class ChassisComponent extends Model
     {
         return $this->hasMany('PCForge\ChassisFormFactor');
     }
+
+    public function radiators()
+    {
+        return $this->hasMany('PCForge\ChassisRadiator');
+    }
 }
