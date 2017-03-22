@@ -12,7 +12,7 @@ class ProcessorComponent extends Model
         'id',
         'component_id',
         'has_apu',
-        'socket',
+        'socket_id',
         'speed',
     ];
 
@@ -20,7 +20,7 @@ class ProcessorComponent extends Model
         'id'           => 'nullable|integer|unique:processor_components|min:0',
         'component_id' => 'required|exists:components,id',
         'has_apu'      => 'required|boolean',
-        'socket'       => 'required|string',
+        'socket_id'    => 'required|exists:sockets,id',
         'speed'        => 'required|numeric|min:0',
     ];
 
@@ -28,7 +28,12 @@ class ProcessorComponent extends Model
         'id'           => 'nullable|integer|unique:processor_components|min:0',
         'component_id' => 'nullable|exists:components,id',
         'has_apu'      => 'nullable|boolean',
-        'socket'       => 'nullable|string',
+        'socket_id'    => 'nullable|exists:sockets,id',
         'speed'        => 'nullable|numeric|min:0',
     ];
+
+    public function socket()
+    {
+        return $this->hasOne('PCForge\Socket');
+    }
 }

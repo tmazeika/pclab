@@ -21,7 +21,7 @@ class Component extends Model
         'asin'        => 'required|string',
         'name'        => 'required|string',
         'watts_usage' => 'required|integer|min:0',
-        'weight'      => 'required|numeric|min:0',
+        'weight'      => 'required|integer|min:0',
     ];
 
     private $updateRules = [

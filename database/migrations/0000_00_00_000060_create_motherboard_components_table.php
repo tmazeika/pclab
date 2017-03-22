@@ -21,9 +21,12 @@ class CreateMotherboardComponentsTable extends Migration
             // chassis
             $table->tinyInteger('audio_headers')->unsigned();
             $table->tinyInteger('fan_headers')->unsigned();
-            $table->string('form_factor');
+            $table->smallInteger('max_eatx_y')->unsigned();
             $table->tinyInteger('usb2_headers')->unsigned();
             $table->tinyInteger('usb3_headers')->unsigned();
+
+            $table->integer('form_factor_id')->unsigned();
+            $table->foreign('form_factor_id')->references('id')->on('form_factors')->onDelete('restrict');
 
             // graphics
             $table->boolean('has_displayport_out');
@@ -37,11 +40,13 @@ class CreateMotherboardComponentsTable extends Migration
             $table->smallInteger('dimm_frequency')->unsigned();
             $table->smallInteger('dimm_pins')->unsigned();
             $table->tinyInteger('dimm_slots')->unsigned();
-            $table->smallInteger('max_memory_capacity')->unsigned();
+            $table->smallInteger('dimm_max_capacity')->unsigned();
 
             // processor
-            $table->string('processor_socket');
             $table->tinyInteger('atx12v_pins')->unsigned();
+
+            $table->integer('socket_id')->unsigned();
+            $table->foreign('socket_id')->references('id')->on('sockets')->onDelete('restrict');
 
             // storage
             $table->unsignedTinyInteger('sata_slots');

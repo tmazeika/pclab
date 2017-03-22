@@ -20,8 +20,10 @@ class CreateProcessorComponentsTable extends Migration
 
             // features
             $table->boolean('has_apu');
-            $table->string('socket');
             $table->float('speed');
+
+            $table->integer('socket_id')->unsigned();
+            $table->foreign('socket_id')->references('id')->on('sockets')->onDelete('restrict');
 
             $table->timestamps();
         });

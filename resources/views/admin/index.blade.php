@@ -7,6 +7,7 @@
     @each('partials.admin.table', [
         'PCForge\ChassisComponent',
         'PCForge\ChassisFormFactor',
+        'PCForge\ChassisRadiator',
         'PCForge\Component',
         'PCForge\CoolingComponent',
         'PCForge\CoolingSocket',
