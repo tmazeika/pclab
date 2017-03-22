@@ -20,8 +20,6 @@ class CreateChassisComponentsTable extends Migration
 
             // cooling
             $table->smallInteger('max_fan_z')->unsigned();
-            $table->smallInteger('max_radiator_x')->unsigned();
-            $table->smallInteger('max_radiator_z')->unsigned();
 
             // graphics
             $table->smallInteger('max_graphics_size_x_blocked')->unsigned();
