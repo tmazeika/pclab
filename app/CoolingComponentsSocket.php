@@ -15,11 +15,11 @@ class CoolingComponentsSocket extends Model
 
     private $createRules = [
         'cooling_component_id' => 'required|exists:cooling_components,id',
-        'socket_id'       => 'required|sockets,id',
+        'socket_id'            => 'required|sockets,id',
     ];
 
     private $updateRules = [
         'cooling_component_id' => 'nullable|exists:cooling_components,id',
-        'socket_id'       => 'nullable|sockets,id',
+        'socket_id'            => 'nullable|sockets,id',
     ];
 }
