@@ -4,9 +4,9 @@ namespace PCForge;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ChassisComponentRadiator extends Model
+class ChassisComponentsRadiator extends Model
 {
-    use ComponentChild, Validatable;
+    use Validatable;
 
     protected $fillable = [
         'id',

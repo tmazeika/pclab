@@ -6,16 +6,16 @@
 <main class="content">
     @each('partials.admin.table', [
         'PCForge\ChassisComponent',
-        'PCForge\ChassisFormFactor',
-        'PCForge\ChassisRadiator',
+        'PCForge\ChassisComponentsRadiator',
         'PCForge\Component',
         'PCForge\CoolingComponent',
-        'PCForge\CoolingSocket',
+        'PCForge\FormFactor',
         'PCForge\GraphicsComponent',
         'PCForge\MemoryComponent',
         'PCForge\MotherboardComponent',
         'PCForge\PowerComponent',
         'PCForge\ProcessorComponent',
+        'PCForge\Socket',
         'PCForge\StorageComponent',
     ], 'model')
 </main>
