@@ -28,6 +28,7 @@ class CreateChassisComponentsTable extends Migration
             // motherboard
             $table->tinyInteger('audio_headers')->unsigned();
             $table->tinyInteger('fan_headers')->unsigned();
+            $table->smallInteger('max_eatx_y')->unsigned();
             $table->tinyInteger('usb2_headers')->unsigned();
             $table->tinyInteger('usb3_headers')->unsigned();
 

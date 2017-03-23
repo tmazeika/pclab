@@ -24,6 +24,7 @@ class AdminController extends Controller
         'processor_components'            => 'PCForge\ProcessorComponent',
         'sockets'                         => 'PCForge\Socket',
         'storage_components'              => 'PCForge\StorageComponent',
+        'storage_sizes'                   => 'PCForge\StorageSize',
     ];
 
     public function index()

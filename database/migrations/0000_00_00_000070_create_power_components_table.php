@@ -20,11 +20,9 @@ class CreatePowerComponentsTable extends Migration
 
             // cables
             $table->tinyInteger('atx12v_pins')->unsigned();
-            $table->tinyInteger('molexes')->unsigned();
             $table->tinyInteger('sata_powers')->unsigned();
 
             // features
-            $table->float('efficiency');
             $table->boolean('is_modular');
             $table->smallInteger('watts_out')->unsigned();
 

@@ -21,7 +21,6 @@ class CreateMotherboardComponentsTable extends Migration
             // chassis
             $table->tinyInteger('audio_headers')->unsigned();
             $table->tinyInteger('fan_headers')->unsigned();
-            $table->smallInteger('max_eatx_y')->unsigned();
             $table->tinyInteger('usb2_headers')->unsigned();
             $table->tinyInteger('usb3_headers')->unsigned();
 
@@ -37,10 +36,13 @@ class CreateMotherboardComponentsTable extends Migration
             $table->boolean('supports_sli');
 
             // memory
-            $table->smallInteger('dimm_frequency')->unsigned();
+            $table->smallInteger('dimm_gen')->unsigned();
             $table->smallInteger('dimm_pins')->unsigned();
             $table->tinyInteger('dimm_slots')->unsigned();
             $table->smallInteger('dimm_max_capacity')->unsigned();
+
+            // physical
+            $table->smallInteger('size_y')->unsigned();
 
             // processor
             $table->tinyInteger('atx12v_pins')->unsigned();
@@ -49,7 +51,7 @@ class CreateMotherboardComponentsTable extends Migration
             $table->foreign('socket_id')->references('id')->on('sockets')->onDelete('restrict');
 
             // storage
-            $table->unsignedTinyInteger('sata_slots');
+            $table->tinyInteger('sata_slots')->unsigned();
 
             $table->timestamps();
         });

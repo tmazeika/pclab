@@ -19,13 +19,12 @@ class CreateMemoryComponentsTable extends Migration
             $table->foreign('component_id')->references('id')->on('components')->onDelete('cascade');
 
             // physical
-            $table->tinyInteger('size_z');
+            $table->smallInteger('size_z');
 
             // specs
+            $table->integer('capacity')->unsigned();
             $table->tinyInteger('ddr_gen')->unsigned();
-            $table->smallInteger('frequency')->unsigned();
             $table->smallInteger('pins')->unsigned();
-            $table->smallInteger('capacity')->unsigned();
 
             $table->timestamps();
         });

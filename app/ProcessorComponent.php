@@ -21,7 +21,7 @@ class ProcessorComponent extends Model
         'component_id' => 'required|exists:components,id',
         'has_apu'      => 'required|boolean',
         'socket_id'    => 'required|exists:sockets,id',
-        'speed'        => 'required|numeric|min:0',
+        'speed'        => 'required|integer|min:0',
     ];
 
     private $updateRules = [
@@ -29,7 +29,7 @@ class ProcessorComponent extends Model
         'component_id' => 'nullable|exists:components,id',
         'has_apu'      => 'nullable|boolean',
         'socket_id'    => 'nullable|exists:sockets,id',
-        'speed'        => 'nullable|numeric|min:0',
+        'speed'        => 'nullable|integer|min:0',
     ];
 
     public function socket()

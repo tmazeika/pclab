@@ -19,6 +19,7 @@
         'PCForge\ProcessorComponent',
         'PCForge\Socket',
         'PCForge\StorageComponent',
+        'PCForge\StorageSize',
     ], 'model')
 </main>
 @endsection
