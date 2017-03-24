@@ -24,4 +24,14 @@ class ChassisComponentsFormFactor extends Model
         'chassis_component_id' => 'nullable|exists:chassis_components,id',
         'form_factor_id'       => 'nullable|exists:form_factors,id',
     ];
+
+    public function chassisComponent()
+    {
+        return $this->hasOne('PCForge\ChassisComponent');
+    }
+
+    public function formFactor()
+    {
+        return $this->hasOne('PCForge\FormFactor');
+    }
 }

@@ -24,4 +24,14 @@ class CoolingComponentsSocket extends Model
         'cooling_component_id' => 'nullable|exists:cooling_components,id',
         'socket_id'            => 'nullable|exists:sockets,id',
     ];
+
+    public function coolingComponent()
+    {
+        return $this->hasOne('PCForge\CoolingComponent');
+    }
+
+    public function socket()
+    {
+        return $this->hasOne('PCForge\Socket');
+    }
 }

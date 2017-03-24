@@ -22,4 +22,9 @@ class StorageSize extends Model
         'id'   => 'nullable|integer|unique:storage_sizes|min:0',
         'name' => 'nullable|string',
     ];
+
+    public function storageComponents()
+    {
+        return $this->belongsToMany('PCForge\StorageComponent');
+    }
 }

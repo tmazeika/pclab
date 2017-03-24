@@ -31,4 +31,9 @@ class StorageComponent extends Model
         'is_ssd'          => 'nullable|boolean',
         'storage_size_id' => 'nullable|exists:storage_sizes,id',
     ];
+
+    public function storageSize()
+    {
+        return $this->hasOne('PCForge\StorageSize');
+    }
 }
