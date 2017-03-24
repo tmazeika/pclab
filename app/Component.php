@@ -29,7 +29,7 @@ class Component extends Model
         'asin'        => 'nullable|string',
         'name'        => 'nullable|string',
         'watts_usage' => 'nullable|integer|min:0',
-        'weight'      => 'nullable|numeric|min:0',
+        'weight'      => 'nullable|integer|min:0',
     ];
 
     public function img()
