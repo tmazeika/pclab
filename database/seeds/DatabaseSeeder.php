@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PowerComponentsTableSeeder::class);
         $this->call(ProcessorComponentsTableSeeder::class);
         $this->call(StorageComponentsTableSeeder::class);
-        $this->call(StorageSizesTableSeeder::class);
         $this->call(ChassisComponentsFormFactorsTableSeeder::class);
         $this->call(ChassisComponentsRadiatorsTableSeeder::class);
         $this->call(CoolingComponentsSocketsTableSeeder::class);
