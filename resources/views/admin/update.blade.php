@@ -24,7 +24,7 @@
                     <tr>
                         @foreach($columns as $column)
                             <td>
-                                <input name="{{ $column }}" value="{{ $item->$column }}"/>
+                                <input name="{{ $column }}" value="{{ $item->$column or '' }}"/>
                             </td>
                         @endforeach
                     </tr>

@@ -11,27 +11,30 @@ class MemoryComponent extends Model
     protected $fillable = [
         'id',
         'component_id',
+        'count',
         'size_z',
-        'capacity',
+        'capacity_each',
         'ddr_gen',
         'pins',
     ];
 
     private $createRules = [
-        'id'           => 'nullable|integer|unique:memory_components|min:0',
-        'component_id' => 'required|exists:components,id',
-        'size_z'       => 'required|integer|min:0',
-        'capacity'     => 'required|integer|min:0',
-        'ddr_gen'      => 'required|integer|min:0',
-        'pins'         => 'required|integer|min:0',
+        'id'            => 'nullable|integer|unique:memory_components|min:0',
+        'component_id'  => 'required|exists:components,id',
+        'count'         => 'required|integer|min:0',
+        'size_z'        => 'required|integer|min:0',
+        'capacity_each' => 'required|integer|min:0',
+        'ddr_gen'       => 'required|integer|min:0',
+        'pins'          => 'required|integer|min:0',
     ];
 
     private $updateRules = [
-        'id'           => 'nullable|integer|unique:memory_components|min:0',
-        'component_id' => 'nullable|exists:components,id',
-        'size_z'       => 'nullable|integer|min:0',
-        'capacity'     => 'nullable|integer|min:0',
-        'ddr_gen'      => 'nullable|integer|min:0',
-        'pins'         => 'nullable|integer|min:0',
+        'id'            => 'nullable|integer|unique:memory_components|min:0',
+        'component_id'  => 'nullable|exists:components,id',
+        'count'         => 'nullable|integer|min:0',
+        'size_z'        => 'nullable|integer|min:0',
+        'capacity_each' => 'nullable|integer|min:0',
+        'ddr_gen'       => 'nullable|integer|min:0',
+        'pins'          => 'nullable|integer|min:0',
     ];
 }
