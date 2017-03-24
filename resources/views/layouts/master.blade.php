@@ -32,9 +32,8 @@
 </head>
 <body>
     @include('partials.header')
-
     @yield('content')
-
     @include('partials.footer')
+    @stack('scripts')
 </body>
 </html>

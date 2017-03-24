@@ -21,22 +21,15 @@ Route::group(['prefix' => 'admin'], function() {
     Route::get('create/{table}', 'AdminController@showCreate');
     Route::get('update/{table}/{id}', 'AdminController@showUpdate');
 
+    Route::get('delete/{table}/{id}', 'AdminController@delete');
+
     Route::post('create/{table}', 'AdminController@create');
     Route::post('update/{table}/{id}', 'AdminController@update');
 
-    Route::get('delete/{table}/{id}', 'AdminController@delete');
 });
 
 Route::group(['prefix' => 'build'], function() {
-    Route::get('/', function() {
-        return view('build.index');
-    });
-
-    Route::get('custom', function() {
-        return view('build.custom');
-    });
-
-    Route::get('preset', function() {
-        return view('build.preset');
-    });
+    Route::get('/', 'BuildController@index');
+    Route::get('custom', 'BuildController@showCustom');
+    Route::get('preset', 'BuildController@showPreset');
 });

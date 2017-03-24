@@ -1,7 +1,11 @@
 @extends('layouts.master')
 
-@section('title', 'Build')
+@section('title', 'Preset Build')
 
 @section('content')
 <!-- TODO -->
 @endsection
+
+@push('scripts')
+@include('partials.js.jquery')
+@endpush

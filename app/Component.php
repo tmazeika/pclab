@@ -31,4 +31,9 @@ class Component extends Model
         'watts_usage' => 'nullable|integer|min:0',
         'weight'      => 'nullable|numeric|min:0',
     ];
+
+    public function img()
+    {
+        return asset('img/components/'.str_pad($this->id, 6, '0', STR_PAD_LEFT).'.jpg');
+    }
 }
