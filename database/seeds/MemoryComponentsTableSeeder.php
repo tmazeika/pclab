@@ -21,6 +21,14 @@ class MemoryComponentsTableSeeder extends Seeder
                 'ddr_gen'       => 4,
                 'pins'          => 288,
             ],
+            [
+                'component_id'  => 16,
+                'count'         => 2,
+                'height'        => 10,
+                'capacity_each' => 8,
+                'ddr_gen'       => 4,
+                'pins'          => 288,
+            ],
         ]);
     }
 }

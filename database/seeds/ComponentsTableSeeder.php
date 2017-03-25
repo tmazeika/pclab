@@ -91,6 +91,24 @@ class ComponentsTableSeeder extends Seeder
                 'watts_usage' => 0,
                 'weight'      => 10700,
             ],
+            [
+                'asin'        => 'B00CX4MUCC',
+                'name'        => 'Gigabyte AMD 970',
+                'watts_usage' => 0,
+                'weight'      => 898,
+            ],
+            [
+                'asin'        => 'B06WVFFXXL',
+                'name'        => 'MSI B350 TOMAHAWK',
+                'watts_usage' => 0,
+                'weight'      => 1270,
+            ],
+            [
+                'asin'        => 'B0134EW7G8',
+                'name'        => 'Corsair Vengeance LPX',
+                'watts_usage' => 10,
+                'weight'      => 82,
+            ],
         ]);
     }
 }
