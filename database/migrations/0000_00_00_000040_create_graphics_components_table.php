@@ -26,7 +26,7 @@ class CreateGraphicsComponentsTable extends Migration
             $table->boolean('supports_sli');
 
             // physical
-            $table->smallInteger('size_x')->unsigned();
+            $table->smallInteger('length')->unsigned();
 
             $table->timestamps();
         });

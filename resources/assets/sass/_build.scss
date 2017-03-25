@@ -19,18 +19,20 @@
 }
 
 .build-chooser {
-  margin: 2em;
+  /** flex **/
   display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
-$border-width: 1px;
 $item-width: 15em;
 
 .build-chooser-item {
-  border: $border-width solid darken($accent-color, 15%);
+  border: 1px solid darken($accent-color, 15%);
   overflow: hidden;
 
-  width: calc(#{$item-width} + 2 * #{$border-width});
+  width: $item-width;
+  margin: 2em;
 }
 
 .build-chooser-item-img {

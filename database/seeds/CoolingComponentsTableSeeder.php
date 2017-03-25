@@ -14,13 +14,11 @@ class CoolingComponentsTableSeeder extends Seeder
     {
         DB::table('cooling_components')->insert([
             [
-                'component_id' => 3,
-                'is_air'       => true,
-                'fan_xy'       => 120,
-                'fan_z'        => 159,
-                'radiator_x'   => 0,
-                'radiator_z'   => 0,
-                'max_memory_z' => 37,
+                'component_id'      => 3,
+                'is_air'            => true,
+                'fan_width'         => 120,
+                'radiator_length'   => 0,
+                'max_memory_height' => 37,
             ],
         ]);
     }

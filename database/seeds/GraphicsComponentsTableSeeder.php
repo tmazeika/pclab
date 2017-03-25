@@ -20,7 +20,7 @@ class GraphicsComponentsTableSeeder extends Seeder
                 'has_hdmi_out'        => true,
                 'has_vga_out'         => false,
                 'supports_sli'        => true,
-                'size_x'              => 280,
+                'length'              => 280,
             ],
         ]);
     }

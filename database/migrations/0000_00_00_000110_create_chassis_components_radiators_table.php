@@ -18,9 +18,8 @@ class CreateChassisComponentsRadiatorsTable extends Migration
             $table->integer('chassis_component_id')->unsigned();
             $table->foreign('chassis_component_id')->references('id')->on('chassis_components')->onDelete('cascade');
 
-            $table->boolean('is_max_absolute');
-            $table->smallInteger('max_size_x')->unsigned();
-            $table->smallInteger('fan_size_xz')->unsigned();
+            $table->smallInteger('max_fan_width')->unsigned();
+            $table->smallInteger('max_length')->unsigned();
 
             $table->timestamps();
         });

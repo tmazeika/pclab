@@ -12,33 +12,27 @@ class CoolingComponent extends Model
         'id',
         'component_id',
         'is_air',
-        'fan_xy',
-        'fan_z',
-        'radiator_x',
-        'radiator_z',
-        'max_memory_z',
+        'fan_width',
+        'radiator_length',
+        'max_memory_height',
     ];
 
     private $createRules = [
-        'id'           => 'nullable|integer|unique:cooling_components|min:0',
-        'component_id' => 'required|exists:components,id',
-        'is_air'       => 'required|boolean',
-        'fan_xy'       => 'required|integer|min:0',
-        'fan_z'        => 'required|integer|min:0',
-        'radiator_x'   => 'required|integer|min:0',
-        'radiator_z'   => 'required|integer|min:0',
-        'max_memory_z' => 'required|integer|min:0',
+        'id'                => 'nullable|integer|unique:cooling_components|min:0',
+        'component_id'      => 'required|exists:components,id',
+        'is_air'            => 'required|boolean',
+        'fan_width'         => 'required|integer|min:0',
+        'radiator_length'   => 'required|integer|min:0',
+        'max_memory_height' => 'required|integer|min:0',
     ];
 
     private $updateRules = [
-        'id'           => 'nullable|integer|unique:cooling_components|min:0',
-        'component_id' => 'nullable|exists:components,id',
-        'is_air'       => 'nullable|boolean',
-        'fan_xy'       => 'nullable|integer|min:0',
-        'fan_z'        => 'nullable|integer|min:0',
-        'radiator_x'   => 'nullable|integer|min:0',
-        'radiator_z'   => 'nullable|integer|min:0',
-        'max_memory_z' => 'nullable|integer|min:0',
+        'id'                => 'nullable|integer|unique:cooling_components|min:0',
+        'component_id'      => 'nullable|exists:components,id',
+        'is_air'            => 'nullable|boolean',
+        'fan_width'         => 'nullable|integer|min:0',
+        'radiator_length'   => 'nullable|integer|min:0',
+        'max_memory_height' => 'nullable|integer|min:0',
     ];
 
     public function sockets()

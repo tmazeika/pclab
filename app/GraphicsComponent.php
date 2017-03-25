@@ -16,7 +16,7 @@ class GraphicsComponent extends Model
         'has_hdmi_out',
         'has_vga_out',
         'supports_sli',
-        'size_x',
+        'length',
     ];
 
     private $createRules = [
@@ -27,7 +27,7 @@ class GraphicsComponent extends Model
         'has_hdmi_out'        => 'required|boolean',
         'has_vga_out'         => 'required|boolean',
         'supports_sli'        => 'required|boolean',
-        'size_x'              => 'required|integer|min:0',
+        'length'              => 'required|integer|min:0',
     ];
 
     private $updateRules = [
@@ -38,6 +38,6 @@ class GraphicsComponent extends Model
         'has_hdmi_out'        => 'nullable|boolean',
         'has_vga_out'         => 'nullable|boolean',
         'supports_sli'        => 'nullable|boolean',
-        'size_x'              => 'nullable|integer|min:0',
+        'length'              => 'nullable|integer|min:0',
     ];
 }

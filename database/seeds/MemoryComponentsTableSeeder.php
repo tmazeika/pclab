@@ -16,7 +16,7 @@ class MemoryComponentsTableSeeder extends Seeder
             [
                 'component_id'  => 5,
                 'count'         => 2,
-                'size_z'        => 12,
+                'height'        => 12,
                 'capacity_each' => 8,
                 'ddr_gen'       => 4,
                 'pins'          => 288,

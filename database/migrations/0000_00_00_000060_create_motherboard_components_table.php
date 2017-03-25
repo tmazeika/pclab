@@ -42,7 +42,7 @@ class CreateMotherboardComponentsTable extends Migration
             $table->smallInteger('dimm_max_capacity')->unsigned();
 
             // physical
-            $table->smallInteger('size_y')->unsigned();
+            $table->smallInteger('length')->unsigned();
 
             // processor
             $table->tinyInteger('atx12v_pins')->unsigned();

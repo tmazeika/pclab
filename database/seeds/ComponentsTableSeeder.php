@@ -61,6 +61,36 @@ class ComponentsTableSeeder extends Seeder
                 'watts_usage' => 0,
                 'weight'      => 3227,
             ],
+            [
+                'asin'        => 'B010T6CWI2',
+                'name'        => 'Intel Core i5-6500',
+                'watts_usage' => 35,
+                'weight'      => 295,
+            ],
+            [
+                'asin'        => 'B015VPX2EO',
+                'name'        => 'Intel Core i3-6100',
+                'watts_usage' => 51,
+                'weight'      => 272,
+            ],
+            [
+                'asin'        => 'B06W9JXK4G',
+                'name'        => 'AMD Ryzen 7 1800X',
+                'watts_usage' => 95,
+                'weight'      => 119,
+            ],
+            [
+                'asin'        => 'B009O7YUF6',
+                'name'        => 'AMD FX-8350',
+                'watts_usage' => 125,
+                'weight'      => 200,
+            ],
+            [
+                'asin'        => 'B00Q2Z11QE',
+                'name'        => 'Fractal Design Define R5 Blackout Edition',
+                'watts_usage' => 0,
+                'weight'      => 10700,
+            ],
         ]);
     }
 }

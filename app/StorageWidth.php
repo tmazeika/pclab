@@ -4,7 +4,7 @@ namespace PCForge;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StorageSize extends Model
+class StorageWidth extends Model
 {
     use Validatable;
 
@@ -14,12 +14,12 @@ class StorageSize extends Model
     ];
 
     private $createRules = [
-        'id'   => 'nullable|integer|unique:storage_sizes|min:0',
+        'id'   => 'nullable|integer|unique:storage_widths|min:0',
         'name' => 'required|string',
     ];
 
     private $updateRules = [
-        'id'   => 'nullable|integer|unique:storage_sizes|min:0',
+        'id'   => 'nullable|integer|unique:storage_widths|min:0',
         'name' => 'nullable|string',
     ];
 

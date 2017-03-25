@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class StorageSizesTableSeeder extends Seeder
+class StorageWidthsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,7 +12,7 @@ class StorageSizesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('storage_sizes')->insert([
+        DB::table('storage_widths')->insert([
             ['name' => '2p5'],
             ['name' => '3p5'],
         ]);

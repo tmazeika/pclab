@@ -15,21 +15,18 @@ class ChassisComponentsRadiatorsTableSeeder extends Seeder
         DB::table('chassis_components_radiators')->insert([
             [
                 'chassis_component_id' => 1,
-                'is_max_absolute'      => true,
-                'max_size_x'           => 120,
-                'fan_size_xz'          => 120,
+                'max_fan_width'        => 120,
+                'max_length'           => 360,
             ],
             [
                 'chassis_component_id' => 1,
-                'is_max_absolute'      => false,
-                'max_size_x'           => 360,
-                'fan_size_xz'          => 120,
+                'max_fan_width'        => 140,
+                'max_length'           => 280,
             ],
             [
-                'chassis_component_id' => 1,
-                'is_max_absolute'      => false,
-                'max_size_x'           => 280,
-                'fan_size_xz'          => 140,
+                'chassis_component_id' => 2,
+                'max_fan_width'        => 0,
+                'max_length'           => 420,
             ],
         ]);
     }

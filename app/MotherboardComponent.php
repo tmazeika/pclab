@@ -26,9 +26,9 @@ class MotherboardComponent extends Model
         'dimm_pins',
         'dimm_slots',
         'dimm_max_capacity',
-        'socket_id',
-        'size_y',
+        'length',
         'atx12v_pins',
+        'socket_id',
         'sata_slots',
     ];
 
@@ -50,9 +50,9 @@ class MotherboardComponent extends Model
         'dimm_pins'           => 'required|integer|min:0',
         'dimm_slots'          => 'required|integer|min:0',
         'dimm_max_capacity'   => 'required|integer|min:0',
-        'socket_id'           => 'required|exists:sockets,id',
-        'size_y'              => 'required|integer|min:0',
+        'length'              => 'required|integer|min:0',
         'atx12v_pins'         => 'required|integer|min:0',
+        'socket_id'           => 'required|exists:sockets,id',
         'sata_slots'          => 'required|integer|min:0',
     ];
 
@@ -74,9 +74,9 @@ class MotherboardComponent extends Model
         'dimm_pins'           => 'nullable|integer|min:0',
         'dimm_slots'          => 'nullable|integer|min:0',
         'dimm_max_capacity'   => 'nullable|integer|min:0',
-        'socket_id'           => 'nullable|exists:sockets,id',
-        'size_y'              => 'nullable|integer|min:0',
+        'length'              => 'nullable|integer|min:0',
         'atx12v_pins'         => 'nullable|integer|min:0',
+        'socket_id'           => 'nullable|exists:sockets,id',
         'sata_slots'          => 'nullable|integer|min:0',
     ];
 

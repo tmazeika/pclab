@@ -21,6 +21,7 @@ class CreateProcessorComponentsTable extends Migration
             // features
             $table->tinyInteger('cores')->unsigned();
             $table->boolean('has_apu');
+            $table->boolean('has_stock_cooler');
             $table->integer('speed')->unsigned();
 
             $table->integer('socket_id')->unsigned();

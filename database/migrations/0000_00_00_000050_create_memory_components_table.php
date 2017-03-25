@@ -20,7 +20,7 @@ class CreateMemoryComponentsTable extends Migration
 
             // physical
             $table->tinyInteger('count');
-            $table->smallInteger('size_z');
+            $table->smallInteger('height');
 
             // specs
             $table->integer('capacity_each')->unsigned();

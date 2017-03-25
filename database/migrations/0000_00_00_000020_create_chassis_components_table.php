@@ -19,16 +19,16 @@ class CreateChassisComponentsTable extends Migration
             $table->foreign('component_id')->references('id')->on('components')->onDelete('cascade');
 
             // cooling
-            $table->smallInteger('max_fan_z')->unsigned();
+            $table->smallInteger('max_fan_width')->unsigned();
 
             // graphics
-            $table->smallInteger('max_graphics_size_x_blocked')->unsigned();
-            $table->smallInteger('max_graphics_size_x_full')->unsigned();
+            $table->smallInteger('max_graphics_length_blocked')->unsigned();
+            $table->smallInteger('max_graphics_length_full')->unsigned();
 
             // motherboard
             $table->tinyInteger('audio_headers')->unsigned();
             $table->tinyInteger('fan_headers')->unsigned();
-            $table->smallInteger('max_eatx_y')->unsigned();
+            $table->smallInteger('max_eatx_length')->unsigned();
             $table->tinyInteger('usb2_headers')->unsigned();
             $table->tinyInteger('usb3_headers')->unsigned();
 
@@ -38,6 +38,7 @@ class CreateChassisComponentsTable extends Migration
             // storage
             $table->tinyInteger('2p5_bays')->unsigned();
             $table->tinyInteger('3p5_bays')->unsigned();
+            $table->tinyInteger('adaptable_bays')->unsigned();
 
             $table->timestamps();
         });
