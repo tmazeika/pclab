@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class GraphicsComponent extends Model
 {
-    use ComponentChild, Validatable;
+    use ComponentChild, Validatable, VideoOutputer;
 
     protected $fillable = [
         'id',

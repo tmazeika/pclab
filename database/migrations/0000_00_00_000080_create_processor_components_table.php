@@ -19,8 +19,9 @@ class CreateProcessorComponentsTable extends Migration
             $table->foreign('component_id')->references('id')->on('components')->onDelete('cascade');
 
             // features
+            $table->tinyInteger('cores')->unsigned();
             $table->boolean('has_apu');
-            $table->integer('speed');
+            $table->integer('speed')->unsigned();
 
             $table->integer('socket_id')->unsigned();
             $table->foreign('socket_id')->references('id')->on('sockets')->onDelete('restrict');

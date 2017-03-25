@@ -21,7 +21,7 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'asin'        => 'B01F0KWL6A',
-                'name'        => 'Phanteks Enthoo Evolv - Tempered Glass Edition',
+                'name'        => 'Phanteks Enthoo Evolv: Tempered Glass Edition',
                 'watts_usage' => 0,
                 'weight'      => 10200,
             ],
@@ -39,7 +39,7 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'asin'        => 'B01EIDY1EK',
-                'name'        => 'Crucial Ballistix Sport LT 16 GB (2 x 8 GB) DDR4',
+                'name'        => 'Crucial Ballistix Sport LT',
                 'watts_usage' => 10,
                 'weight'      => 145,
             ],
@@ -51,7 +51,7 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'asin'        => 'B00OBRE5UE',
-                'name'        => 'Samsung 850 EVO 500 GB SSD',
+                'name'        => 'Samsung 850 EVO',
                 'watts_usage' => 2,
                 'weight'      => 54,
             ],

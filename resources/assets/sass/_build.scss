@@ -1,9 +1,67 @@
+.build-section {
+  margin: 2em 0;
+}
+
+.build-header {
+  border-left: 3px solid $accent-color;
+
+  padding-left: 1rem;
+}
+
 .build-heading {
-  font: 2em/1 $normal-font;
+  font: bold 2em/1 $normal-font;
 
   margin: 0;
 }
 
 .build-desc {
   font: 1em/1.5 $normal-font;
+}
+
+.build-chooser {
+  margin: 2em;
+  display: flex;
+}
+
+$border-width: 1px;
+$item-width: 15em;
+
+.build-chooser-item {
+  border: $border-width solid darken($accent-color, 15%);
+  overflow: hidden;
+
+  width: calc(#{$item-width} + 2 * #{$border-width});
+}
+
+.build-chooser-item-img {
+  width: $item-width;
+}
+
+.build-chooser-item-heading {
+  font: 1.25em/1.2 $normal-font;
+
+  margin: 0.75rem;
+}
+
+.build-chooser-item-features {
+  font: 1em/1.5 $normal-font;
+  list-style: circle;
+
+  margin: 0 0 0.75rem 0;
+}
+
+.build-chooser-item-button {
+  background-color: $accent-color;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font: 1.25em/1.2 $normal-font;
+  outline: none;
+
+  width: 100%;
+  padding: 1rem;
+
+  &:hover {
+    background-color: lighten($accent-color, 5%);
+  }
 }

@@ -13,21 +13,21 @@ class SocketsTableSeeder extends Seeder
     public function run()
     {
         DB::table('sockets')->insert([
-            ['name' => 'lga775'],
-            ['name' => 'lga1150'],
-            ['name' => 'lga1151'],
-            ['name' => 'lga1155'],
-            ['name' => 'lga1156'],
-            ['name' => 'lga1366'],
-            ['name' => 'lga2011'],
-            ['name' => 'fm1'],
-            ['name' => 'fm2'],
-            ['name' => 'fm2+'],
-            ['name' => 'am2'],
-            ['name' => 'am2+'],
-            ['name' => 'am3'],
-            ['name' => 'am3+'],
-            ['name' => 'am4'],
+            ['name' => 'LGA 775'],
+            ['name' => 'LGA 1150'],
+            ['name' => 'LGA 1151'],
+            ['name' => 'LGA 1155'],
+            ['name' => 'LGA 1156'],
+            ['name' => 'LGA 1366'],
+            ['name' => 'LGA 2011'],
+            ['name' => 'FM1'],
+            ['name' => 'FM2'],
+            ['name' => 'FM2+'],
+            ['name' => 'AM2'],
+            ['name' => 'AM2+'],
+            ['name' => 'AM3'],
+            ['name' => 'AM3+'],
+            ['name' => 'AM4'],
         ]);
     }
 }

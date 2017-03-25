@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class MotherboardComponent extends Model
 {
-    use ComponentChild, Validatable;
+    use ComponentChild, Validatable, VideoOutputer;
 
     protected $fillable = [
         'id',
@@ -82,7 +82,7 @@ class MotherboardComponent extends Model
 
     public function formFactor()
     {
-        return $this->hasOne('PCForge\FormFactor');
+        return $this->hasOne('PCForge\FormFactor', 'id', 'form_factor_id');
     }
 
     public function socket()

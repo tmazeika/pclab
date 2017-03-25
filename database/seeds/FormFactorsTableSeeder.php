@@ -13,10 +13,10 @@ class FormFactorsTableSeeder extends Seeder
     public function run()
     {
         DB::table('form_factors')->insert([
-            ['name' => 'atx'],
-            ['name' => 'eatx'],
-            ['name' => 'microatx'],
-            ['name' => 'miniitx'],
+            ['name' => 'ATX'],
+            ['name' => 'E-ATX'],
+            ['name' => 'Micro-ATX'],
+            ['name' => 'Mini-ITX'],
         ]);
     }
 }

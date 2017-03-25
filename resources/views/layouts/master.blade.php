@@ -34,6 +34,7 @@
     @include('partials.header')
     @yield('content')
     @include('partials.footer')
+    <script src="{{ asset('js/turbolinks.js') }}"></script>
     @stack('scripts')
 </body>
 </html>
