@@ -18,5 +18,5 @@
 @endsection
 
 @push('scripts')
-@include('partials.js.jquery')
+<script src="{{ asset('js/app.js') }}"></script>
 @endpush
