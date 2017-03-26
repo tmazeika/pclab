@@ -31,18 +31,9 @@
     <title>@yield('title') &mdash; PCForge</title>
 </head>
 <body>
-    <div id="vue"></div>
-
     @include('partials.header')
     @yield('content')
     @include('partials.footer')
-
-    <script>
-        window.Laravel = {!! json_encode([
-            'csrfToken' => csrf_token(),
-        ]) !!}
-    </script>
-
     @stack('scripts')
 </body>
 </html>
