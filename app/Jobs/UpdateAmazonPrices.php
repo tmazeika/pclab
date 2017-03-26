@@ -60,17 +60,34 @@ class UpdateAmazonPrices implements ShouldQueue
                 if ($listing->IsEligibleForPrime == 1) {
                     $asin = $item->ASIN;
                     $cacheMinutes = self::MINUTES_TO_UPDATE + 1;
-                    cache([
-                        "$asin.price" => (int) $listing->Price->Amount,
-                        "$asin.available" => $listing->AvailabilityAttributes->AvailabilityType === 'now'
-                    ], $cacheMinutes);
+                    $currentPrice = (int) $listing->Price->Amount;
+                    $previousPrice = cache("$asin.price", 0);
+                    $previousAvailability = cache("$asin.is_available", false);
+
+                    // absolute percent change from previous price to new price must be under 25%, else falsify
+                    // availability
+                    if (!$previousAvailability || $previousPrice === 0 ||
+                        abs($currentPrice - $previousPrice) / $previousPrice < 0.25
+                    ) {
+                        cache([
+                            "$asin.price"        => $currentPrice,
+                            "$asin.is_available" => $listing->AvailabilityAttributes->AvailabilityType === 'now',
+                        ], $cacheMinutes);
+                    }
+                    else {
+                        // if a big price change was detected, pretend we've never gotten this item's price before;
+                        // hopefully the Amazon seller fixes any pricing mistakes within 12 hours
+                        cache([
+                            "$asin.price"        => 0,
+                            "$asin.is_available" => false,
+                        ], $cacheMinutes);
+                    }
+
                     break;
                 }
             }
         }
     }
-
-
 
     private function getAwsRequestUrl(array $params): string
     {
