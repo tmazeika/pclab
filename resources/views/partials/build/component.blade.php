@@ -11,8 +11,13 @@
     <div class="build-chooser">
         @foreach($components as $component)
         <div class="build-chooser-item">
-            <img class="build-chooser-item-img" src="{{ $component->component->img() }}"/>
-            <h1 class="build-chooser-item-heading">{{ $component->component->name }}</h1>
+            <img class="build-chooser-item-img" src="{{ $component->parent->img() }}"/>
+            <h1 class="build-chooser-item-heading">
+                {{ $component->parent->name }}
+            </h1>
+            <h1 class="build-chooser-item-heading build-chooser-item-price">
+                {{ $component->parent->getPriceFormatted() }}
+            </h1>
             @include($component->featuresView())
             <button class="build-chooser-item-button">Select</button>
         </div>

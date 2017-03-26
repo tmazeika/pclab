@@ -15,7 +15,7 @@ class CreateSocketsTable extends Migration
     {
         Schema::create('sockets', function(Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }

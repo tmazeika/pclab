@@ -18,7 +18,7 @@ class StorageComponent extends Model
 
     private $createRules = [
         'id'               => 'nullable|integer|unique:storage_components|min:0',
-        'component_id'     => 'required|exists:components,id',
+        'component_id'     => 'required|exists:components,id|unique:storage_components',
         'capacity'         => 'required|integer|min:0',
         'is_ssd'           => 'required|boolean',
         'storage_width_id' => 'required|exists:storage_widths,id',
@@ -26,7 +26,7 @@ class StorageComponent extends Model
 
     private $updateRules = [
         'id'               => 'nullable|integer|unique:storage_components|min:0',
-        'component_id'     => 'nullable|exists:components,id',
+        'component_id'     => 'nullable|exists:components,id|unique:storage_components',
         'capacity'         => 'nullable|integer|min:0',
         'is_ssd'           => 'nullable|boolean',
         'storage_width_id' => 'nullable|exists:storage_widths,id',

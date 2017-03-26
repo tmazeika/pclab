@@ -2,8 +2,6 @@
 
 namespace PCForge\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class BuildController extends Controller
 {
     public function index()

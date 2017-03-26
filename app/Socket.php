@@ -15,12 +15,12 @@ class Socket extends Model
 
     private $createRules = [
         'id'   => 'nullable|integer|unique:sockets|min:0',
-        'name' => 'required|string',
+        'name' => 'required|string|unique:sockets',
     ];
 
     private $updateRules = [
         'id'   => 'nullable|integer|unique:sockets|min:0',
-        'name' => 'nullable|string',
+        'name' => 'nullable|string|unique:sockets',
     ];
 
     public function coolingComponents()

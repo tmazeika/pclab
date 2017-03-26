@@ -20,7 +20,7 @@ class ProcessorComponent extends Model
 
     private $createRules = [
         'id'               => 'nullable|integer|unique:processor_components|min:0',
-        'component_id'     => 'required|exists:components,id',
+        'component_id'     => 'required|exists:components,id|unique:processor_components',
         'cores'            => 'required|integer|min:0',
         'has_apu'          => 'required|boolean',
         'has_stock_cooler' => 'required|boolean',
@@ -30,7 +30,7 @@ class ProcessorComponent extends Model
 
     private $updateRules = [
         'id'               => 'nullable|integer|unique:processor_components|min:0',
-        'component_id'     => 'nullable|exists:components,id',
+        'component_id'     => 'nullable|exists:components,id|unique:processor_components',
         'cores'            => 'nullable|integer|min:0',
         'has_apu'          => 'nullable|boolean',
         'has_stock_cooler' => 'nullable|boolean',

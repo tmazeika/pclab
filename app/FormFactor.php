@@ -15,12 +15,12 @@ class FormFactor extends Model
 
     private $createRules = [
         'id'   => 'nullable|integer|unique:form_factors|min:0',
-        'name' => 'required|string',
+        'name' => 'required|string|unique:form_factors',
     ];
 
     private $updateRules = [
         'id'   => 'nullable|integer|unique:form_factors|min:0',
-        'name' => 'nullable|string',
+        'name' => 'nullable|string|unique:form_factors',
     ];
 
     public function chassisComponents()

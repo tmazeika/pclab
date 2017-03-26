@@ -16,7 +16,7 @@ class CreateComponentsTable extends Migration
         Schema::create('components', function(Blueprint $table) {
             $table->increments('id');
 
-            $table->string('asin');
+            $table->string('asin')->index()->unique();
             $table->string('name');
             $table->smallInteger('watts_usage')->unsigned();
             $table->integer('weight')->unsigned();

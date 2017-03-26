@@ -34,7 +34,7 @@ class MotherboardComponent extends Model
 
     private $createRules = [
         'id'                  => 'nullable|integer|unique:motherboard_components|min:0',
-        'component_id'        => 'required|exists:components,id',
+        'component_id'        => 'required|exists:components,id|unique:motherboard_components',
         'audio_headers'       => 'required|integer|min:0',
         'fan_headers'         => 'required|integer|min:0',
         'usb2_headers'        => 'required|integer|min:0',
@@ -58,7 +58,7 @@ class MotherboardComponent extends Model
 
     private $updateRules = [
         'id'                  => 'nullable|integer|unique:motherboard_components|min:0',
-        'component_id'        => 'nullable|exists:components,id',
+        'component_id'        => 'nullable|exists:components,id|unique:motherboard_components',
         'audio_headers'       => 'nullable|integer|min:0',
         'fan_headers'         => 'nullable|integer|min:0',
         'usb2_headers'        => 'nullable|integer|min:0',

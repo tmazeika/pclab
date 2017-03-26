@@ -15,7 +15,7 @@ class CreateFormFactorsTable extends Migration
     {
         Schema::create('form_factors', function(Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }

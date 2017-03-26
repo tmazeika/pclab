@@ -15,7 +15,7 @@ class CreateStorageWidthsTable extends Migration
     {
         Schema::create('storage_widths', function(Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }

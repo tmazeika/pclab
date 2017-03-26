@@ -19,7 +19,7 @@ class PowerComponent extends Model
 
     private $createRules = [
         'id'           => 'nullable|integer|unique:power_components|min:0',
-        'component_id' => 'required|exists:components,id',
+        'component_id' => 'required|exists:components,id|unique:power_components',
         'atx12v_pins'  => 'required|integer|min:0',
         'sata_powers'  => 'required|integer|min:0',
         'is_modular'   => 'required|boolean',
@@ -28,7 +28,7 @@ class PowerComponent extends Model
 
     private $updateRules = [
         'id'           => 'nullable|integer|unique:power_components|min:0',
-        'component_id' => 'nullable|exists:components,id',
+        'component_id' => 'nullable|exists:components,id|unique:power_components',
         'atx12v_pins'  => 'nullable|integer|min:0',
         'sata_powers'  => 'nullable|integer|min:0',
         'is_modular'   => 'nullable|boolean',

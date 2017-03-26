@@ -19,7 +19,7 @@ class CoolingComponent extends Model
 
     private $createRules = [
         'id'                => 'nullable|integer|unique:cooling_components|min:0',
-        'component_id'      => 'required|exists:components,id',
+        'component_id'      => 'required|exists:components,id|unique:cooling_components',
         'is_air'            => 'required|boolean',
         'fan_width'         => 'required|integer|min:0',
         'radiator_length'   => 'required|integer|min:0',
@@ -28,7 +28,7 @@ class CoolingComponent extends Model
 
     private $updateRules = [
         'id'                => 'nullable|integer|unique:cooling_components|min:0',
-        'component_id'      => 'nullable|exists:components,id',
+        'component_id'      => 'nullable|exists:components,id|unique:cooling_components',
         'is_air'            => 'nullable|boolean',
         'fan_width'         => 'nullable|integer|min:0',
         'radiator_length'   => 'nullable|integer|min:0',

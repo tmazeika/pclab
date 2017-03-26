@@ -27,7 +27,7 @@ class ChassisComponent extends Model
 
     private $createRules = [
         'id'                          => 'nullable|integer|unique:chassis_components|min:0',
-        'component_id'                => 'required|exists:components,id',
+        'component_id'                => 'required|exists:components,id|unique:chassis_components',
         'max_fan_width'               => 'required|integer|min:0',
         'max_graphics_length_blocked' => 'required|integer|min:0',
         'max_graphics_length_full'    => 'required|integer|min:0',
@@ -44,7 +44,7 @@ class ChassisComponent extends Model
 
     private $updateRules = [
         'id'                          => 'nullable|integer|unique:chassis_components|min:0',
-        'component_id'                => 'nullable|exists:components,id',
+        'component_id'                => 'nullable|exists:components,id|unique:chassis_components',
         'max_fan_width'               => 'nullable|integer|min:0',
         'max_graphics_length_blocked' => 'nullable|integer|min:0',
         'max_graphics_length_full'    => 'nullable|integer|min:0',

@@ -15,12 +15,12 @@ class StorageWidth extends Model
 
     private $createRules = [
         'id'   => 'nullable|integer|unique:storage_widths|min:0',
-        'name' => 'required|string',
+        'name' => 'required|string|unique:storage_widths',
     ];
 
     private $updateRules = [
         'id'   => 'nullable|integer|unique:storage_widths|min:0',
-        'name' => 'nullable|string',
+        'name' => 'nullable|string|unique:storage_widths',
     ];
 
     public function storageComponents()

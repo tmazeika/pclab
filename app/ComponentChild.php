@@ -9,9 +9,9 @@ trait ComponentChild
         return 'partials.build.'.$this->type().'-component';
     }
 
-    public function component()
+    public function parent()
     {
-        return $this->belongsTo('PCForge\Component');
+        return $this->belongsTo('PCForge\Component', 'component_id', 'id');
     }
 
     public function type()

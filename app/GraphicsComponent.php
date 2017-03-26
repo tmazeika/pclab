@@ -21,7 +21,7 @@ class GraphicsComponent extends Model
 
     private $createRules = [
         'id'                  => 'nullable|integer|unique:graphics_components|min:0',
-        'component_id'        => 'required|exists:components,id',
+        'component_id'        => 'required|exists:components,id|unique:graphics_components',
         'has_displayport_out' => 'required|boolean',
         'has_dvi_out'         => 'required|boolean',
         'has_hdmi_out'        => 'required|boolean',
@@ -32,7 +32,7 @@ class GraphicsComponent extends Model
 
     private $updateRules = [
         'id'                  => 'nullable|integer|unique:graphics_components|min:0',
-        'component_id'        => 'nullable|exists:components,id',
+        'component_id'        => 'nullable|exists:components,id|unique:graphics_components',
         'has_displayport_out' => 'nullable|boolean',
         'has_dvi_out'         => 'nullable|boolean',
         'has_hdmi_out'        => 'nullable|boolean',

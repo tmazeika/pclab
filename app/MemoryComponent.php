@@ -20,7 +20,7 @@ class MemoryComponent extends Model
 
     private $createRules = [
         'id'            => 'nullable|integer|unique:memory_components|min:0',
-        'component_id'  => 'required|exists:components,id',
+        'component_id'  => 'required|exists:components,id|unique:memory_components',
         'count'         => 'required|integer|min:0',
         'height'        => 'required|integer|min:0',
         'capacity_each' => 'required|integer|min:0',
@@ -30,7 +30,7 @@ class MemoryComponent extends Model
 
     private $updateRules = [
         'id'            => 'nullable|integer|unique:memory_components|min:0',
-        'component_id'  => 'nullable|exists:components,id',
+        'component_id'  => 'nullable|exists:components,id|unique:memory_components',
         'count'         => 'nullable|integer|min:0',
         'height'        => 'nullable|integer|min:0',
         'capacity_each' => 'nullable|integer|min:0',
