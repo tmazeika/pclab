@@ -23,12 +23,12 @@ class FormFactor extends Model
         'name' => 'nullable|string|unique:form_factors',
     ];
 
-    public function chassisComponents()
+    public function chassis_components()
     {
         return $this->belongsToMany('PCForge\ChassisComponent');
     }
 
-    public function motherboardComponents()
+    public function motherboard_components()
     {
         return $this->belongsToMany('PCForge\MotherboardComponent');
     }

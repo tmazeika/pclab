@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ChassisComponentsFormFactorsTableSeeder extends Seeder
+class ChassisComponentFormFactorTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,15 +12,15 @@ class ChassisComponentsFormFactorsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('chassis_components_form_factors')->insert([
+        DB::table('chassis_component_form_factor')->insert([
             [
                 'chassis_component_id' => 1,
                 'form_factor_id'       => 1,
             ],
-            [
-                'chassis_component_id' => 1,
-                'form_factor_id'       => 2,
-            ],
+            //[
+            //    'chassis_component_id' => 1,
+            //    'form_factor_id'       => 2,
+            //],
             [
                 'chassis_component_id' => 1,
                 'form_factor_id'       => 3,

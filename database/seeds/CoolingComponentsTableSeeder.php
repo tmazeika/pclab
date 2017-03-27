@@ -17,8 +17,9 @@ class CoolingComponentsTableSeeder extends Seeder
                 'component_id'      => 3,
                 'is_air'            => true,
                 'fan_width'         => 120,
-                'radiator_length'   => 0,
+                'height'            => 159,
                 'max_memory_height' => 37,
+                'radiator_length'   => 0,
             ],
         ]);
     }

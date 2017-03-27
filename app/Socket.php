@@ -23,17 +23,17 @@ class Socket extends Model
         'name' => 'nullable|string|unique:sockets',
     ];
 
-    public function coolingComponents()
+    public function cooling_components()
     {
         return $this->belongsToMany('PCForge\CoolingComponent');
     }
 
-    public function motherboardComponents()
+    public function motherboard_components()
     {
         return $this->belongsToMany('PCForge\MotherboardComponent');
     }
 
-    public function processorComponents()
+    public function processor_components()
     {
         return $this->belongsToMany('PCForge\ProcessorComponent');
     }

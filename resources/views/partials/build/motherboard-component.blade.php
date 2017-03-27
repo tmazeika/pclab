@@ -1,5 +1,5 @@
 <ul class="build-chooser-item-features">
-    <li><span class="bold">Form Factor:</span> {{ $component->formFactor->name }}</li>
+    <li><span class="bold">Form Factor:</span> {{ $component->form_factor->name }}</li>
     <li>
         @if($component->outputsString())
             <span class="bold">Outputs:</span> {{ $component->outputsString() }}

@@ -29,7 +29,7 @@ class ChassisComponentsRadiator extends Model
         'max_length'           => 'nullable|integer|min:0',
     ];
 
-    public function chassisComponent()
+    public function chassis_component()
     {
         return $this->belongsTo('PCForge\ChassisComponent');
     }

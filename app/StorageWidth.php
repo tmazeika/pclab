@@ -23,7 +23,7 @@ class StorageWidth extends Model
         'name' => 'nullable|string|unique:storage_widths',
     ];
 
-    public function storageComponents()
+    public function storage_components()
     {
         return $this->belongsToMany('PCForge\StorageComponent');
     }

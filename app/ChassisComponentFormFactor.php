@@ -4,7 +4,7 @@ namespace PCForge;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ChassisComponentsFormFactor extends Model
+class ChassisComponentFormFactor extends Model
 {
     use Validatable;
 
@@ -25,12 +25,12 @@ class ChassisComponentsFormFactor extends Model
         'form_factor_id'       => 'nullable|exists:form_factors,id',
     ];
 
-    public function chassisComponent()
+    public function chassis_component()
     {
         return $this->hasOne('PCForge\ChassisComponent');
     }
 
-    public function formFactor()
+    public function form_factors()
     {
         return $this->hasOne('PCForge\FormFactor');
     }

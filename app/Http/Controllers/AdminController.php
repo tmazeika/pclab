@@ -10,21 +10,21 @@ use Illuminate\Support\Facades\DB;
 class AdminController extends Controller
 {
     const TABLE_MODEL_DICT = [
-        'chassis_components'              => 'PCForge\ChassisComponent',
-        'chassis_components_form_factors' => 'PCForge\ChassisComponentsFormFactor',
-        'chassis_components_radiators'    => 'PCForge\ChassisComponentsRadiator',
-        'components'                      => 'PCForge\Component',
-        'cooling_components'              => 'PCForge\CoolingComponent',
-        'cooling_components_sockets'      => 'PCForge\CoolingComponentsSocket',
-        'form_factors'                    => 'PCForge\FormFactor',
-        'graphics_components'             => 'PCForge\GraphicsComponent',
-        'memory_components'               => 'PCForge\MemoryComponent',
-        'motherboard_components'          => 'PCForge\MotherboardComponent',
-        'power_components'                => 'PCForge\PowerComponent',
-        'processor_components'            => 'PCForge\ProcessorComponent',
-        'sockets'                         => 'PCForge\Socket',
-        'storage_components'              => 'PCForge\StorageComponent',
-        'storage_widths'                   => 'PCForge\StorageWidth',
+        'chassis_components'            => 'PCForge\ChassisComponent',
+        'chassis_component_form_factor' => 'PCForge\ChassisComponentFormFactor',
+        'chassis_components_radiators'  => 'PCForge\ChassisComponentsRadiator',
+        'components'                    => 'PCForge\Component',
+        'cooling_components'            => 'PCForge\CoolingComponent',
+        'cooling_component_socket'      => 'PCForge\CoolingComponentSocket',
+        'form_factors'                  => 'PCForge\FormFactor',
+        'graphics_components'           => 'PCForge\GraphicsComponent',
+        'memory_components'             => 'PCForge\MemoryComponent',
+        'motherboard_components'        => 'PCForge\MotherboardComponent',
+        'power_components'              => 'PCForge\PowerComponent',
+        'processor_components'          => 'PCForge\ProcessorComponent',
+        'sockets'                       => 'PCForge\Socket',
+        'storage_components'            => 'PCForge\StorageComponent',
+        'storage_widths'                => 'PCForge\StorageWidth',
     ];
 
     public function index()

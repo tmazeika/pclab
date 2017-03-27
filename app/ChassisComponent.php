@@ -11,7 +11,7 @@ class ChassisComponent extends Model
     protected $fillable = [
         'id',
         'component_id',
-        'max_fan_width',
+        'max_fan_height',
         'max_graphics_length_blocked',
         'max_graphics_length_full',
         'audio_headers',
@@ -28,7 +28,7 @@ class ChassisComponent extends Model
     private $createRules = [
         'id'                          => 'nullable|integer|unique:chassis_components|min:0',
         'component_id'                => 'required|exists:components,id|unique:chassis_components',
-        'max_fan_width'               => 'required|integer|min:0',
+        'max_fan_height'              => 'required|integer|min:0',
         'max_graphics_length_blocked' => 'required|integer|min:0',
         'max_graphics_length_full'    => 'required|integer|min:0',
         'audio_headers'               => 'required|integer|min:0',
@@ -45,7 +45,7 @@ class ChassisComponent extends Model
     private $updateRules = [
         'id'                          => 'nullable|integer|unique:chassis_components|min:0',
         'component_id'                => 'nullable|exists:components,id|unique:chassis_components',
-        'max_fan_width'               => 'nullable|integer|min:0',
+        'max_fan_height'              => 'nullable|integer|min:0',
         'max_graphics_length_blocked' => 'nullable|integer|min:0',
         'max_graphics_length_full'    => 'nullable|integer|min:0',
         'audio_headers'               => 'nullable|integer|min:0',
@@ -59,9 +59,9 @@ class ChassisComponent extends Model
         'adaptable_bays'              => 'nullable|integer|min:0',
     ];
 
-    public function formFactors()
+    public function form_factors()
     {
-        return $this->hasMany('PCForge\ChassisFormFactor');
+        return $this->hasMany('PCForge\ChassisComponentFormFactor');
     }
 
     public function radiators()

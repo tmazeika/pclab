@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CoolingComponentsSocketsTableSeeder extends Seeder
+class CoolingComponentSocketTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,7 +12,7 @@ class CoolingComponentsSocketsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('cooling_components_sockets')->insert([
+        DB::table('cooling_component_socket')->insert([
             [
                 'cooling_component_id' => 1,
                 'socket_id'            => 1,

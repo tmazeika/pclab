@@ -32,7 +32,7 @@ class StorageComponent extends Model
         'storage_width_id' => 'nullable|exists:storage_widths,id',
     ];
 
-    public function storageSize()
+    public function storage_size()
     {
         return $this->hasOne('PCForge\StorageWidth');
     }

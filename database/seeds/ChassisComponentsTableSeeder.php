@@ -15,7 +15,7 @@ class ChassisComponentsTableSeeder extends Seeder
         DB::table('chassis_components')->insert([
             [
                 'component_id'                => 2,
-                'max_fan_width'               => 194,
+                'max_fan_height'              => 194,
                 'max_graphics_length_blocked' => 300,
                 'max_graphics_length_full'    => 420,
                 'audio_headers'               => 1,
@@ -30,7 +30,7 @@ class ChassisComponentsTableSeeder extends Seeder
             ],
             [
                 'component_id'                => 13,
-                'max_fan_width'               => 180,
+                'max_fan_height'              => 180,
                 'max_graphics_length_blocked' => 310,
                 'max_graphics_length_full'    => 440,
                 'audio_headers'               => 1,

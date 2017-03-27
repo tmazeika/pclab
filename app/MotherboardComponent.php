@@ -80,7 +80,7 @@ class MotherboardComponent extends Model
         'sata_slots'          => 'nullable|integer|min:0',
     ];
 
-    public function formFactor()
+    public function form_factor()
     {
         return $this->hasOne('PCForge\FormFactor', 'id', 'form_factor_id');
     }

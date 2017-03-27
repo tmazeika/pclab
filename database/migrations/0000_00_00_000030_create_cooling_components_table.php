@@ -23,8 +23,9 @@ class CreateCoolingComponentsTable extends Migration
 
             // physical
             $table->smallInteger('fan_width')->unsigned();
-            $table->smallInteger('radiator_length')->unsigned();
+            $table->smallInteger('height')->unsigned();
             $table->SmallInteger('max_memory_height')->unsigned();
+            $table->smallInteger('radiator_length')->unsigned();
 
             $table->timestamps();
         });

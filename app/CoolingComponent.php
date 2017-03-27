@@ -13,8 +13,9 @@ class CoolingComponent extends Model
         'component_id',
         'is_air',
         'fan_width',
-        'radiator_length',
+        'height',
         'max_memory_height',
+        'radiator_length',
     ];
 
     private $createRules = [
@@ -22,8 +23,9 @@ class CoolingComponent extends Model
         'component_id'      => 'required|exists:components,id|unique:cooling_components',
         'is_air'            => 'required|boolean',
         'fan_width'         => 'required|integer|min:0',
-        'radiator_length'   => 'required|integer|min:0',
+        'height'            => 'required|integer|min:0',
         'max_memory_height' => 'required|integer|min:0',
+        'radiator_length'   => 'required|integer|min:0',
     ];
 
     private $updateRules = [
@@ -31,8 +33,9 @@ class CoolingComponent extends Model
         'component_id'      => 'nullable|exists:components,id|unique:cooling_components',
         'is_air'            => 'nullable|boolean',
         'fan_width'         => 'nullable|integer|min:0',
-        'radiator_length'   => 'nullable|integer|min:0',
+        'height'            => 'nullable|integer|min:0',
         'max_memory_height' => 'nullable|integer|min:0',
+        'radiator_length'   => 'nullable|integer|min:0',
     ];
 
     public function sockets()

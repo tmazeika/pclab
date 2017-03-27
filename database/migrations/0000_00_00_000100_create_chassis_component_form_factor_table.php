@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateChassisComponentsFormFactorsTable extends Migration
+class CreateChassisComponentFormFactorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateChassisComponentsFormFactorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('chassis_components_form_factors', function(Blueprint $table) {
+        Schema::create('chassis_component_form_factor', function(Blueprint $table) {
             $table->integer('chassis_component_id')->unsigned();
             $table->foreign('chassis_component_id')->references('id')->on('chassis_components')->onDelete('cascade');
 
@@ -29,6 +29,6 @@ class CreateChassisComponentsFormFactorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chassis_components_form_factors');
+        Schema::dropIfExists('chassis_component_form_factors');
     }
 }

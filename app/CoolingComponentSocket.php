@@ -4,7 +4,7 @@ namespace PCForge;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CoolingComponentsSocket extends Model
+class CoolingComponentSocket extends Model
 {
     use Validatable;
 
@@ -25,7 +25,7 @@ class CoolingComponentsSocket extends Model
         'socket_id'            => 'nullable|exists:sockets,id',
     ];
 
-    public function coolingComponent()
+    public function cooling_component()
     {
         return $this->hasOne('PCForge\CoolingComponent');
     }
