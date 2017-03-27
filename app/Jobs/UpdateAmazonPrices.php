@@ -60,7 +60,7 @@ class UpdateAmazonPrices implements ShouldQueue
                 if ($listing->IsEligibleForPrime == 1) {
                     $asin = $item->ASIN;
                     $cacheMinutes = self::MINUTES_TO_UPDATE + 1;
-                    $currentPrice = (int) $listing->Price->Amount;
+                    $currentPrice = intval($listing->Price->Amount);
                     $previousPrice = cache("$asin.price", 0);
                     $previousAvailability = cache("$asin.is_available", false);
 

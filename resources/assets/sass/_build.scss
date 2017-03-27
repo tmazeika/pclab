@@ -29,10 +29,44 @@ $item-width: 15em;
 
 .build-chooser-item {
   border: 1px solid darken($accent-color, 15%);
+  cursor: pointer;
   overflow: hidden;
+
+  transition: box-shadow 0.2s;
 
   width: $item-width;
   margin: 2em;
+
+  &:not(.disabled) {
+    &:hover {
+      box-shadow: 0 0 10px $dim-element-color;
+    }
+
+    &.selected {
+      box-shadow: 0 0 20px $accent-color;
+    }
+  }
+
+  * {
+    transition: color 0.2s;
+  }
+
+  img {
+    transition: opacity 0.2s;
+  }
+
+  &.disabled {
+    border-color: $dim-element-color;
+    cursor: default;
+
+    * {
+      color: $dim-element-color;
+    }
+
+    img {
+      opacity: 0.25;
+    }
+  }
 }
 
 .build-chooser-item-img {
@@ -54,20 +88,4 @@ $item-width: 15em;
   list-style: circle;
 
   margin: 0 0 0.75rem 0;
-}
-
-.build-chooser-item-button {
-  background-color: $accent-color;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  font: 1.25em/1.2 $normal-font;
-  outline: none;
-
-  width: 100%;
-  padding: 1rem;
-
-  &:hover {
-    background-color: lighten($accent-color, 5%);
-  }
 }

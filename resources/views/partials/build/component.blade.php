@@ -10,7 +10,9 @@
     </div>
     <div class="build-chooser">
         @foreach($components as $component)
-        <div class="build-chooser-item">
+        <div class="build-chooser-item {{ $component->parent->isSelected() ? 'selected' : '' }}"
+             data-component-id="{{ $component->parent->id }}"
+             data-component-type="{{ $component->type() }}">
             <img class="build-chooser-item-img" src="{{ $component->parent->img() }}"/>
             <h1 class="build-chooser-item-heading">
                 {{ $component->parent->name }}
@@ -19,7 +21,6 @@
                 {{ $component->parent->getPriceFormatted() }}
             </h1>
             @include($component->featuresView())
-            <button class="build-chooser-item-button">Select</button>
         </div>
         @endforeach
     </div>

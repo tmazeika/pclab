@@ -23,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(
+            'PCForge\Contracts\CompatibilityServiceContract',
+            'PCForge\Services\CompatibilityService'
+        );
     }
 }

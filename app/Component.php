@@ -37,6 +37,11 @@ class Component extends Model
         return asset('img/components/'.str_pad($this->id, 6, '0', STR_PAD_LEFT).'.jpg');
     }
 
+    public function isSelected()
+    {
+        return session("$this->id.selected");
+    }
+
     public function getPrice()
     {
         return cache("$this->asin.price", 0);

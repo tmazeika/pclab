@@ -19,6 +19,7 @@
 
 @push('scripts')
 <script>
+    const ajaxSelectUrl = "{{ url('build/custom/select') }}";
     const csrfToken = "{{ csrf_token() }}";
 </script>
 

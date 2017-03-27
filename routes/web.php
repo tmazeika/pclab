@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function() {
     return view('home');
 });
@@ -30,6 +32,10 @@ Route::group(['prefix' => 'admin'], function() {
 
 Route::group(['prefix' => 'build'], function() {
     Route::get('/', 'BuildController@index');
-    Route::get('custom', 'BuildController@showCustom');
     Route::get('preset', 'BuildController@showPreset');
+
+    Route::group(['prefix' => 'custom'], function() {
+        Route::get('/', 'BuildController@showCustom');
+        Route::get('select', 'BuildController@customSelect');
+    });
 });

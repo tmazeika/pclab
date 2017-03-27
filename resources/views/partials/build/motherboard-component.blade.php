@@ -1,6 +1,12 @@
 <ul class="build-chooser-item-features">
     <li><span class="bold">Form Factor:</span> {{ $component->formFactor->name }}</li>
-    <li><span class="bold">Outputs:</span> {{ $component->outputsString() }}</li>
+    <li>
+        @if($component->outputsString())
+            <span class="bold">Outputs:</span> {{ $component->outputsString() }}
+        @else
+            <span class="bold">No Video Outputs</span>
+        @endif
+    </li>
     <li><span class="bold">PCIe 3.0 Slots:</span> {{ $component->pcie3_slots }}</li>
     <li><span class="bold">SLI Support:</span> {{ $component->supports_sli ? 'Yes' : 'No' }}</li>
     <li><span class="bold">Max RAM Capacity:</span> {{ $component->dimm_max_capacity }} GB</li>
