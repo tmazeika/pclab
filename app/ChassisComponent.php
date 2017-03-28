@@ -61,11 +61,11 @@ class ChassisComponent extends Model
 
     public function form_factors()
     {
-        return $this->hasMany('PCForge\ChassisComponentFormFactor');
+        return $this->belongsToMany('PCForge\FormFactor');
     }
 
     public function radiators()
     {
-        return $this->hasMany('PCForge\ChassisRadiator');
+        return $this->belongsToMany('PCForge\ChassisRadiator');
     }
 }

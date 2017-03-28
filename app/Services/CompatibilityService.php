@@ -2,11 +2,15 @@
 
 namespace PCForge\Services;
 
+use Illuminate\Support\Facades\DB;
 use PCForge\ChassisComponent;
 use PCForge\Contracts\CompatibilityServiceContract;
 use PCForge\CoolingComponent;
+use PCForge\CoolingComponentSocket;
 use PCForge\GraphicsComponent;
 use PCForge\MotherboardComponent;
+use PCForge\ProcessorComponent;
+use PCForge\Socket;
 
 class CompatibilityService implements CompatibilityServiceContract
 {
@@ -31,6 +35,9 @@ class CompatibilityService implements CompatibilityServiceContract
 
     private function chassis(ChassisComponent $chassis)
     {
+        // chassis
+        $badChassis = ChassisComponent::where('id', '!=', $chassis->id)->pluck('component_id')->all();
+
         // cooling
         $badCooling = CoolingComponent::where('height', '>', $chassis->max_fan_height)
             ->pluck('component_id')
@@ -47,6 +54,30 @@ class CompatibilityService implements CompatibilityServiceContract
             ->pluck('component_id')
             ->all();
 
-        return array_merge($badCooling, $badGraphics, $badMotherboard);
+        return array_merge($badChassis, $badCooling, $badGraphics, $badMotherboard);
+    }
+
+    private function processor(ProcessorComponent $processor)
+    {
+        $socketId = $processor->socket->id;
+
+        // cooling
+        $coolingComponentsTable = (new CoolingComponent)->getTable();
+        $coolingComponentSocketTable = (new CoolingComponentSocket)->getTable();
+        $badCooling = CoolingComponent::whereNotExists(function($query) use ($socketId, $coolingComponentsTable, $coolingComponentSocketTable) {
+            $query->select(DB::raw(1))
+                ->from($coolingComponentSocketTable)
+                ->whereRaw("$coolingComponentSocketTable.cooling_component_id = $coolingComponentsTable.id")
+                ->whereRaw("$coolingComponentSocketTable.socket_id = $socketId");
+        })->pluck('component_id')->all();
+
+        // TODO: memory
+
+        // TODO: motherboard
+
+        // processor
+        $badProcessors = ProcessorComponent::where('id', '!=', $processor->id)->pluck('component_id')->all();
+
+        return array_merge($badCooling, $badProcessors);
     }
 }

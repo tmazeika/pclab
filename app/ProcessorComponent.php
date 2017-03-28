@@ -40,6 +40,6 @@ class ProcessorComponent extends Model
 
     public function socket()
     {
-        return $this->hasOne('PCForge\Socket', 'id', 'socket_id');
+        return $this->belongsTo('PCForge\Socket');
     }
 }

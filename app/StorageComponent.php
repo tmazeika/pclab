@@ -34,6 +34,6 @@ class StorageComponent extends Model
 
     public function storage_size()
     {
-        return $this->hasOne('PCForge\StorageWidth');
+        return $this->hasMany('PCForge\StorageWidth');
     }
 }

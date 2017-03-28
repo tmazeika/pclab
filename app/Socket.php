@@ -25,16 +25,16 @@ class Socket extends Model
 
     public function cooling_components()
     {
-        return $this->belongsToMany('PCForge\CoolingComponent');
+        return $this->hasMany('PCForge\CoolingComponent');
     }
 
     public function motherboard_components()
     {
-        return $this->belongsToMany('PCForge\MotherboardComponent');
+        return $this->hasMany('PCForge\MotherboardComponent');
     }
 
     public function processor_components()
     {
-        return $this->belongsToMany('PCForge\ProcessorComponent');
+        return $this->hasMany('PCForge\ProcessorComponent');
     }
 }

@@ -82,11 +82,11 @@ class MotherboardComponent extends Model
 
     public function form_factor()
     {
-        return $this->hasOne('PCForge\FormFactor', 'id', 'form_factor_id');
+        return $this->belongsTo('PCForge\FormFactor');
     }
 
     public function socket()
     {
-        return $this->hasOne('PCForge\Socket');
+        return $this->belongsTo('PCForge\Socket');
     }
 }

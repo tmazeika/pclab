@@ -13,7 +13,8 @@ class UpdateAmazonPrices implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    const MINUTES_TO_UPDATE = 12 * 60 + 1;
+    // TODO: remove '9001 * '
+    const MINUTES_TO_UPDATE = 9001 * 12 * 60 + 1;
     const ENDPOINT = 'webservices.amazon.com';
     const URI = '/onca/xml';
 

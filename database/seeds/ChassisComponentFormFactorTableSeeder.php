@@ -17,10 +17,10 @@ class ChassisComponentFormFactorTableSeeder extends Seeder
                 'chassis_component_id' => 1,
                 'form_factor_id'       => 1,
             ],
-            //[
-            //    'chassis_component_id' => 1,
-            //    'form_factor_id'       => 2,
-            //],
+            [
+                'chassis_component_id' => 1,
+                'form_factor_id'       => 2,
+            ],
             [
                 'chassis_component_id' => 1,
                 'form_factor_id'       => 3,

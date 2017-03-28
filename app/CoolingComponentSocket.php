@@ -8,6 +8,7 @@ class CoolingComponentSocket extends Model
 {
     use Validatable;
 
+    public $table = 'cooling_component_socket';
     public $timestamps = false;
 
     protected $fillable = [
@@ -27,11 +28,11 @@ class CoolingComponentSocket extends Model
 
     public function cooling_component()
     {
-        return $this->hasOne('PCForge\CoolingComponent');
+        return $this->belongsTo('PCForge\CoolingComponent');
     }
 
     public function socket()
     {
-        return $this->hasOne('PCForge\Socket');
+        return $this->belongsTo('PCForge\Socket');
     }
 }

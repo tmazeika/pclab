@@ -40,6 +40,6 @@ class CoolingComponent extends Model
 
     public function sockets()
     {
-        return $this->hasMany('PCForge\Socket');
+        return $this->belongsToMany('PCForge\Socket');
     }
 }

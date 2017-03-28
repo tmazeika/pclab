@@ -25,6 +25,6 @@ class StorageWidth extends Model
 
     public function storage_components()
     {
-        return $this->belongsToMany('PCForge\StorageComponent');
+        return $this->hasMany('PCForge\StorageComponent');
     }
 }

@@ -8,6 +8,7 @@ class ChassisComponentFormFactor extends Model
 {
     use Validatable;
 
+    public $table = 'chassis_component_form_factor';
     public $timestamps = false;
 
     protected $fillable = [
@@ -27,11 +28,11 @@ class ChassisComponentFormFactor extends Model
 
     public function chassis_component()
     {
-        return $this->hasOne('PCForge\ChassisComponent');
+        return $this->belongsTo('PCForge\ChassisComponent');
     }
 
     public function form_factors()
     {
-        return $this->hasOne('PCForge\FormFactor');
+        return $this->belongsTo('PCForge\FormFactor');
     }
 }
