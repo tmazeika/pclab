@@ -29,6 +29,6 @@ class CreateChassisComponentFormFactorTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chassis_component_form_factors');
+        Schema::dropIfExists('chassis_component_form_factor');
     }
 }
