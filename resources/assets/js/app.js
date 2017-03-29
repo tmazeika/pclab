@@ -1,5 +1,14 @@
 window.$ = require('jquery');
 
+function enableClassIf(enabledCondition, target, clazz) {
+    if (enabledCondition) {
+        $(target).addClass(clazz);
+    }
+    else {
+        $(target).removeClass(clazz);
+    }
+}
+
 $('.build-chooser-item').on('click', function() {
     if ($(this).hasClass('disabled')) {
         return;
@@ -10,12 +19,7 @@ $('.build-chooser-item').on('click', function() {
     const componentType = $(this).attr('data-component-type');
     const selected = $(this).hasClass('selected');
 
-    if (selected) {
-        $(target).removeClass('selected');
-    }
-    else {
-        $(target).addClass('selected');
-    }
+    enableClassIf(!selected, target, 'selected');
 
     $.ajax(ajaxSelectUrl, {
         data: {
