@@ -2,82 +2,52 @@
 
 namespace PCForge\Services;
 
-use Illuminate\Support\Facades\DB;
-use PCForge\ChassisComponent;
 use PCForge\Contracts\CompatibilityServiceContract;
-use PCForge\CoolingComponent;
-use PCForge\CoolingComponentSocket;
-use PCForge\GraphicsComponent;
-use PCForge\MotherboardComponent;
-use PCForge\ProcessorComponent;
-use PCForge\Socket;
+use PCForge\Models\Compatibility;
+use PCForge\Models\Component;
 
 class CompatibilityService implements CompatibilityServiceContract
 {
     public function isAllowedToSelect(int $componentId): bool
     {
-        // TODO: check if disabled
-        return !session("$componentId.selected");
+        return !session("c$componentId-selected", false)
+            && session("c$componentId-disabled", 0) === 0;
     }
 
-    public function select(int $componentId, string $componentType): array
+    public function select(int $componentId): array
     {
-        $modelName = 'PCForge\\' . ucfirst($componentType) . 'Component';
-        $component = $modelName::where('component_id', $componentId)->firstOrFail();
-
-        return $this->$componentType($component);
+        return $this->setSelection($componentId, true);
     }
 
-    public function deselect(int $componentId, string $componentType): array
+    public function deselect(int $componentId): array
     {
-        return $this->select($componentId, $componentType);
+        return $this->setSelection($componentId, false);
     }
 
-    private function chassis(ChassisComponent $chassis)
+    private function setSelection(int $componentId, bool $select): array
     {
-        // chassis
-        $badChassis = ChassisComponent::where('id', '!=', $chassis->id)->pluck('component_id')->all();
-
-        // cooling
-        $badCooling = CoolingComponent::where('height', '>', $chassis->max_fan_height)
-            ->pluck('component_id')
+        $incompatibleIds = Component
+            ::whereNotIn('id', Compatibility::where('component_1_id', $componentId)->pluck('component_2_id')->all())
+            ->pluck('id')
             ->all();
+        $sessionArray = [];
 
-        // graphics
-        // TODO: allow full length when appropriate
-        $badGraphics = GraphicsComponent::where('length', '>', $chassis->max_graphics_length_blocked)
-            ->pluck('component_id')
-            ->all();
+        foreach ($incompatibleIds as $key => $incompatibleId) {
+            $disabledAmount = session("c$incompatibleId-disabled", 0) + ($select ? 1 : -1);
 
-        // motherboard
-        $badMotherboard = MotherboardComponent::whereNotIn('form_factor_id', $chassis->form_factors->pluck('id')->all())
-            ->pluck('component_id')
-            ->all();
+            if ($disabledAmount < 0) {
+                $disabledAmount = 0;
+            }
 
-        return array_merge($badChassis, $badCooling, $badGraphics, $badMotherboard);
-    }
+            $sessionArray[] = ["c$incompatibleId-disabled" => $disabledAmount];
 
-    private function processor(ProcessorComponent $processor)
-    {
-        $socketId = $processor->socket->id;
+            if ($disabledAmount > 0 && !$select) {
+                unset($incompatibleIds[$key]);
+            }
+        }
 
-        // cooling
-        $coolingComponentsTable = (new CoolingComponent)->getTable();
-        $coolingComponentSocketTable = (new CoolingComponentSocket)->getTable();
-        $badCooling = CoolingComponent::whereNotExists(function($query) use ($socketId, $coolingComponentsTable, $coolingComponentSocketTable) {
-            $query->select(DB::raw(1))
-                ->from($coolingComponentSocketTable)
-                ->whereRaw("$coolingComponentSocketTable.cooling_component_id = $coolingComponentsTable.id")
-                ->whereRaw("$coolingComponentSocketTable.socket_id = $socketId");
-        })->pluck('component_id')->all();
+        session(array_merge(["c$componentId-selected" => $select], ...$sessionArray));
 
-        // TODO: memory
-
-        // TODO: motherboard
-
-        // processor
-        $badProcessors = ProcessorComponent::where('id', '!=', $processor->id)->pluck('component_id')->all();
-
-        return array_merge($badCooling, $badProcessors);
+        return array_values($incompatibleIds);
     }
 }

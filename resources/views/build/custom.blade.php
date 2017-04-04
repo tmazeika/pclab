@@ -5,14 +5,14 @@
 @section('content')
 <main class="content">
     @each('partials.build.component', [
-        'PCForge\ChassisComponent',
-        'PCForge\ProcessorComponent',
-        'PCForge\CoolingComponent',
-        'PCForge\GraphicsComponent',
-        'PCForge\MemoryComponent',
-        'PCForge\MotherboardComponent',
-        'PCForge\StorageComponent',
-        'PCForge\PowerComponent',
+        'PCForge\Models\ChassisComponent',
+        'PCForge\Models\ProcessorComponent',
+        'PCForge\Models\CoolingComponent',
+        'PCForge\Models\GraphicsComponent',
+        'PCForge\Models\MemoryComponent',
+        'PCForge\Models\MotherboardComponent',
+        'PCForge\Models\StorageComponent',
+        'PCForge\Models\PowerComponent',
     ], 'model')
 </main>
 @endsection

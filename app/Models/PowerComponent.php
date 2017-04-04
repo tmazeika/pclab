@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge;
+namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PowerComponent extends Model
+class PowerComponent extends Model implements CompatibilityNode
 {
     use ComponentChild, Validatable;
 
@@ -34,4 +34,14 @@ class PowerComponent extends Model
         'is_modular'   => 'nullable|boolean',
         'watts_out'    => 'nullable|integer|min:0',
     ];
+
+    public function getAllDirectlyCompatibleComponents(): array
+    {
+        return [];
+    }
+
+    public function getAllDirectlyIncompatibleComponents(): array
+    {
+        return [];
+    }
 }

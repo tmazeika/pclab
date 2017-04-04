@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge;
+namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StorageComponent extends Model
+class StorageComponent extends Model implements CompatibilityNode
 {
     use ComponentChild, Validatable;
 
@@ -34,6 +34,23 @@ class StorageComponent extends Model
 
     public function storage_size()
     {
-        return $this->hasMany('PCForge\StorageWidth');
+        return $this->hasMany('PCForge\Models\StorageWidth');
+    }
+
+    public function getAllDirectlyCompatibleComponents(): array
+    {
+        return [];
+    }
+
+    /**
+     * Gets all components that are directly incompatible with this component. More specifically, the components that
+     * can be reliably deemed incompatible with this component while disregarding the presence of other components in
+     * the build.
+     *
+     * @return int[] an array of component ID's
+     */
+    public function getAllDirectlyIncompatibleComponents(): array
+    {
+        return [];
     }
 }

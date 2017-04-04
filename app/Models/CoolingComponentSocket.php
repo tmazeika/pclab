@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge;
+namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,11 +28,11 @@ class CoolingComponentSocket extends Model
 
     public function cooling_component()
     {
-        return $this->belongsTo('PCForge\CoolingComponent');
+        return $this->belongsTo('PCForge\Models\CoolingComponent');
     }
 
     public function socket()
     {
-        return $this->belongsTo('PCForge\Socket');
+        return $this->belongsTo('PCForge\Models\Socket');
     }
 }

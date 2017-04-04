@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge;
+namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,6 +31,6 @@ class ChassisComponentsRadiator extends Model
 
     public function chassis_component()
     {
-        return $this->belongsTo('PCForge\ChassisComponent');
+        return $this->belongsTo('PCForge\Models\ChassisComponent');
     }
 }

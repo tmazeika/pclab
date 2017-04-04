@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge;
+namespace PCForge\Models;
 
 trait VideoOutputer
 {

@@ -11,8 +11,6 @@
 |
 */
 
-use Illuminate\Support\Facades\Route;
-
 Route::get('/', function() {
     return view('home');
 });
@@ -27,6 +25,8 @@ Route::group(['prefix' => 'admin'], function() {
 
     Route::post('create/{table}', 'AdminController@create');
     Route::post('update/{table}/{id}', 'AdminController@update');
+
+    Route::get('update-compatibilities', 'AdminController@updateCompatibilities');
 
 });
 

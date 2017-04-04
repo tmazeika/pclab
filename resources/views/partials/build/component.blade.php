@@ -10,18 +10,21 @@
     </div>
     <div class="build-chooser">
         @foreach($components as $component)
-        <div class="build-chooser-item {{ $component->parent->isSelected() ? 'selected' : '' }}"
-             data-component-id="{{ $component->parent->id }}"
-             data-component-type="{{ $component->type() }}">
-            <img class="build-chooser-item-img" src="{{ $component->parent->img() }}"/>
-            <h1 class="build-chooser-item-heading">
-                {{ $component->parent->name }}
-            </h1>
-            <h1 class="build-chooser-item-heading build-chooser-item-price">
-                {{ $component->parent->getPriceFormatted() }}
-            </h1>
-            @include($component->featuresView())
-        </div>
+            @if($component->parent->isAvailable())
+                <div class="build-chooser-item {{ $component->parent->isSelected() ? 'selected' : '' }}
+                        {{ $component->parent->isDisabled() ? 'disabled' : '' }}"
+                     data-component-id="{{ $component->parent->id }}"
+                     data-component-type="{{ $component->parent->type->name }}">
+                    <img class="build-chooser-item-img" src="{{ $component->parent->img() }}"/>
+                    <h1 class="build-chooser-item-heading">
+                        {{ $component->parent->name }}
+                    </h1>
+                    <h1 class="build-chooser-item-heading build-chooser-item-price">
+                        {{ $component->parent->getPriceFormatted() }}
+                    </h1>
+                    @include($component->featuresView())
+                </div>
+            @endif
         @endforeach
     </div>
 </section>

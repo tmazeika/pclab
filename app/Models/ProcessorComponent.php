@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge;
+namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ProcessorComponent extends Model
+class ProcessorComponent extends Model implements CompatibilityNode
 {
     use ComponentChild, Validatable;
 
@@ -40,6 +40,34 @@ class ProcessorComponent extends Model
 
     public function socket()
     {
-        return $this->belongsTo('PCForge\Socket');
+        return $this->belongsTo('PCForge\Models\Socket');
+    }
+
+    public function getAllDirectlyCompatibleComponents(): array
+    {
+        // motherboard
+        $components[] = MotherboardComponent
+            ::where('socket_id', $this->socket_id)
+            ->pluck('component_id')
+            ->all();
+
+        return array_merge(...$components);
+    }
+
+    public function getAllDirectlyIncompatibleComponents(): array
+    {
+        // motherboard
+        $components[] = MotherboardComponent
+            ::where('socket_id', '!=', $this->socket_id)
+            ->pluck('component_id')
+            ->all();
+
+        // processor
+        $components[] = ProcessorComponent
+            ::where('id', '!=', $this->id)
+            ->pluck('component_id')
+            ->all();
+
+        return array_merge(...$components);
     }
 }

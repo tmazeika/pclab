@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge;
+namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,6 +25,6 @@ class StorageWidth extends Model
 
     public function storage_components()
     {
-        return $this->hasMany('PCForge\StorageComponent');
+        return $this->hasMany('PCForge\Models\StorageComponent');
     }
 }

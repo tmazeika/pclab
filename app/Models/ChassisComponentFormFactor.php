@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge;
+namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,11 +28,11 @@ class ChassisComponentFormFactor extends Model
 
     public function chassis_component()
     {
-        return $this->belongsTo('PCForge\ChassisComponent');
+        return $this->belongsTo('PCForge\Models\ChassisComponent');
     }
 
     public function form_factors()
     {
-        return $this->belongsTo('PCForge\FormFactor');
+        return $this->belongsTo('PCForge\Models\FormFactor');
     }
 }

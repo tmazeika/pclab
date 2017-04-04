@@ -16,20 +16,18 @@ interface CompatibilityServiceContract
      * be compatible with the given one.
      *
      * @param int $componentId
-     * @param string $componentType
      *
      * @return int[] the other component ID's that are not compatible with the given component
      */
-    public function select(int $componentId, string $componentType): array;
+    public function select(int $componentId): array;
 
     /**
      * Deselects the given component. A list of component ID's that are now not to be deemed incompatible with the
      * build is returned.
      *
      * @param int $componentId
-     * @param string $componentType
      *
      * @return int[] the other component ID's that now compatible with the build
      */
-    public function deselect(int $componentId, string $componentType): array;
+    public function deselect(int $componentId): array;
 }

@@ -2,7 +2,6 @@
 
 namespace PCForge\Http\Controllers;
 
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use PCForge\Contracts\CompatibilityServiceContract;
 
@@ -26,13 +25,11 @@ class BuildController extends Controller
     public function customSelect(Request $request, CompatibilityServiceContract $compatibilityService)
     {
         $this->validate($request, [
-            'component-id'   => 'required|exists:components,id',
-            'component-type' => 'required|in:chassis,cooling,graphics,memory,motherboard,power,processor,storage',
-            'selected'       => 'required|boolean',
+            'component-id' => 'required|exists:components,id',
+            'selected'     => 'required|boolean',
         ]);
 
         $componentId = intval($request->input('component-id'));
-        $componentType = $request->input('component-type');
         $selected = boolval($request->input('selected'));
 
         if ($selected) {
@@ -40,14 +37,12 @@ class BuildController extends Controller
                 abort(400, 'Component Not Selectable');
             }
 
-            $otherIds = $compatibilityService->select($componentId, $componentType);
+            $incompatibleIds = $compatibilityService->select($componentId);
         }
         else {
-            $otherIds = $compatibilityService->deselect($componentId, $componentType);
+            $incompatibleIds = $compatibilityService->deselect($componentId);
         }
 
-        session(["$componentId.selected" => $selected]);
-
-        return json_encode([$selected ? 'disable' : 'enable' => $otherIds]);
+        return json_encode([($selected ? 'disable' : 'enable') => $incompatibleIds]);
     }
 }

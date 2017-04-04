@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FormFactorsTableSeeder::class);
         $this->call(SocketsTableSeeder::class);
         $this->call(StorageWidthsTableSeeder::class);
+        $this->call(ComponentTypesTableSeeder::class);
         $this->call(ComponentsTableSeeder::class);
         $this->call(ChassisComponentsTableSeeder::class);
         $this->call(CoolingComponentsTableSeeder::class);

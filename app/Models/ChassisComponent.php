@@ -1,22 +1,21 @@
 <?php
 
-namespace PCForge;
+namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ChassisComponent extends Model
+class ChassisComponent extends Model implements CompatibilityNode
 {
     use ComponentChild, Validatable;
 
     protected $fillable = [
         'id',
         'component_id',
-        'max_fan_height',
+        'max_cooling_fan_height',
         'max_graphics_length_blocked',
         'max_graphics_length_full',
         'audio_headers',
         'fan_headers',
-        'max_eatx_length',
         'usb2_headers',
         'usb3_headers',
         'uses_sata_power',
@@ -28,12 +27,11 @@ class ChassisComponent extends Model
     private $createRules = [
         'id'                          => 'nullable|integer|unique:chassis_components|min:0',
         'component_id'                => 'required|exists:components,id|unique:chassis_components',
-        'max_fan_height'              => 'required|integer|min:0',
+        'max_cooling_fan_height'      => 'required|integer|min:0',
         'max_graphics_length_blocked' => 'required|integer|min:0',
         'max_graphics_length_full'    => 'required|integer|min:0',
         'audio_headers'               => 'required|integer|min:0',
         'fan_headers'                 => 'required|integer|min:0',
-        'max_eatx_length'             => 'required|integer|min:0',
         'usb2_headers'                => 'required|integer|min:0',
         'usb3_headers'                => 'required|integer|min:0',
         'uses_sata_power'             => 'required|boolean',
@@ -45,12 +43,11 @@ class ChassisComponent extends Model
     private $updateRules = [
         'id'                          => 'nullable|integer|unique:chassis_components|min:0',
         'component_id'                => 'nullable|exists:components,id|unique:chassis_components',
-        'max_fan_height'              => 'nullable|integer|min:0',
+        'max_cooling_fan_height'      => 'nullable|integer|min:0',
         'max_graphics_length_blocked' => 'nullable|integer|min:0',
         'max_graphics_length_full'    => 'nullable|integer|min:0',
         'audio_headers'               => 'nullable|integer|min:0',
         'fan_headers'                 => 'nullable|integer|min:0',
-        'max_eatx_length'             => 'nullable|integer|min:0',
         'usb2_headers'                => 'nullable|integer|min:0',
         'usb3_headers'                => 'nullable|integer|min:0',
         'uses_sata_power'             => 'nullable|boolean',
@@ -61,11 +58,61 @@ class ChassisComponent extends Model
 
     public function form_factors()
     {
-        return $this->belongsToMany('PCForge\FormFactor');
+        return $this->belongsToMany('PCForge\Models\FormFactor');
     }
 
     public function radiators()
     {
-        return $this->belongsToMany('PCForge\ChassisRadiator');
+        return $this->belongsToMany('PCForge\Models\ChassisRadiator');
+    }
+
+    public function getAllDirectlyCompatibleComponents(): array
+    {
+        // motherboard
+        $components[] = MotherboardComponent
+            ::where('audio_headers', '>=', $this->audio_headers)
+            ->where('fan_headers', '>=', $this->fan_headers)
+            ->where('usb2_headers', '>=', $this->usb2_headers)
+            ->where('usb3_headers', '>=', $this->usb3_headers)
+            ->whereIn('form_factor_id', $this->form_factors->pluck('id')->all())
+            ->pluck('component_id')
+            ->all();
+
+        return array_merge(...$components);
+    }
+
+    public function getAllDirectlyIncompatibleComponents(): array
+    {
+        // chassis
+        $components[] = ChassisComponent
+            ::where('id', '!=', $this->id)
+            ->pluck('component_id')
+            ->all();
+
+        // cooling TODO: check radiators
+        $components[] = CoolingComponent
+            ::where('height', '>', $this->max_cooling_fan_height)
+            ->pluck('component_id')
+            ->all();
+
+        // graphics TODO: check against max_graphics_length_full
+        $components[] = GraphicsComponent
+            ::where('length', '>', $this->max_graphics_length_blocked)
+            ->pluck('component_id')
+            ->all();
+
+        // motherboard
+        $components[] = MotherboardComponent
+            ::where('audio_headers', '<', $this->audio_headers)
+            ->orWhere('fan_headers', '<', $this->fan_headers)
+            ->orWhere('usb2_headers', '<', $this->usb2_headers)
+            ->orWhere('usb3_headers', '<', $this->usb3_headers)
+            ->orWhereNotIn('form_factor_id', $this->form_factors->pluck('id')->all())
+            ->pluck('component_id')
+            ->all();
+
+        // TODO: check storage amounts and widths
+
+        return array_merge(...$components);
     }
 }

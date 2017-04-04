@@ -4,22 +4,28 @@
 
 @section('content')
 <main class="content">
+    <a href="{{ url('admin/update-compatibilities') }}">
+        [Update Compatibilities]
+    </a>
+
     @each('partials.admin.table', [
-        'PCForge\ChassisComponent',
-        'PCForge\ChassisComponentFormFactor',
-        'PCForge\ChassisComponentsRadiator',
-        'PCForge\Component',
-        'PCForge\CoolingComponent',
-        'PCForge\CoolingComponentSocket',
-        'PCForge\FormFactor',
-        'PCForge\GraphicsComponent',
-        'PCForge\MemoryComponent',
-        'PCForge\MotherboardComponent',
-        'PCForge\PowerComponent',
-        'PCForge\ProcessorComponent',
-        'PCForge\Socket',
-        'PCForge\StorageComponent',
-        'PCForge\StorageWidth',
+        'PCForge\Models\ChassisComponent',
+        'PCForge\Models\ChassisComponentFormFactor',
+        'PCForge\Models\ChassisComponentsRadiator',
+        'PCForge\Models\Compatibility',
+        'PCForge\Models\Component',
+        'PCForge\Models\ComponentType',
+        'PCForge\Models\CoolingComponent',
+        'PCForge\Models\CoolingComponentSocket',
+        'PCForge\Models\FormFactor',
+        'PCForge\Models\GraphicsComponent',
+        'PCForge\Models\MemoryComponent',
+        'PCForge\Models\MotherboardComponent',
+        'PCForge\Models\PowerComponent',
+        'PCForge\Models\ProcessorComponent',
+        'PCForge\Models\Socket',
+        'PCForge\Models\StorageComponent',
+        'PCForge\Models\StorageWidth',
     ], 'model')
 </main>
 @endsection

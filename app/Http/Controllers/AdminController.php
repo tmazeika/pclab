@@ -6,25 +6,27 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PCForge\Events\NewComponentAdded;
 
 class AdminController extends Controller
 {
     const TABLE_MODEL_DICT = [
-        'chassis_components'            => 'PCForge\ChassisComponent',
-        'chassis_component_form_factor' => 'PCForge\ChassisComponentFormFactor',
-        'chassis_components_radiators'  => 'PCForge\ChassisComponentsRadiator',
-        'components'                    => 'PCForge\Component',
-        'cooling_components'            => 'PCForge\CoolingComponent',
-        'cooling_component_socket'      => 'PCForge\CoolingComponentSocket',
-        'form_factors'                  => 'PCForge\FormFactor',
-        'graphics_components'           => 'PCForge\GraphicsComponent',
-        'memory_components'             => 'PCForge\MemoryComponent',
-        'motherboard_components'        => 'PCForge\MotherboardComponent',
-        'power_components'              => 'PCForge\PowerComponent',
-        'processor_components'          => 'PCForge\ProcessorComponent',
-        'sockets'                       => 'PCForge\Socket',
-        'storage_components'            => 'PCForge\StorageComponent',
-        'storage_widths'                => 'PCForge\StorageWidth',
+        'chassis_components'            => 'PCForge\Models\ChassisComponent',
+        'chassis_component_form_factor' => 'PCForge\Models\ChassisComponentFormFactor',
+        'chassis_components_radiators'  => 'PCForge\Models\ChassisComponentsRadiator',
+        'compatibilities'               => 'PCForge\Models\Compatibility',
+        'components'                    => 'PCForge\Models\Component',
+        'cooling_components'            => 'PCForge\Models\CoolingComponent',
+        'cooling_component_socket'      => 'PCForge\Models\CoolingComponentSocket',
+        'form_factors'                  => 'PCForge\Models\FormFactor',
+        'graphics_components'           => 'PCForge\Models\GraphicsComponent',
+        'memory_components'             => 'PCForge\Models\MemoryComponent',
+        'motherboard_components'        => 'PCForge\Models\MotherboardComponent',
+        'power_components'              => 'PCForge\Models\PowerComponent',
+        'processor_components'          => 'PCForge\Models\ProcessorComponent',
+        'sockets'                       => 'PCForge\Models\Socket',
+        'storage_components'            => 'PCForge\Models\StorageComponent',
+        'storage_widths'                => 'PCForge\Models\StorageWidth',
     ];
 
     public function index()
@@ -75,6 +77,13 @@ class AdminController extends Controller
         catch (QueryException $e) {
             abort(400, $e->getMessage());
         }
+
+        return redirect()->back();
+    }
+
+    public function updateCompatibilities()
+    {
+        event(new NewComponentAdded);
 
         return redirect()->back();
     }

@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge;
+namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GraphicsComponent extends Model
+class GraphicsComponent extends Model implements CompatibilityNode
 {
     use ComponentChild, Validatable, VideoOutputer;
 
@@ -40,4 +40,40 @@ class GraphicsComponent extends Model
         'supports_sli'        => 'nullable|boolean',
         'length'              => 'nullable|integer|min:0',
     ];
+
+    public function getAllDirectlyCompatibleComponents(): array
+    {
+        // motherboard TODO: use actual number of graphics components selected
+        $components[] = MotherboardComponent
+            ::where('pcie3_slots', '>=', 1)
+            ->pluck('component_id')
+            ->all();
+
+        // power TODO
+
+        return array_merge(...$components);
+    }
+
+    public function getAllDirectlyIncompatibleComponents(): array
+    {
+        // chassis TODO: check against max_graphics_length_full
+        $components[] = ChassisComponent
+            ::where('max_graphics_length_blocked', '<', $this->length)
+            ->pluck('component_id')
+            ->all();
+
+        // graphics
+        $components[] = GraphicsComponent
+            ::where('id', '!=', $this->id)
+            ->pluck('component_id')
+            ->all();
+
+        // motherboard TODO: use actual number of graphics components selected
+        $components[] = MotherboardComponent
+            ::where('pcie3_slots', '<', 1)
+            ->pluck('component_id')
+            ->all();
+
+        return array_merge(...$components);
+    }
 }

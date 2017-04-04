@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge;
+namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,16 +25,16 @@ class Socket extends Model
 
     public function cooling_components()
     {
-        return $this->hasMany('PCForge\CoolingComponent');
+        return $this->hasMany('PCForge\Models\CoolingComponent');
     }
 
     public function motherboard_components()
     {
-        return $this->hasMany('PCForge\MotherboardComponent');
+        return $this->hasMany('PCForge\Models\MotherboardComponent');
     }
 
     public function processor_components()
     {
-        return $this->hasMany('PCForge\ProcessorComponent');
+        return $this->hasMany('PCForge\Models\ProcessorComponent');
     }
 }

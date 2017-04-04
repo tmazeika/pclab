@@ -13,8 +13,7 @@ class UpdateAmazonPrices implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    // TODO: remove '9001 * '
-    const MINUTES_TO_UPDATE = 9001 * 12 * 60 + 1;
+    const MINUTES_TO_UPDATE = 12 * 60 + 1;
     const ENDPOINT = 'webservices.amazon.com';
     const URI = '/onca/xml';
 
@@ -27,7 +26,7 @@ class UpdateAmazonPrices implements ShouldQueue
      */
     public function __construct($componentAsins)
     {
-        if (sizeof($componentAsins) > 10) {
+        if (count($componentAsins) > 10) {
             throw new InvalidArgumentException('Maximum of 10 items allowed in one AWS ItemLookup request');
         }
 
@@ -36,10 +35,8 @@ class UpdateAmazonPrices implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $params = [
             'Service'        => 'AWSECommerceService',
@@ -57,35 +54,16 @@ class UpdateAmazonPrices implements ShouldQueue
         foreach ($xml->Items->Item as $item) {
             foreach ($item->Offers->Offer as $offer) {
                 $listing = $offer->OfferListing;
+                $asin = $item->ASIN;
+                $cacheMinutes = self::MINUTES_TO_UPDATE + 1;
+                $available = strval($listing->AvailabilityAttributes->AvailabilityType) === 'now'
+                    && intval($listing->IsEligibleForPrime) === 1;
+                $currentPrice = intval($listing->Price->Amount);
 
-                if ($listing->IsEligibleForPrime == 1) {
-                    $asin = $item->ASIN;
-                    $cacheMinutes = self::MINUTES_TO_UPDATE + 1;
-                    $currentPrice = intval($listing->Price->Amount);
-                    $previousPrice = cache("$asin.price", 0);
-                    $previousAvailability = cache("$asin.is_available", false);
+                cache(["a$asin-price" => $currentPrice], $cacheMinutes);
+                cache(["a$asin-available" => $available], $cacheMinutes);
 
-                    // absolute percent change from previous price to new price must be under 25%, else falsify
-                    // availability
-                    if (!$previousAvailability || $previousPrice === 0 ||
-                        abs($currentPrice - $previousPrice) / $previousPrice < 0.25
-                    ) {
-                        cache([
-                            "$asin.price"        => $currentPrice,
-                            "$asin.is_available" => $listing->AvailabilityAttributes->AvailabilityType === 'now',
-                        ], $cacheMinutes);
-                    }
-                    else {
-                        // if a big price change was detected, pretend we've never gotten this item's price before;
-                        // hopefully the Amazon seller fixes any pricing mistakes within 12 hours
-                        cache([
-                            "$asin.price"        => 0,
-                            "$asin.is_available" => false,
-                        ], $cacheMinutes);
-                    }
-
-                    break;
-                }
+                break;
             }
         }
     }

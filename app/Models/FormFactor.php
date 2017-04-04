@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge;
+namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,11 +25,11 @@ class FormFactor extends Model
 
     public function chassis_components()
     {
-        return $this->belongsToMany('PCForge\ChassisComponent');
+        return $this->belongsToMany('PCForge\Models\ChassisComponent');
     }
 
     public function motherboard_components()
     {
-        return $this->belongsToMany('PCForge\MotherboardComponent');
+        return $this->belongsToMany('PCForge\Models\MotherboardComponent');
     }
 }
