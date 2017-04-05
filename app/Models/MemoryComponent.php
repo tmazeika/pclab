@@ -73,4 +73,14 @@ class MemoryComponent extends Model implements CompatibilityNode
 
         return array_merge(...$components);
     }
+
+    public function getAllDynamicallyCompatibleComponents(array $selectedComponentIds): array
+    {
+        return [];
+    }
+
+    public function getAllDynamicallyIncompatibleComponents(array $selectedComponentIds): array
+    {
+        return [];
+    }
 }

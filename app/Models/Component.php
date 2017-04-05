@@ -69,4 +69,11 @@ class Component extends Model
     {
         return $this->belongsTo('PCForge\Models\ComponentType', 'component_type_id', 'id');
     }
+
+    public function castToActualComponent(): CompatibilityNode
+    {
+        $model = 'PCForge\Models\\' . ucfirst($this->type->name) . 'Component';
+
+        return $model::where('component_id', $this->id)->first();
+    }
 }

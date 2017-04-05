@@ -125,17 +125,9 @@ class MotherboardComponent extends Model implements CompatibilityNode
             ->pluck('component_id')
             ->all();
 
-        // graphics TODO: check count
-        $components[] = GraphicsComponent
-            ::all()
-            ->pluck('component_id')
-            ->all();
-
-        // memory TODO: safer way to do the whereRaw?
+        // memory
         $components[] = MemoryComponent
-            ::whereRaw('count * capacity_each <= ' . $this->dimm_max_capacity)
-            ->where('count', '<=', $this->dimm_slots)
-            ->where('ddr_gen', $this->dimm_gen)
+            ::where('ddr_gen', $this->dimm_gen)
             ->where('pins', $this->dimm_pins)
             ->pluck('component_id')
             ->all();
@@ -145,8 +137,6 @@ class MotherboardComponent extends Model implements CompatibilityNode
             ::where('socket_id', $socketId)
             ->pluck('component_id')
             ->all();
-
-        // storage TODO: check count (SATA)
 
         return array_merge(...$components);
     }
@@ -188,13 +178,9 @@ class MotherboardComponent extends Model implements CompatibilityNode
             ->pluck('component_id')
             ->all();
 
-        // graphics TODO: check count
-
-        // memory TODO: safer way to do the whereRaw?
+        // memory
         $components[] = MemoryComponent
-            ::whereRaw('count * capacity_each > ' . $this->dimm_max_capacity)
-            ->orWhere('count', '>', $this->dimm_slots)
-            ->orWhere('ddr_gen', '!=', $this->dimm_gen)
+            ::where('ddr_gen', '!=', $this->dimm_gen)
             ->orWhere('pins', '!=', $this->dimm_pins)
             ->pluck('component_id')
             ->all();
@@ -211,8 +197,16 @@ class MotherboardComponent extends Model implements CompatibilityNode
             ->pluck('component_id')
             ->all();
 
-        // storage TODO: check count (SATA)
-
         return array_merge(...$components);
+    }
+
+    public function getAllDynamicallyCompatibleComponents(array $selectedComponentIds): array
+    {
+        return [];
+    }
+
+    public function getAllDynamicallyIncompatibleComponents(array $selectedComponentIds): array
+    {
+        return [];
     }
 }

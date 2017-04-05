@@ -19,9 +19,8 @@ class UpdateCompatibilitiesTable
      */
     public function handle(NewComponentAdded $event): void
     {
-        Component::orderBy('id')->get()->each(function ($component, $key) {
-            $componentModel = 'PCForge\Models\\' . ucfirst($component->type->name) . 'Component';
-            $this->addComponent($key, $componentModel::where('component_id', $component->id)->first());
+        Component::orderBy('id')->get()->each(function(Component $component, int $key) {
+            $this->addComponent($key, $component->castToActualComponent());
         });
 
         $this->updateCompatibilitiesTable();

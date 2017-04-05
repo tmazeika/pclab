@@ -8,6 +8,8 @@ class PowerComponent extends Model implements CompatibilityNode
 {
     use ComponentChild, Validatable;
 
+    const WATTS_INC = 50;
+
     protected $fillable = [
         'id',
         'component_id',
@@ -37,10 +39,42 @@ class PowerComponent extends Model implements CompatibilityNode
 
     public function getAllDirectlyCompatibleComponents(): array
     {
-        return [];
+        return [$this->id];
     }
 
     public function getAllDirectlyIncompatibleComponents(): array
+    {
+        // power
+        $components[] = PowerComponent
+            ::where('id', '!=', $this->id)
+            ->pluck('component_id')
+            ->all();
+
+        return array_merge(...$components);
+    }
+
+    public function getAllDynamicallyCompatibleComponents(array $selectedComponentIds): array
+    {
+        // TODO: check atx12v_pins + sata_powers
+
+        $totalWattsUsage = 100;
+        $selectedComponents = Component::whereIn('id', array_keys($selectedComponentIds))->pluck('id', 'watts_usage');
+
+        foreach ($selectedComponents as $componentId => $wattsUsage) {
+            $count = $selectedComponentIds[$componentId];
+            $totalWattsUsage += $wattsUsage * $count;
+        }
+
+        // ceil total watts usage to next increment of 50
+        $totalWattsUsage = ceil((float) $totalWattsUsage / self::WATTS_INC) * self::WATTS_INC;
+
+        return PowerComponent
+            ::where('watts_out', '>=', $totalWattsUsage)
+            ->pluck('component_id')
+            ->all();
+    }
+
+    public function getAllDynamicallyIncompatibleComponents(array $selectedComponentIds): array
     {
         return [];
     }

@@ -43,37 +43,27 @@ class GraphicsComponent extends Model implements CompatibilityNode
 
     public function getAllDirectlyCompatibleComponents(): array
     {
-        // motherboard TODO: use actual number of graphics components selected
-        $components[] = MotherboardComponent
-            ::where('pcie3_slots', '>=', 1)
-            ->pluck('component_id')
-            ->all();
-
-        // power TODO
-
-        return array_merge(...$components);
+        return [$this->id];
     }
 
     public function getAllDirectlyIncompatibleComponents(): array
     {
-        // chassis TODO: check against max_graphics_length_full
-        $components[] = ChassisComponent
-            ::where('max_graphics_length_blocked', '<', $this->length)
-            ->pluck('component_id')
-            ->all();
-
         // graphics
         $components[] = GraphicsComponent
             ::where('id', '!=', $this->id)
             ->pluck('component_id')
             ->all();
 
-        // motherboard TODO: use actual number of graphics components selected
-        $components[] = MotherboardComponent
-            ::where('pcie3_slots', '<', 1)
-            ->pluck('component_id')
-            ->all();
-
         return array_merge(...$components);
+    }
+
+    public function getAllDynamicallyCompatibleComponents(array $selectedComponentIds): array
+    {
+        return [];
+    }
+
+    public function getAllDynamicallyIncompatibleComponents(array $selectedComponentIds): array
+    {
+        return [];
     }
 }
