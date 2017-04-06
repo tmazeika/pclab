@@ -35,10 +35,6 @@ class CompatibilityService implements CompatibilityServiceContract
             ->pluck('id')
             ->all();
 
-        // set selected count of component
-        $selectedCount = session("c$componentId-selected", 0);
-        session(["c$componentId-selected" => $selectedCount + $countInc]);
-
         // second pass: dynamically (in)compatible components
         // TODO
 
@@ -60,7 +56,7 @@ class CompatibilityService implements CompatibilityServiceContract
             $disabledCounts[] = ["c$incompatibleComponentId-disabled" => $disabledCount];
         }
 
-        session(array_merge(...$disabledCounts));
+        session(array_merge([], ...$disabledCounts));
 
         return array_values($incompatibleComponentIds);
     }

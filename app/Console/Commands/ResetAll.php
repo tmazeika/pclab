@@ -3,7 +3,7 @@
 namespace PCForge\Console\Commands;
 
 use Illuminate\Console\Command;
-use PCForge\Events\NewComponentAdded;
+use PCForge\Events\ComponentModified;
 
 class ResetAll extends Command
 {
@@ -45,7 +45,7 @@ class ResetAll extends Command
         $this->call('update-amazon-prices');
 
         if ($compatibilities) {
-            event(new NewComponentAdded);
+            event(new ComponentModified);
         }
     }
 }

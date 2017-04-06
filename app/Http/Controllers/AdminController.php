@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use PCForge\Events\NewComponentAdded;
+use PCForge\Events\ComponentModified;
 
 class AdminController extends Controller
 {
@@ -83,7 +83,7 @@ class AdminController extends Controller
 
     public function updateCompatibilities()
     {
-        event(new NewComponentAdded);
+        event(new ComponentModified);
 
         return redirect()->back();
     }

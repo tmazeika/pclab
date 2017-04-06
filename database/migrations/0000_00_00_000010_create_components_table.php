@@ -23,6 +23,7 @@ class CreateComponentsTable extends Migration
             $table->string('name');
             $table->smallInteger('watts_usage')->unsigned();
             $table->integer('weight')->unsigned();
+            $table->boolean('has_dynamic_compatibilities');
 
             $table->timestamps();
         });
