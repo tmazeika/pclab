@@ -3,25 +3,34 @@
 namespace PCForge\Listeners;
 
 use PCForge\AdjacencyMatrix;
+use PCForge\Contracts\CompatibilityServiceContract;
 use PCForge\Models\Compatibility;
 use PCForge\Models\CompatibilityNode;
 use PCForge\Models\Component;
 
 class UpdateCompatibilitiesTable
 {
-    /** @var array $compatibleNodesToAdjacent */
-    private $compatibleNodesToAdjacent = [];
+    /** @var CompatibilityServiceContract $compatibilityService */
+    private $compatibilityService;
 
-    /** @var array $incompatibleNodesToAdjacent */
-    private $incompatibleNodesToAdjacent = [];
+    /** @var array $compatibleComponentsToAdjacent */
+    private $compatibleComponentsToAdjacent = [];
+
+    /** @var array $incompatibleComponentsToAdjacent */
+    private $incompatibleComponentsToAdjacent = [];
+
+    public function __construct(CompatibilityServiceContract $compatibilityService)
+    {
+        $this->compatibilityService = $compatibilityService;
+    }
 
     /**
      * Handle the event.
      */
     public function handle(): void
     {
-        Component::each(function (Component $component, int $key) {
-            $this->addComponent($key, $component->toCompatibilityNode());
+        Component::each(function (Component $component) {
+            $this->addComponent($component->id - 1, $component->toCompatibilityNode());
         });
 
         $this->updateCompatibilitiesTable();
@@ -30,62 +39,26 @@ class UpdateCompatibilitiesTable
     public function addComponent(int $key, CompatibilityNode $compatibilityNode): void
     {
         // compatible components
-        $this->compatibleNodesToAdjacent[$key] =
-            $this->zeroIndexArray($compatibilityNode->getAllDirectlyCompatibleComponents());
+        $this->compatibleComponentsToAdjacent[$key] = $compatibilityNode->getAllDirectlyCompatibleComponents();
 
         // incompatible components
-        $this->incompatibleNodesToAdjacent[$key] =
-            $this->zeroIndexArray($compatibilityNode->getAllDirectlyIncompatibleComponents());
+        $this->incompatibleComponentsToAdjacent[$key] = $compatibilityNode->getAllDirectlyIncompatibleComponents();
     }
 
-    /**
-     * Converts a one-based array to a zero-based array.
-     *
-     * @param array $arr a one-based array
-     *
-     * @return array
-     */
-    private function zeroIndexArray(array $arr): array
-    {
-        for ($i = 0; $i < count($arr); $i++) {
-            $arr[$i]--;
-        }
-
-        return $arr;
-    }
-
-    /**
-     * Procedure:
-     * 1. Pick a component
-     * 2. In the compatibility matrix, zero the rows and columns that have an edge in the picked component's
-     *    incompatibility matrix column
-     * 3. Mark all reachable components from the picked component's compatibility matrix column as 'compatible'
-     */
     private function updateCompatibilitiesTable(): void
     {
         // create compatibility table from scratch
         Compatibility::truncate();
 
-        $compatibilityAdjacencyMatrix = new AdjacencyMatrix($this->compatibleNodesToAdjacent);
-        $incompatibilityAdjacencyMatrix = new AdjacencyMatrix($this->incompatibleNodesToAdjacent);
+        $compatibilities = $this->compatibilityService->getAllCompatibilities(
+            $this->compatibleComponentsToAdjacent, $this->incompatibleComponentsToAdjacent
+        );
 
-        // step 1
-        foreach ($compatibilityAdjacencyMatrix as $node) {
-            // clone for traversal and zeroing
-            $compatAM = clone $compatibilityAdjacencyMatrix;
-
-            // step 2
-            foreach ($compatAM as $row) {
-                if ($incompatibilityAdjacencyMatrix->hasEdgeAt($node, $row)) {
-                    $compatAM->zeroNode($row);
-                }
-            }
-
-            // step 3
-            foreach ($compatAM->getAllReachableNodesFrom($node) as $compatNode) {
+        foreach ($compatibilities as $component1 => $adjacent) {
+            foreach ($adjacent as $component2) {
                 Compatibility::create([
-                    'component_1_id' => $node + 1,
-                    'component_2_id' => $compatNode + 1,
+                    'component_1_id' => $component1 + 1,
+                    'component_2_id' => $component2 + 1,
                 ]);
             }
         }

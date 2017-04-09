@@ -2,6 +2,7 @@
 
 namespace PCForge\Services;
 
+use PCForge\AdjacencyMatrix;
 use PCForge\Contracts\CompatibilityServiceContract;
 use PCForge\Models\Compatibility;
 use PCForge\Models\Component;
@@ -48,6 +49,49 @@ class CompatibilityService implements CompatibilityServiceContract
             })
             ->values()
             ->all();
+    }
+
+    public function getAllCompatibilities(array $compatibleComponentsToAdjacent, array $incompatibleComponentsToAdjacent): array
+    {
+        $arr = [];
+
+        $compatibilityAdjacencyMatrix = new AdjacencyMatrix(
+            $this->zeroBaseAdjacentIds($compatibleComponentsToAdjacent)
+        );
+
+        $incompatibilityAdjacencyMatrix = new AdjacencyMatrix(
+            $this->zeroBaseAdjacentIds($incompatibleComponentsToAdjacent)
+        );
+
+        // step 1
+        foreach ($compatibilityAdjacencyMatrix as $node) {
+            // clone for traversal and zeroing
+            $compatAM = clone $compatibilityAdjacencyMatrix;
+
+            // step 2
+            foreach ($compatAM as $row) {
+                if ($incompatibilityAdjacencyMatrix->hasEdgeAt($node, $row)) {
+                    $compatAM->zeroNode($row);
+                }
+            }
+
+            // step 3
+            foreach ($compatAM->getAllReachableNodesFrom($node) as $compatNode) {
+                $arr[$node][] = $compatNode;
+            }
+        }
+
+        return $arr;
+    }
+
+    private function zeroBaseAdjacentIds(array $componentsToAdjacent): array {
+        for ($i = 0; $i < count($componentsToAdjacent); $i++) {
+            for ($j = 0; $j < count($componentsToAdjacent[$i]); $j++) {
+                $componentsToAdjacent[$i][$j]--;
+            }
+        }
+
+        return $componentsToAdjacent;
     }
 
     private function isDisabled(int $id): bool
