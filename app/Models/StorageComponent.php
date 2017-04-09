@@ -47,12 +47,12 @@ class StorageComponent extends Model implements CompatibilityNode
         return [];
     }
 
-    public function getAllDynamicallyCompatibleComponents(array $selectedComponentIds): array
+    public function getAllDynamicallyCompatibleComponents(array $selected): array
     {
         return [];
     }
 
-    public function getAllDynamicallyIncompatibleComponents(array $selectedComponentIds): array
+    public function getAllDynamicallyIncompatibleComponents(array $selected): array
     {
         return [];
     }

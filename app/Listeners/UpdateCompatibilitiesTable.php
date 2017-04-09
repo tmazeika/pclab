@@ -30,6 +30,7 @@ class UpdateCompatibilitiesTable
     public function handle(): void
     {
         Component::each(function (Component $component) {
+            // TODO: check availability
             $this->addComponent($component->id - 1, $component->toCompatibilityNode());
         });
 

@@ -18,14 +18,19 @@ class CompatibilityService implements CompatibilityServiceContract
     {
         session(["c$id-selected-count" => $count]);
 
-        return Component
-            ::where('is_available', true)
-            // first pass: dynamically incompatible components
-            // TODO
-            // second pass: (in)directly incompatible components
+        $components = Component::where('is_available', true);
+
+        // first pass: (in)directly incompatible components
+        $staticallyIncompatible = $components
             ->whereNotIn('id', Compatibility
                 ::where('component_1_id', $id)
                 ->pluck('component_2_id'))
+            ->get();
+
+        // second pass: dynamically incompatible components
+        // TODO
+
+        return $staticallyIncompatible
             ->pluck('id')
             ->filter(function (int $incompatId) use ($id, $count) {
                 $disabledFrom = session("c$incompatId-disabled-from", []);
@@ -84,10 +89,13 @@ class CompatibilityService implements CompatibilityServiceContract
         return $arr;
     }
 
-    private function zeroBaseAdjacentIds(array $componentsToAdjacent): array {
+    private function zeroBaseAdjacentIds(array $componentsToAdjacent): array
+    {
         for ($i = 0; $i < count($componentsToAdjacent); $i++) {
-            for ($j = 0; $j < count($componentsToAdjacent[$i]); $j++) {
-                $componentsToAdjacent[$i][$j]--;
+            if (isset($componentsToAdjacent[$i])) {
+                for ($j = 0; $j < count($componentsToAdjacent[$i]); $j++) {
+                    $componentsToAdjacent[$i][$j]--;
+                }
             }
         }
 

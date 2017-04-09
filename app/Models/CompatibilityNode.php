@@ -27,26 +27,26 @@ interface CompatibilityNode
      * Similar to getAllDirectlyCompatibleComponents, but this function determines compatibility using parameters that
      * are unique to each session, such as count and presence of other selected components.
      *
-     * @param array $selectedComponentIds an association between component ID's and the number of times they were
+     * @param array $selected an association between component ID's and the number of times they were
      * selected
      *
      * @return int[] an array of component ID's
      *
      * @see getAllDirectlyCompatibleComponents
      */
-    public function getAllDynamicallyCompatibleComponents(array $selectedComponentIds): array;
+    public function getAllDynamicallyCompatibleComponents(array $selected): array;
 
     /**
      * Gets all components that are incompatible with this component based on some other session specific parameters.
      * Similar to getAllDirectlyIncompatibleComponents, but this function determines incompatibility using parameters
      * that are unique to each session, such as count and presence of other selected components.
      *
-     * @param array $selectedComponentIds an association between component ID's and the number of times they were
+     * @param array $selected an association between component ID's and the number of times they were
      * selected
      *
      * @return int[] an array of component ID's
      *
      * @see getAllDirectlyIncompatibleComponents
      */
-    public function getAllDynamicallyIncompatibleComponents(array $selectedComponentIds): array;
+    public function getAllDynamicallyIncompatibleComponents(array $selected): array;
 }

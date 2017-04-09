@@ -53,29 +53,39 @@ class PowerComponent extends Model implements CompatibilityNode
         return array_merge(...$components);
     }
 
-    public function getAllDynamicallyCompatibleComponents(array $selectedComponentIds): array
+    public function getAllDynamicallyCompatibleComponents(array $selected): array
     {
         // TODO: check atx12v_pins + sata_powers
 
-        $totalWattsUsage = 100;
-        $selectedComponents = Component::whereIn('id', array_keys($selectedComponentIds))->pluck('id', 'watts_usage');
-
-        foreach ($selectedComponents as $componentId => $wattsUsage) {
-            $count = $selectedComponentIds[$componentId];
-            $totalWattsUsage += $wattsUsage * $count;
-        }
-
-        // ceil total watts usage to next increment of 50
-        $totalWattsUsage = ceil((float)$totalWattsUsage / self::WATTS_INC) * self::WATTS_INC;
-
         return PowerComponent
-            ::where('watts_out', '>=', $totalWattsUsage)
+            ::where('watts_out', '>=', $this->getTotalWattsUsage($selected))
             ->pluck('component_id')
             ->all();
     }
 
-    public function getAllDynamicallyIncompatibleComponents(array $selectedComponentIds): array
+    public function getAllDynamicallyIncompatibleComponents(array $selected): array
     {
-        return [];
+        // TODO: check atx12v_pins + sata_powers
+
+        return PowerComponent
+            ::where('watts_out', '<', $this->getTotalWattsUsage($selected))
+            ->pluck('component_id')
+            ->all();
+    }
+
+    private function getTotalWattsUsage(array $selected): int
+    {
+        $totalWattsUsage = 100;
+        $selectedComponents = Component
+            ::whereIn('id', array_keys($selected))
+            ->pluck('watts_usage', 'id');
+
+        foreach ($selectedComponents as $id => $wattsUsage) {
+            $count = $selected[$id];
+            $totalWattsUsage += $wattsUsage * $count;
+        }
+
+        // ceil total watts usage to next increment of 50
+        return ceil((float)$totalWattsUsage / self::WATTS_INC) * self::WATTS_INC;
     }
 }

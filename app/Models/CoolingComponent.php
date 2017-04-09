@@ -117,12 +117,12 @@ class CoolingComponent extends Model implements CompatibilityNode
         return array_merge(...$components);
     }
 
-    public function getAllDynamicallyCompatibleComponents(array $selectedComponentIds): array
+    public function getAllDynamicallyCompatibleComponents(array $selected): array
     {
         return [];
     }
 
-    public function getAllDynamicallyIncompatibleComponents(array $selectedComponentIds): array
+    public function getAllDynamicallyIncompatibleComponents(array $selected): array
     {
         return [];
     }
