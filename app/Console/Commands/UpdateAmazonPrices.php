@@ -2,10 +2,10 @@
 
 namespace PCForge\Console\Commands;
 
-use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 use PCForge\Jobs\UpdateAmazonPrices as UpdateAmazonPricesJob;
+use PCForge\Models\Component;
 
 class UpdateAmazonPrices extends Command
 {
@@ -36,17 +36,13 @@ class UpdateAmazonPrices extends Command
      */
     public function handle(): void
     {
-        $now = Carbon::now();
-        $secondsToDelay = 0;
+        Component
+            ::pluck('asin')
+            ->chunk(UpdateAmazonPricesJob::MAX_ASINS_PER_REQUEST)
+            ->each(function (Collection $asins, int $i) {
+                $job = new UpdateAmazonPricesJob($asins->toArray());
 
-        DB::table('components')->select('asin')->orderBy('asin')->chunk(10, function($components) use ($now, &$secondsToDelay) {
-            $asins = [];
-
-            foreach ($components as $component) {
-                array_push($asins, $component->asin);
-            }
-
-            dispatch((new UpdateAmazonPricesJob($asins))->delay($now->addSeconds($secondsToDelay++)));
-        });
+                dispatch($job->delay($i));
+            });
     }
 }

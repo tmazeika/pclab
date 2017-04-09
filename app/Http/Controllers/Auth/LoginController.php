@@ -2,8 +2,8 @@
 
 namespace PCForge\Http\Controllers\Auth;
 
-use PCForge\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use PCForge\Http\Controllers\Controller;
 
 class LoginController extends Controller
 {

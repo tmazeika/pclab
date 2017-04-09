@@ -1,11 +1,11 @@
 <section>
     @php
         $items = $model::all();
-        $table = (new $model)->getTable();
-        $columns = Schema::getColumnListing($table);
+        $tableName = $model::tableName();
+        $columns = Schema::getColumnListing($tableName);
     @endphp
 
-    <h1>{{ $table }}</h1>
+    <h1>{{ $tableName }}</h1>
 
     @if($items->count() > 0)
         <div style="overflow-x: auto">
@@ -28,13 +28,13 @@
                             @endforeach
 
                             <td>
-                                <a href="{{ url('admin/update', [$table, $item->id]) }}">
+                                <a href="{{ url('admin/update', [$tableName, $item->id]) }}">
                                     <button>Update</button>
                                 </a>
                             </td>
 
                             <td>
-                                <a href="{{ url('admin/delete', [$table, $item->id]) }}">
+                                <a href="{{ url('admin/delete', [$tableName, $item->id]) }}">
                                     <button>Delete</button>
                                 </a>
                             </td>
@@ -45,7 +45,7 @@
         </div>
     @endif
 
-    <a href="{{ url('admin/create', [$table]) }}">
+    <a href="{{ url('admin/create', [$tableName]) }}">
         <button>Create</button>
     </a>
 </section>

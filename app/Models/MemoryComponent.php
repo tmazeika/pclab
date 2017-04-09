@@ -6,19 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class MemoryComponent extends Model implements CompatibilityNode
 {
-    use ComponentChild, Validatable;
+    use ExtendedModel, ComponentChild, Validatable;
 
-    protected $fillable = [
-        'id',
-        'component_id',
-        'count',
-        'height',
-        'capacity_each',
-        'ddr_gen',
-        'pins',
-    ];
-
-    private $createRules = [
+    private const CREATE_RULES = [
         'id'            => 'nullable|integer|unique:memory_components|min:0',
         'component_id'  => 'required|exists:components,id|unique:memory_components',
         'count'         => 'required|integer|min:0',
@@ -28,7 +18,7 @@ class MemoryComponent extends Model implements CompatibilityNode
         'pins'          => 'required|integer|min:0',
     ];
 
-    private $updateRules = [
+    private const UPDATE_RULES = [
         'id'            => 'nullable|integer|unique:memory_components|min:0',
         'component_id'  => 'nullable|exists:components,id|unique:memory_components',
         'count'         => 'nullable|integer|min:0',
@@ -36,6 +26,16 @@ class MemoryComponent extends Model implements CompatibilityNode
         'capacity_each' => 'nullable|integer|min:0',
         'ddr_gen'       => 'nullable|integer|min:0',
         'pins'          => 'nullable|integer|min:0',
+    ];
+
+    protected $fillable = [
+        'id',
+        'component_id',
+        'count',
+        'height',
+        'capacity_each',
+        'ddr_gen',
+        'pins',
     ];
 
     public function getAllDirectlyCompatibleComponents(): array

@@ -8,15 +8,13 @@ trait Validatable
 {
     private $errors;
 
-    public function validate(array $data, string $op)
+    public static function validate(array $data, string $op)
     {
-        $ruleSet = $op . 'Rules';
-        $validator = Validator::make($data, $this->$ruleSet);
+        $ruleSet = $op . '_RULES';
+        $validator = Validator::make($data, constant("self::$ruleSet"));
 
         if ($validator->fails()) {
-            $this->errors = $validator->errors();
-
-            return false;
+            return $validator->errors();
         }
 
         return true;

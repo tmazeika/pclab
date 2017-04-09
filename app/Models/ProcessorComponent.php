@@ -6,19 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProcessorComponent extends Model implements CompatibilityNode
 {
-    use ComponentChild, Validatable;
+    use ExtendedModel, ComponentChild, Validatable;
 
-    protected $fillable = [
-        'id',
-        'component_id',
-        'cores',
-        'has_apu',
-        'has_stock_cooler',
-        'socket_id',
-        'speed',
-    ];
-
-    private $createRules = [
+    private const CREATE_RULES = [
         'id'               => 'nullable|integer|unique:processor_components|min:0',
         'component_id'     => 'required|exists:components,id|unique:processor_components',
         'cores'            => 'required|integer|min:0',
@@ -28,7 +18,7 @@ class ProcessorComponent extends Model implements CompatibilityNode
         'speed'            => 'required|integer|min:0',
     ];
 
-    private $updateRules = [
+    private const UPDATE_RULES = [
         'id'               => 'nullable|integer|unique:processor_components|min:0',
         'component_id'     => 'nullable|exists:components,id|unique:processor_components',
         'cores'            => 'nullable|integer|min:0',
@@ -36,6 +26,16 @@ class ProcessorComponent extends Model implements CompatibilityNode
         'has_stock_cooler' => 'nullable|boolean',
         'socket_id'        => 'nullable|exists:sockets,id',
         'speed'            => 'nullable|integer|min:0',
+    ];
+
+    protected $fillable = [
+        'id',
+        'component_id',
+        'cores',
+        'has_apu',
+        'has_stock_cooler',
+        'socket_id',
+        'speed',
     ];
 
     public function socket()

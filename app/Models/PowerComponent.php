@@ -6,20 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class PowerComponent extends Model implements CompatibilityNode
 {
-    use ComponentChild, Validatable;
+    use ExtendedModel, ComponentChild, Validatable;
 
     const WATTS_INC = 50;
 
-    protected $fillable = [
-        'id',
-        'component_id',
-        'atx12v_pins',
-        'sata_powers',
-        'is_modular',
-        'watts_out',
-    ];
-
-    private $createRules = [
+    private const CREATE_RULES = [
         'id'           => 'nullable|integer|unique:power_components|min:0',
         'component_id' => 'required|exists:components,id|unique:power_components',
         'atx12v_pins'  => 'required|integer|min:0',
@@ -28,13 +19,22 @@ class PowerComponent extends Model implements CompatibilityNode
         'watts_out'    => 'required|integer|min:0',
     ];
 
-    private $updateRules = [
+    private const UPDATE_RULES = [
         'id'           => 'nullable|integer|unique:power_components|min:0',
         'component_id' => 'nullable|exists:components,id|unique:power_components',
         'atx12v_pins'  => 'nullable|integer|min:0',
         'sata_powers'  => 'nullable|integer|min:0',
         'is_modular'   => 'nullable|boolean',
         'watts_out'    => 'nullable|integer|min:0',
+    ];
+
+    protected $fillable = [
+        'id',
+        'component_id',
+        'atx12v_pins',
+        'sata_powers',
+        'is_modular',
+        'watts_out',
     ];
 
     public function getAllDirectlyCompatibleComponents(): array
@@ -66,7 +66,7 @@ class PowerComponent extends Model implements CompatibilityNode
         }
 
         // ceil total watts usage to next increment of 50
-        $totalWattsUsage = ceil((float) $totalWattsUsage / self::WATTS_INC) * self::WATTS_INC;
+        $totalWattsUsage = ceil((float)$totalWattsUsage / self::WATTS_INC) * self::WATTS_INC;
 
         return PowerComponent
             ::where('watts_out', '>=', $totalWattsUsage)

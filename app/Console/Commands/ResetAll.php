@@ -34,18 +34,14 @@ class ResetAll extends Command
      */
     public function handle(): void
     {
-        if (!$this->confirm('This will refresh migrations and clear cache! Continue?')) {
-            return;
-        }
+        if ($this->confirm('This will refresh migrations and clear cache! Continue?')) {
+            $this->call('migrate:refresh', ['--seed' => true]);
+            $this->call('cache:clear');
+            $this->call('update-amazon-prices');
 
-        $compatibilities = $this->option('compatibilities');
-
-        $this->call('migrate:refresh', ['--seed' => true]);
-        $this->call('cache:clear');
-        $this->call('update-amazon-prices');
-
-        if ($compatibilities) {
-            event(new ComponentModified);
+            if ($this->option('compatibilities')) {
+                event(new ComponentModified);
+            }
         }
     }
 }

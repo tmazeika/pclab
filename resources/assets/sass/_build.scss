@@ -89,3 +89,46 @@ $item-width: 15em;
 
   margin: 0 0 0.75rem 0;
 }
+
+.build-chooser-item-quantity {
+  margin: 1em 0.25em 0.25em 0.25em;
+
+  /* flex */
+  display: flex;
+}
+
+.build-chooser-item-quantity-button {
+  border: none;
+  color: #fff;
+  font: bold 2em/2rem $normal-font;
+  outline: none;
+
+  width: 4rem;
+  height: 2rem;
+  text-align: center;
+
+  &.subtract {
+    background-color: $dim-element-color;
+
+    &:hover {
+      background-color: darken($dim-element-color, 5%);
+    }
+  }
+
+  &.add {
+    background-color: $accent-color;
+
+    &:hover {
+      background-color: darken($accent-color, 5%);
+    }
+  }
+}
+
+.build-chooser-item-quantity-text {
+  font: bold 1em/2rem $normal-font;
+
+  text-align: center;
+
+  /* flex */
+  flex-grow: 1;
+}

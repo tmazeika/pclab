@@ -169,4 +169,5 @@ class AdjacencyMatrix implements Iterator
     public function rewind()
     {
         reset($this->nodes);
-}}
+    }
+}

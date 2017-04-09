@@ -6,21 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class FormFactor extends Model
 {
-    use Validatable;
+    use ExtendedModel, Validatable;
 
-    protected $fillable = [
-        'id',
-        'name',
-    ];
-
-    private $createRules = [
+    private const CREATE_RULES = [
         'id'   => 'nullable|integer|unique:form_factors|min:0',
         'name' => 'required|string|unique:form_factors',
     ];
 
-    private $updateRules = [
+    private const UPDATE_RULES = [
         'id'   => 'nullable|integer|unique:form_factors|min:0',
         'name' => 'nullable|string|unique:form_factors',
+    ];
+
+    protected $fillable = [
+        'id',
+        'name',
     ];
 
     public function chassis_components()

@@ -6,9 +6,12 @@
 <main class="content">
     <a href="{{ url('admin') }}">Back</a>
 
-    @php($columns = Schema::getColumnListing($table))
+    @php
+        $tableName = $model::tableName();
+        $columns = Schema::getColumnListing($tableName)
+    @endphp
 
-    <form method="POST" action="{{ url('admin/create', [$table]) }}">
+    <form method="POST" action="{{ url('admin/create', [$tableName]) }}">
         {{ csrf_field() }}
 
         <div style="overflow-x: auto">

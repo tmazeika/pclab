@@ -6,21 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Socket extends Model
 {
-    use Validatable;
+    use ExtendedModel, Validatable;
 
-    protected $fillable = [
-        'id',
-        'name',
-    ];
-
-    private $createRules = [
+    private const CREATE_RULES = [
         'id'   => 'nullable|integer|unique:sockets|min:0',
         'name' => 'required|string|unique:sockets',
     ];
 
-    private $updateRules = [
+    private const UPDATE_RULES = [
         'id'   => 'nullable|integer|unique:sockets|min:0',
         'name' => 'nullable|string|unique:sockets',
+    ];
+
+    protected $fillable = [
+        'id',
+        'name',
     ];
 
     public function cooling_components()

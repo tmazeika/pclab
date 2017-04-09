@@ -18,13 +18,13 @@ Route::get('/', function() {
 Route::group(['prefix' => 'admin'], function() {
     Route::get('/', 'AdminController@index');
 
-    Route::get('create/{table}', 'AdminController@showCreate');
-    Route::get('update/{table}/{id}', 'AdminController@showUpdate');
+    Route::get('create/{model}', 'AdminController@showCreate');
+    Route::get('update/{model}/{id}', 'AdminController@showUpdate');
 
-    Route::get('delete/{table}/{id}', 'AdminController@delete');
+    Route::get('delete/{model}/{id}', 'AdminController@delete');
 
-    Route::post('create/{table}', 'AdminController@create');
-    Route::post('update/{table}/{id}', 'AdminController@update');
+    Route::post('create/{model}', 'AdminController@create');
+    Route::post('update/{model}/{id}', 'AdminController@update');
 
     Route::get('update-compatibilities', 'AdminController@updateCompatibilities');
 

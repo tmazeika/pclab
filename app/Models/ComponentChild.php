@@ -4,14 +4,15 @@ namespace PCForge\Models;
 
 trait ComponentChild
 {
-    public function featuresView()
+    public static function featuresView()
     {
-        return 'partials.build.' . $this->type() . '-component';
+        return 'partials.build.' . self::typeName() . '-component';
     }
 
-    public function parent()
+    public static function typeName()
     {
-        return $this->belongsTo('PCForge\Models\Component', 'component_id', 'id');
+        // e.g. 'PCForge\Models\ProcessorComponent' -> 'processor'
+        return strtolower(substr(class_basename(get_called_class()), 0, -strlen('Component')));
     }
 
     public function compatibilities()
@@ -19,8 +20,8 @@ trait ComponentChild
         return $this->hasMany('PCForge\Models\Compatibility', 'component_1_id', 'id');
     }
 
-    public function type()
+    public function parent()
     {
-        return strtolower(substr(get_called_class(), 15, strpos(get_called_class(), 'Component') - 15));
+        return $this->belongsTo('PCForge\Models\Component', 'component_id', 'id');
     }
 }

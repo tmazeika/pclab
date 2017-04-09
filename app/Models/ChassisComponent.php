@@ -6,25 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class ChassisComponent extends Model implements CompatibilityNode
 {
-    use ComponentChild, Validatable;
+    use ExtendedModel, ComponentChild, Validatable;
 
-    protected $fillable = [
-        'id',
-        'component_id',
-        'max_cooling_fan_height',
-        'max_graphics_length_blocked',
-        'max_graphics_length_full',
-        'audio_headers',
-        'fan_headers',
-        'usb2_headers',
-        'usb3_headers',
-        'uses_sata_power',
-        '2p5_bays',
-        '3p5_bays',
-        'adaptable_bays',
-    ];
-
-    private $createRules = [
+    private const CREATE_RULES = [
         'id'                          => 'nullable|integer|unique:chassis_components|min:0',
         'component_id'                => 'required|exists:components,id|unique:chassis_components',
         'max_cooling_fan_height'      => 'required|integer|min:0',
@@ -40,7 +24,7 @@ class ChassisComponent extends Model implements CompatibilityNode
         'adaptable_bays'              => 'required|integer|min:0',
     ];
 
-    private $updateRules = [
+    private const UPDATE_RULES = [
         'id'                          => 'nullable|integer|unique:chassis_components|min:0',
         'component_id'                => 'nullable|exists:components,id|unique:chassis_components',
         'max_cooling_fan_height'      => 'nullable|integer|min:0',
@@ -54,6 +38,22 @@ class ChassisComponent extends Model implements CompatibilityNode
         '2p5_bays'                    => 'nullable|integer|min:0',
         '3p5_bays'                    => 'nullable|integer|min:0',
         'adaptable_bays'              => 'nullable|integer|min:0',
+    ];
+
+    protected $fillable = [
+        'id',
+        'component_id',
+        'max_cooling_fan_height',
+        'max_graphics_length_blocked',
+        'max_graphics_length_full',
+        'audio_headers',
+        'fan_headers',
+        'usb2_headers',
+        'usb3_headers',
+        'uses_sata_power',
+        '2p5_bays',
+        '3p5_bays',
+        'adaptable_bays',
     ];
 
     public function form_factors()
@@ -95,7 +95,7 @@ class ChassisComponent extends Model implements CompatibilityNode
             ->pluck('component_id')
             ->all();
 
-        // graphics TODO: check against max_graphics_length_full
+        // graphics
         $components[] = GraphicsComponent
             ::where('length', '>', $this->max_graphics_length_blocked)
             ->pluck('component_id')
@@ -110,8 +110,6 @@ class ChassisComponent extends Model implements CompatibilityNode
             ->orWhereNotIn('form_factor_id', $this->form_factors->pluck('id')->all())
             ->pluck('component_id')
             ->all();
-
-        // TODO: check storage amounts and widths
 
         return array_merge(...$components);
     }

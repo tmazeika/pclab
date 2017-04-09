@@ -26,7 +26,7 @@ $('.build-chooser-item').on('click', function() {
             'component-id': componentId,
             'component-type': componentType,
             // the selected property was toggled
-            'selected': selected ? 0 : 1,
+            'count': selected ? 0 : 1,
         },
         dataType: 'json'
     }).done((data) => {
@@ -41,4 +41,16 @@ $('.build-chooser-item').on('click', function() {
             }
         }
     });
-});
+})/*.find('.build-chooser-item-quantity-button').on('click', function() {
+    const chooserItem = $(this).closest('.build-chooser-item');
+    const textElem = $(this).siblings('.build-chooser-item-quantity-text');
+    const selected = $(chooserItem).hasClass('selected');
+    let propagate = false;
+
+    if (!selected && $(this).hasClass('add')) {
+        textElem.text('1');
+        propagate = true;
+    }
+
+    return propagate;
+})*/;

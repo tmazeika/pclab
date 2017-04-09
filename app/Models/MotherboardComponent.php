@@ -7,32 +7,9 @@ use Illuminate\Support\Facades\DB;
 
 class MotherboardComponent extends Model implements CompatibilityNode
 {
-    use ComponentChild, Validatable, VideoOutputer;
+    use ExtendedModel, ComponentChild, Validatable, VideoOutputer;
 
-    protected $fillable = [
-        'id',
-        'component_id',
-        'audio_headers',
-        'fan_headers',
-        'usb2_headers',
-        'usb3_headers',
-        'form_factor_id',
-        'has_displayport_out',
-        'has_dvi_out',
-        'has_hdmi_out',
-        'has_vga_out',
-        'pcie3_slots',
-        'supports_sli',
-        'dimm_gen',
-        'dimm_pins',
-        'dimm_slots',
-        'dimm_max_capacity',
-        'atx12v_pins',
-        'socket_id',
-        'sata_slots',
-    ];
-
-    private $createRules = [
+    private const CREATE_RULES = [
         'id'                  => 'nullable|integer|unique:motherboard_components|min:0',
         'component_id'        => 'required|exists:components,id|unique:motherboard_components',
         'audio_headers'       => 'required|integer|min:0',
@@ -55,7 +32,7 @@ class MotherboardComponent extends Model implements CompatibilityNode
         'sata_slots'          => 'required|integer|min:0',
     ];
 
-    private $updateRules = [
+    private const UPDATE_RULES = [
         'id'                  => 'nullable|integer|unique:motherboard_components|min:0',
         'component_id'        => 'nullable|exists:components,id|unique:motherboard_components',
         'audio_headers'       => 'nullable|integer|min:0',
@@ -76,6 +53,29 @@ class MotherboardComponent extends Model implements CompatibilityNode
         'atx12v_pins'         => 'nullable|integer|min:0',
         'socket_id'           => 'nullable|exists:sockets,id',
         'sata_slots'          => 'nullable|integer|min:0',
+    ];
+
+    protected $fillable = [
+        'id',
+        'component_id',
+        'audio_headers',
+        'fan_headers',
+        'usb2_headers',
+        'usb3_headers',
+        'form_factor_id',
+        'has_displayport_out',
+        'has_dvi_out',
+        'has_hdmi_out',
+        'has_vga_out',
+        'pcie3_slots',
+        'supports_sli',
+        'dimm_gen',
+        'dimm_pins',
+        'dimm_slots',
+        'dimm_max_capacity',
+        'atx12v_pins',
+        'socket_id',
+        'sata_slots',
     ];
 
     public function form_factor()
@@ -103,7 +103,7 @@ class MotherboardComponent extends Model implements CompatibilityNode
             ->where('fan_headers', '<=', $this->fan_headers)
             ->where('usb2_headers', '<=', $this->usb2_headers)
             ->where('usb3_headers', '<=', $this->usb3_headers)
-            ->whereExists(function($query) use ($formFactorId, $chassisComponentFormFactorTable, $chassisComponentsTable) {
+            ->whereExists(function ($query) use ($formFactorId, $chassisComponentFormFactorTable, $chassisComponentsTable) {
                 $query
                     ->select(DB::raw(1))
                     ->from($chassisComponentFormFactorTable)
@@ -115,7 +115,7 @@ class MotherboardComponent extends Model implements CompatibilityNode
 
         // cooling
         $components[] = CoolingComponent
-            ::whereExists(function($query) use ($socketId, $coolingComponentSocketTable, $coolingComponentsTable) {
+            ::whereExists(function ($query) use ($socketId, $coolingComponentSocketTable, $coolingComponentsTable) {
                 $query
                     ->select(DB::raw(1))
                     ->from($coolingComponentSocketTable)
@@ -156,7 +156,7 @@ class MotherboardComponent extends Model implements CompatibilityNode
             ->orWhere('fan_headers', '>', $this->fan_headers)
             ->orWhere('usb2_headers', '>', $this->usb2_headers)
             ->orWhere('usb3_headers', '>', $this->usb3_headers)
-            ->orWhereNotExists(function($query) use ($formFactorId, $chassisComponentFormFactorTable, $chassisComponentsTable) {
+            ->orWhereNotExists(function ($query) use ($formFactorId, $chassisComponentFormFactorTable, $chassisComponentsTable) {
                 $query
                     ->select(DB::raw(1))
                     ->from($chassisComponentFormFactorTable)
@@ -168,7 +168,7 @@ class MotherboardComponent extends Model implements CompatibilityNode
 
         // cooling
         $components[] = CoolingComponent
-            ::whereNotExists(function($query) use ($socketId, $coolingComponentSocketTable, $coolingComponentsTable) {
+            ::whereNotExists(function ($query) use ($socketId, $coolingComponentSocketTable, $coolingComponentsTable) {
                 $query
                     ->select(DB::raw(1))
                     ->from($coolingComponentSocketTable)

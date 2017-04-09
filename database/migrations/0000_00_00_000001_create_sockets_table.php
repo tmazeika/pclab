@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateSocketsTable extends Migration
 {
@@ -13,7 +13,7 @@ class CreateSocketsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sockets', function(Blueprint $table) {
+        Schema::create('sockets', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
             $table->timestamps();

@@ -6,16 +6,14 @@
 <main class="content">
     <a href="{{ url('admin') }}">Back</a>
 
-    @php($columns = Schema::getColumnListing($table))
-
-    <form method="POST" action="{{ url('admin/update', [$table, $id]) }}">
+    <form method="POST" action="{{ url('admin/update', [$item->getTable(), $item->id]) }}">
         {{ csrf_field() }}
 
         <div style="overflow-x: auto">
             <table cellpadding="5">
                 <thead>
                     <tr style="font-weight: bold">
-                        @foreach($columns as $column)
+                        @foreach($columns = Schema::getColumnListing($item->getTable()) as $column)
                             <td>{{ $column }}</td>
                         @endforeach
                     </tr>

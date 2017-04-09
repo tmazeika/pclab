@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateComponentsTable extends Migration
 {
@@ -13,17 +13,18 @@ class CreateComponentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('components', function(Blueprint $table) {
+        Schema::create('components', function (Blueprint $table) {
             $table->increments('id');
 
             $table->integer('component_type_id')->unsigned();
             $table->foreign('component_type_id')->references('id')->on('component_types')->onDelete('restrict');
 
             $table->string('asin')->index()->unique();
+            $table->boolean('is_available')->default(true); // TODO: false
             $table->string('name');
+            $table->integer('price')->unsigned()->default(0);
             $table->smallInteger('watts_usage')->unsigned();
             $table->integer('weight')->unsigned();
-            $table->boolean('has_dynamic_compatibilities');
 
             $table->timestamps();
         });

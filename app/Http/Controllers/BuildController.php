@@ -26,23 +26,18 @@ class BuildController extends Controller
     {
         $this->validate($request, [
             'component-id' => 'required|exists:components,id',
-            'selected'     => 'required|boolean',
+            'count'        => 'required|integer|min:0',
         ]);
 
-        $componentId = intval($request->input('component-id'));
-        $selected = boolval($request->input('selected'));
+        $id = intval($request->input('component-id'));
+        $count = intval($request->input('count'));
 
-        if ($selected) {
-            if (!$compatibilityService->isAllowedToSelect($componentId)) {
-                abort(400, 'Component Not Selectable');
-            }
-
-            $incompatibleIds = $compatibilityService->select($componentId);
-        }
-        else {
-            $incompatibleIds = $compatibilityService->deselect($componentId);
+        if (!$compatibilityService->isAllowed($id, $count)) {
+            abort(400, 'Component not selectable');
         }
 
-        return json_encode([($selected ? 'disable' : 'enable') => $incompatibleIds]);
+        return json_encode([
+            ($count === 0 ? 'enable' : 'disable') => $compatibilityService->select($id, $count),
+        ]);
     }
 }

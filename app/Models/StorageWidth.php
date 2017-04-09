@@ -6,21 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class StorageWidth extends Model
 {
-    use Validatable;
+    use ExtendedModel, Validatable;
 
-    protected $fillable = [
-        'id',
-        'name',
-    ];
-
-    private $createRules = [
+    private const CREATE_RULES = [
         'id'   => 'nullable|integer|unique:storage_widths|min:0',
         'name' => 'required|string|unique:storage_widths',
     ];
 
-    private $updateRules = [
+    private const UPDATE_RULES = [
         'id'   => 'nullable|integer|unique:storage_widths|min:0',
         'name' => 'nullable|string|unique:storage_widths',
+    ];
+
+    protected $fillable = [
+        'id',
+        'name',
     ];
 
     public function storage_components()

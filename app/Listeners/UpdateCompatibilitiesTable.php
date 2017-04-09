@@ -2,9 +2,7 @@
 
 namespace PCForge\Listeners;
 
-use Illuminate\Support\Facades\DB;
 use PCForge\AdjacencyMatrix;
-use PCForge\Events\ComponentModified;
 use PCForge\Models\Compatibility;
 use PCForge\Models\CompatibilityNode;
 use PCForge\Models\Component;
@@ -19,13 +17,11 @@ class UpdateCompatibilitiesTable
 
     /**
      * Handle the event.
-     *
-     * @param ComponentModified $event
      */
-    public function handle(ComponentModified $event): void
+    public function handle(): void
     {
-        Component::orderBy('id')->get()->each(function(Component $component, int $key) {
-            $this->addComponent($key, $component->castToActualComponent());
+        Component::orderBy('id')->get()->each(function (Component $component, int $key) {
+            $this->addComponent($key, $component->toCompatibilityNode());
         });
 
         $this->updateCompatibilitiesTable();
@@ -65,10 +61,10 @@ class UpdateCompatibilitiesTable
      *    incompatibility matrix column
      * 3. Mark all reachable components from the picked component's compatibility matrix column as 'compatible'
      */
-    public function updateCompatibilitiesTable(): void
+    private function updateCompatibilitiesTable(): void
     {
         // create compatibility table from scratch
-        DB::table((new Compatibility)->getTable())->truncate();
+        Compatibility::truncate();
 
         $compatibilityAdjacencyMatrix = new AdjacencyMatrix($this->compatibleNodesToAdjacent);
         $incompatibilityAdjacencyMatrix = new AdjacencyMatrix($this->incompatibleNodesToAdjacent);

@@ -9,16 +9,19 @@ trait VideoOutputer
         $outputs = [];
 
         if ($this->has_displayport_out) {
-            array_push($outputs, 'DisplayPort');
+            $outputs[] = 'DisplayPort';
         }
+
         if ($this->has_dvi_out) {
-            array_push($outputs, 'DVI');
+            $outputs[] = 'DVI';
         }
+
         if ($this->has_hdmi_out) {
-            array_push($outputs, 'HDMI');
+            $outputs[] = 'HDMI';
         }
+
         if ($this->has_vga_out) {
-            array_push($outputs, 'VGA');
+            $outputs[] = 'VGA';
         }
 
         return implode(' / ', $outputs);

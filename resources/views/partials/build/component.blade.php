@@ -1,18 +1,20 @@
 @php
     $components = $model::all();
-    $type = (new $model)->type();
+    $typeName = $model::typeName();
+    $tableName = $model::tableName();
 @endphp
 
 <section class="build-section">
     <div class="build-header">
-        <h1 class="build-heading">@lang("build.$type.title")</h1>
-        <p class="build-desc">@lang("build.$type.desc")</p>
+        <h1 class="build-heading">@lang("build.$typeName.title")</h1>
+        <p class="build-desc">@lang("build.$typeName.desc")</p>
     </div>
     <div class="build-chooser">
         @foreach($components as $component)
-            @if($component->parent->isAvailable())
-                <div class="build-chooser-item {{ $component->parent->isSelected() ? 'selected' : '' }}
-                        {{ $component->parent->isDisabled() ? 'disabled' : '' }}"
+            @if($component->parent->is_available)
+                <div class="build-chooser-item
+                        {{ $component->parent->getSelectedCountInSession() > 0 ? 'selected' : '' }}
+                        {{ $component->parent->isDisabledInSession() ? 'disabled' : '' }}"
                      data-component-id="{{ $component->parent->id }}"
                      data-component-type="{{ $component->parent->type->name }}">
                     <img class="build-chooser-item-img" src="{{ $component->parent->img() }}"/>
@@ -23,6 +25,18 @@
                         {{ $component->parent->getPriceFormatted() }}
                     </h1>
                     @include($component->featuresView())
+
+                    @if($component->parent->type->allows_multiple)
+                        <div class="build-chooser-item-quantity">
+                            <button class="build-chooser-item-quantity-button subtract">
+                                &minus;
+                            </button>
+                            <span class="build-chooser-item-quantity-text"></span>
+                            <button class="build-chooser-item-quantity-button add">
+                                &plus;
+                            </button>
+                        </div>
+                    @endif
                 </div>
             @endif
         @endforeach

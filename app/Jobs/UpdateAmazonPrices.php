@@ -8,29 +8,34 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use InvalidArgumentException;
+use PCForge\Models\Component;
 
 class UpdateAmazonPrices implements ShouldQueue
 {
+    const MAX_ASINS_PER_REQUEST = 10;
+
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    const MINUTES_TO_UPDATE = 12 * 60 + 1;
     const ENDPOINT = 'webservices.amazon.com';
+
     const URI = '/onca/xml';
 
-    private $componentAsins;
+    private $asins;
 
     /**
      * Create a new job instance.
      *
-     * @param string[] $componentAsins
+     * @param string[] $asins
      */
-    public function __construct($componentAsins)
+    public function __construct($asins)
     {
-        if (count($componentAsins) > 10) {
-            throw new InvalidArgumentException('Maximum of 10 items allowed in one AWS ItemLookup request');
+        if (count($asins) > self::MAX_ASINS_PER_REQUEST) {
+            throw new InvalidArgumentException(
+                'Maximum of ' . self::MAX_ASINS_PER_REQUEST . ' items allowed in one AWS ItemLookup request'
+            );
         }
 
-        $this->componentAsins = $componentAsins;
+        $this->asins = $asins;
     }
 
     /**
@@ -44,7 +49,7 @@ class UpdateAmazonPrices implements ShouldQueue
             'AssociateTag'   => env('AMAZON_ASSOCIATE_TAG'),
             'Operation'      => 'ItemLookup',
             'ResponseGroup'  => 'OfferListings',
-            'ItemId'         => join(',', $this->componentAsins),
+            'ItemId'         => join(',', $this->asins),
             'IdType'         => 'ASIN',
             'Timestamp'      => gmdate('Y-m-d\TH:i:s\Z'),
         ];
@@ -55,13 +60,14 @@ class UpdateAmazonPrices implements ShouldQueue
             foreach ($item->Offers->Offer as $offer) {
                 $listing = $offer->OfferListing;
                 $asin = $item->ASIN;
-                $cacheMinutes = self::MINUTES_TO_UPDATE + 1;
                 $available = strval($listing->AvailabilityAttributes->AvailabilityType) === 'now'
                     && intval($listing->IsEligibleForPrime) === 1;
                 $currentPrice = intval($listing->Price->Amount);
 
-                cache(["a$asin-price" => $currentPrice], $cacheMinutes);
-                cache(["a$asin-available" => $available], $cacheMinutes);
+                Component::where('asin', $asin)->update([
+                    'price'        => $currentPrice,
+                    'is_available' => true // TODO: $available
+                ]);
 
                 break;
             }
@@ -75,7 +81,7 @@ class UpdateAmazonPrices implements ShouldQueue
         $pairs = [];
 
         foreach ($params as $key => $val) {
-            array_push($pairs, rawurlencode($key) . '=' . rawurlencode($val));
+            $pairs[] = rawurlencode($key) . '=' . rawurlencode($val);
         }
 
         $canonQueryStr = join('&', $pairs);

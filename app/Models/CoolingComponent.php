@@ -7,19 +7,9 @@ use Illuminate\Support\Facades\DB;
 
 class CoolingComponent extends Model implements CompatibilityNode
 {
-    use ComponentChild, Validatable;
+    use ExtendedModel, ComponentChild, Validatable;
 
-    protected $fillable = [
-        'id',
-        'component_id',
-        'is_air',
-        'fan_width',
-        'height',
-        'max_memory_height',
-        'radiator_length',
-    ];
-
-    private $createRules = [
+    private const CREATE_RULES = [
         'id'                => 'nullable|integer|unique:cooling_components|min:0',
         'component_id'      => 'required|exists:components,id|unique:cooling_components',
         'is_air'            => 'required|boolean',
@@ -29,7 +19,7 @@ class CoolingComponent extends Model implements CompatibilityNode
         'radiator_length'   => 'required|integer|min:0',
     ];
 
-    private $updateRules = [
+    private const UPDATE_RULES = [
         'id'                => 'nullable|integer|unique:cooling_components|min:0',
         'component_id'      => 'nullable|exists:components,id|unique:cooling_components',
         'is_air'            => 'nullable|boolean',
@@ -37,6 +27,16 @@ class CoolingComponent extends Model implements CompatibilityNode
         'height'            => 'nullable|integer|min:0',
         'max_memory_height' => 'nullable|integer|min:0',
         'radiator_length'   => 'nullable|integer|min:0',
+    ];
+
+    protected $fillable = [
+        'id',
+        'component_id',
+        'is_air',
+        'fan_width',
+        'height',
+        'max_memory_height',
+        'radiator_length',
     ];
 
     public function sockets()
@@ -52,13 +52,13 @@ class CoolingComponent extends Model implements CompatibilityNode
 
         // motherboard
         $components[] = MotherboardComponent
-            ::whereExists(function($query) use ($coolingId, $coolingComponentSocketTable, $motherboardComponentsTable) {
+            ::whereExists(function ($query) use ($coolingId, $coolingComponentSocketTable, $motherboardComponentsTable) {
                 $query
                     ->select(DB::raw(1))
                     ->from($coolingComponentSocketTable)
                     ->where('cooling_component_id', $coolingId)
                     ->whereRaw("$coolingComponentSocketTable.socket_id = $motherboardComponentsTable.socket_id");
-                })
+            })
             ->pluck('component_id')
             ->all();
 
@@ -92,7 +92,7 @@ class CoolingComponent extends Model implements CompatibilityNode
 
         // motherboard
         $components[] = MotherboardComponent
-            ::whereNotExists(function($query) use ($coolingId, $coolingComponentSocketTable, $motherboardComponentsTable) {
+            ::whereNotExists(function ($query) use ($coolingId, $coolingComponentSocketTable, $motherboardComponentsTable) {
                 $query
                     ->select(DB::raw(1))
                     ->from($coolingComponentSocketTable)
@@ -104,7 +104,7 @@ class CoolingComponent extends Model implements CompatibilityNode
 
         // processor
         $components[] = ProcessorComponent
-            ::whereNotExists(function($query) use ($coolingId, $coolingComponentSocketTable, $processorComponentsTable) {
+            ::whereNotExists(function ($query) use ($coolingId, $coolingComponentSocketTable, $processorComponentsTable) {
                 $query
                     ->select(DB::raw(1))
                     ->from($coolingComponentSocketTable)

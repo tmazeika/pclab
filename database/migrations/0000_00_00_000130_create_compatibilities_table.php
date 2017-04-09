@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateCompatibilitiesTable extends Migration
 {
@@ -13,7 +13,9 @@ class CreateCompatibilitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('compatibilities', function(Blueprint $table) {
+        Schema::create('compatibilities', function (Blueprint $table) {
+            $table->increments('id');
+
             $table->integer('component_1_id')->unsigned();
             $table->foreign('component_1_id')->references('id')->on('components')->onDelete('cascade');
 

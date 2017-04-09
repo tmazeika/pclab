@@ -2,8 +2,8 @@
 
 namespace PCForge\Http\Controllers\Auth;
 
-use PCForge\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use PCForge\Http\Controllers\Controller;
 
 class ForgotPasswordController extends Controller
 {

@@ -2,8 +2,8 @@
 
 namespace PCForge\Http\Controllers\Auth;
 
-use PCForge\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use PCForge\Http\Controllers\Controller;
 
 class ResetPasswordController extends Controller
 {
