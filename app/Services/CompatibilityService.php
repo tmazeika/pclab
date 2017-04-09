@@ -19,11 +19,11 @@ class CompatibilityService implements CompatibilityServiceContract
         session(["c$id-selected-count" => $count]);
 
         return Component
-            ::all()
+            ::where('is_available', true)
             // first pass: dynamically incompatible components
             // TODO
             // second pass: (in)directly incompatible components
-            ->whereNotInStrict('id', Compatibility
+            ->whereNotIn('id', Compatibility
                 ::where('component_1_id', $id)
                 ->pluck('component_2_id'))
             ->pluck('id')
