@@ -20,7 +20,7 @@ class UpdateCompatibilitiesTable
      */
     public function handle(): void
     {
-        Component::orderBy('id')->get()->each(function (Component $component, int $key) {
+        Component::each(function (Component $component, int $key) {
             $this->addComponent($key, $component->toCompatibilityNode());
         });
 
