@@ -37,12 +37,12 @@ class PowerComponent extends Model implements CompatibilityNode
         'watts_out',
     ];
 
-    public function getAllDirectlyCompatibleComponents(): array
+    public function getStaticallyCompatibleComponents(): array
     {
         return [$this->id];
     }
 
-    public function getAllDirectlyIncompatibleComponents(): array
+    public function getStaticallyIncompatibleComponents(): array
     {
         // power
         $components[] = PowerComponent
@@ -53,7 +53,7 @@ class PowerComponent extends Model implements CompatibilityNode
         return array_merge(...$components);
     }
 
-    public function getAllDynamicallyCompatibleComponents(array $selected): array
+    public function getDynamicallyCompatibleComponents(array $selected): array
     {
         // TODO: check atx12v_pins + sata_powers
 
@@ -63,7 +63,7 @@ class PowerComponent extends Model implements CompatibilityNode
             ->all();
     }
 
-    public function getAllDynamicallyIncompatibleComponents(array $selected): array
+    public function getDynamicallyIncompatibleComponents(array $selected): array
     {
         // TODO: check atx12v_pins + sata_powers
 

@@ -38,7 +38,7 @@ class MemoryComponent extends Model implements CompatibilityNode
         'pins',
     ];
 
-    public function getAllDirectlyCompatibleComponents(): array
+    public function getStaticallyCompatibleComponents(): array
     {
         // motherboard
         $components[] = MotherboardComponent
@@ -50,7 +50,7 @@ class MemoryComponent extends Model implements CompatibilityNode
         return array_merge(...$components);
     }
 
-    public function getAllDirectlyIncompatibleComponents(): array
+    public function getStaticallyIncompatibleComponents(): array
     {
         // cooling
         $components[] = CoolingComponent
@@ -74,12 +74,12 @@ class MemoryComponent extends Model implements CompatibilityNode
         return array_merge(...$components);
     }
 
-    public function getAllDynamicallyCompatibleComponents(array $selected): array
+    public function getDynamicallyCompatibleComponents(array $selected): array
     {
         return [];
     }
 
-    public function getAllDynamicallyIncompatibleComponents(array $selected): array
+    public function getDynamicallyIncompatibleComponents(array $selected): array
     {
         return [];
     }

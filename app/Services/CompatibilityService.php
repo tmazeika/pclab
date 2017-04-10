@@ -2,9 +2,10 @@
 
 namespace PCForge\Services;
 
+use Illuminate\Support\Collection;
 use PCForge\AdjacencyMatrix;
 use PCForge\Contracts\CompatibilityServiceContract;
-use PCForge\Models\Compatibility;
+use PCForge\Models\CompatibilityNode;
 use PCForge\Models\Component;
 
 class CompatibilityService implements CompatibilityServiceContract
@@ -18,22 +19,27 @@ class CompatibilityService implements CompatibilityServiceContract
     {
         session(["c$id-selected-count" => $count]);
 
-        $components = Component::where('is_available', true);
+        if ($count === 0) {
+            session()->forget("selected.$id");
+        } else if (!session()->exists("selected.$id")) {
+            session()->push('selected', $id);
+        }
 
-        // first pass: (in)directly incompatible components
-        $staticallyIncompatible = $components
-            ->whereNotIn('id', Compatibility
-                ::where('component_1_id', $id)
-                ->pluck('component_2_id'))
-            ->get();
+        /** @var array $selected */
+        $selected = session()->get('selected', []);
 
-        // second pass: dynamically incompatible components
-        // TODO
+        /** @var Collection $components */
+        $components = Component::where('is_available', true)->get();
 
-        return $staticallyIncompatible
-            ->pluck('id')
+        return collect($this->getIncompatibilities($components, $id, $selected))
+            ->map(function (int $incompatId) {
+                return $incompatId + 1;
+            })
             ->filter(function (int $incompatId) use ($id, $count) {
+                /** @var array $disabledFrom */
                 $disabledFrom = session("c$incompatId-disabled-from", []);
+
+                /** @var bool $disabledFromId */
                 $disabledFromId = in_array($id, $disabledFrom);
 
                 // if we're not deselecting and this component hasn't already been disabled by the selected component...
@@ -56,16 +62,66 @@ class CompatibilityService implements CompatibilityServiceContract
             ->all();
     }
 
-    public function getAllCompatibilities(array $compatibleComponentsToAdjacent, array $incompatibleComponentsToAdjacent): array
+    private function getIncompatibilities(Collection $components, int $componentId, array $selected): array
+    {
+        $compatibilities = [];
+        $incompatibilities = [];
+
+        foreach ($components as $component) {
+            /** @var CompatibilityNode $node */
+            $node = $component->toCompatibilityNode();
+            $key = $component->id - 1;
+
+            $compatibilities[$key] = array_unique(array_merge(
+                // static
+                cache()->tags('static-compatibilities')->rememberForever("c$key", function () use ($node) {
+                    return $node->getStaticallyCompatibleComponents();
+                }),
+                // dynamic
+                $node->getDynamicallyCompatibleComponents($selected)
+            ));
+
+            $incompatibilities[$key] = array_unique(array_merge(
+                // static
+                cache()->tags('static-incompatibilities')->rememberForever("c$key", function () use ($node) {
+                    return $node->getStaticallyIncompatibleComponents();
+                }),
+                // dynamic
+                $node->getDynamicallyIncompatibleComponents($selected)
+            ));
+        }
+
+        return $components
+            ->map(function (Component $component) {
+                return $component->id - 1;
+            })
+            ->diff($this->getCompatibilities($compatibilities, $incompatibilities)[$componentId - 1])
+            ->toArray();
+    }
+
+    /**
+     * Procedure:
+     * 1. Pick a component
+     * 2. In the compatibility adjacency matrix, zero the rows and columns that have an edge in the picked component's
+     *    incompatibility adjacency matrix column
+     * 3. Mark all reachable components from the picked component's compatibility adjacency matrix column as
+     *    'compatible'
+     *
+     * @param array $compatibilities
+     * @param array $incompatibilities
+     *
+     * @return array
+     */
+    private function getCompatibilities(array $compatibilities, array $incompatibilities): array
     {
         $arr = [];
 
         $compatibilityAdjacencyMatrix = new AdjacencyMatrix(
-            $this->zeroBaseAdjacentIds($compatibleComponentsToAdjacent)
+            $this->zeroBaseAdjacentIds($compatibilities)
         );
 
         $incompatibilityAdjacencyMatrix = new AdjacencyMatrix(
-            $this->zeroBaseAdjacentIds($incompatibleComponentsToAdjacent)
+            $this->zeroBaseAdjacentIds($incompatibilities)
         );
 
         // step 1

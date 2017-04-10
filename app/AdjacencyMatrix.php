@@ -38,12 +38,16 @@ class AdjacencyMatrix implements Iterator
      * have with others.
      *
      * @param int $node the node whose column and row are to be zeroed
+     *
+     * @return AdjacencyMatrix
      */
-    public function zeroNode(int $node): void
+    public function zeroNode(int $node): AdjacencyMatrix
     {
         foreach ($this->nodes as $row) {
             $this->arr[$node][$row] = $this->arr[$row][$node] = 0;
         }
+
+        return $this;
     }
 
     /**

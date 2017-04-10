@@ -24,18 +24,4 @@ interface CompatibilityServiceContract
      * compatible if $count is 0
      */
     public function select(int $id, int $count): array;
-
-    /**
-     * Procedure:
-     * 1. Pick a component
-     * 2. In the compatibility matrix, zero the rows and columns that have an edge in the picked component's
-     *    incompatibility matrix column
-     * 3. Mark all reachable components from the picked component's compatibility matrix column as 'compatible'
-     *
-     * @param array $compatibleComponentsToAdjacent
-     * @param array $incompatibleComponentsToAdjacent
-     *
-     * @return array
-     */
-    public function getAllCompatibilities(array $compatibleComponentsToAdjacent, array $incompatibleComponentsToAdjacent): array;
 }

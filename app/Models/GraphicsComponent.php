@@ -41,12 +41,12 @@ class GraphicsComponent extends Model implements CompatibilityNode
         'length',
     ];
 
-    public function getAllDirectlyCompatibleComponents(): array
+    public function getStaticallyCompatibleComponents(): array
     {
         return [$this->id];
     }
 
-    public function getAllDirectlyIncompatibleComponents(): array
+    public function getStaticallyIncompatibleComponents(): array
     {
         // graphics
         $components[] = GraphicsComponent
@@ -57,12 +57,12 @@ class GraphicsComponent extends Model implements CompatibilityNode
         return array_merge(...$components);
     }
 
-    public function getAllDynamicallyCompatibleComponents(array $selected): array
+    public function getDynamicallyCompatibleComponents(array $selected): array
     {
         return [];
     }
 
-    public function getAllDynamicallyIncompatibleComponents(array $selected): array
+    public function getDynamicallyIncompatibleComponents(array $selected): array
     {
         return [];
     }

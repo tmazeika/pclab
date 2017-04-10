@@ -43,7 +43,7 @@ class ProcessorComponent extends Model implements CompatibilityNode
         return $this->belongsTo('PCForge\Models\Socket');
     }
 
-    public function getAllDirectlyCompatibleComponents(): array
+    public function getStaticallyCompatibleComponents(): array
     {
         // motherboard
         $components[] = MotherboardComponent
@@ -54,7 +54,7 @@ class ProcessorComponent extends Model implements CompatibilityNode
         return array_merge(...$components);
     }
 
-    public function getAllDirectlyIncompatibleComponents(): array
+    public function getStaticallyIncompatibleComponents(): array
     {
         // motherboard
         $components[] = MotherboardComponent
@@ -71,12 +71,12 @@ class ProcessorComponent extends Model implements CompatibilityNode
         return array_merge(...$components);
     }
 
-    public function getAllDynamicallyCompatibleComponents(array $selected): array
+    public function getDynamicallyCompatibleComponents(array $selected): array
     {
         return [];
     }
 
-    public function getAllDynamicallyIncompatibleComponents(array $selected): array
+    public function getDynamicallyIncompatibleComponents(array $selected): array
     {
         return [];
     }

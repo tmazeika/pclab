@@ -17,7 +17,6 @@ class CreateComponentTypesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->boolean('allows_multiple');
-            $table->boolean('has_dynamic_compatibilities');
             $table->timestamps();
         });
     }

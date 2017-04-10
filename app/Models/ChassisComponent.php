@@ -66,7 +66,7 @@ class ChassisComponent extends Model implements CompatibilityNode
         return $this->belongsToMany('PCForge\Models\ChassisRadiator');
     }
 
-    public function getAllDirectlyCompatibleComponents(): array
+    public function getStaticallyCompatibleComponents(): array
     {
         // motherboard
         $components[] = MotherboardComponent
@@ -81,7 +81,7 @@ class ChassisComponent extends Model implements CompatibilityNode
         return array_merge(...$components);
     }
 
-    public function getAllDirectlyIncompatibleComponents(): array
+    public function getStaticallyIncompatibleComponents(): array
     {
         // chassis
         $components[] = ChassisComponent
@@ -114,12 +114,12 @@ class ChassisComponent extends Model implements CompatibilityNode
         return array_merge(...$components);
     }
 
-    public function getAllDynamicallyCompatibleComponents(array $selected): array
+    public function getDynamicallyCompatibleComponents(array $selected): array
     {
         return [];
     }
 
-    public function getAllDynamicallyIncompatibleComponents(array $selected): array
+    public function getDynamicallyIncompatibleComponents(array $selected): array
     {
         return [];
     }

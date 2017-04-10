@@ -11,7 +11,7 @@ interface CompatibilityNode
      *
      * @return int[] an array of component ID's
      */
-    public function getAllDirectlyCompatibleComponents(): array;
+    public function getStaticallyCompatibleComponents(): array;
 
     /**
      * Gets all components that are directly incompatible with this component. More specifically, the components that
@@ -20,7 +20,7 @@ interface CompatibilityNode
      *
      * @return int[] an array of component ID's
      */
-    public function getAllDirectlyIncompatibleComponents(): array;
+    public function getStaticallyIncompatibleComponents(): array;
 
     /**
      * Gets all components that are compatible with this component based on some other session specific parameters.
@@ -32,9 +32,9 @@ interface CompatibilityNode
      *
      * @return int[] an array of component ID's
      *
-     * @see getAllDirectlyCompatibleComponents
+     * @see getStaticallyCompatibleComponents
      */
-    public function getAllDynamicallyCompatibleComponents(array $selected): array;
+    public function getDynamicallyCompatibleComponents(array $selected): array;
 
     /**
      * Gets all components that are incompatible with this component based on some other session specific parameters.
@@ -46,7 +46,7 @@ interface CompatibilityNode
      *
      * @return int[] an array of component ID's
      *
-     * @see getAllDirectlyIncompatibleComponents
+     * @see getStaticallyIncompatibleComponents
      */
-    public function getAllDynamicallyIncompatibleComponents(array $selected): array;
+    public function getDynamicallyIncompatibleComponents(array $selected): array;
 }

@@ -12,7 +12,6 @@
         'PCForge\Models\ChassisComponent',
         'PCForge\Models\ChassisComponentFormFactor',
         'PCForge\Models\ChassisComponentsRadiator',
-        'PCForge\Models\Compatibility',
         'PCForge\Models\Component',
         'PCForge\Models\ComponentType',
         'PCForge\Models\CoolingComponent',

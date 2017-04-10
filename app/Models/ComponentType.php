@@ -12,21 +12,18 @@ class ComponentType extends Model
         'id'                          => 'nullable|integer|unique:component_types|min:0',
         'name'                        => 'required|string|unique:component_types',
         'allows_multiple'             => 'required|boolean',
-        'has_dynamic_compatibilities' => 'required|boolean',
     ];
 
     private const UPDATE_RULES = [
         'id'                          => 'nullable|integer|unique:component_types|min:0',
         'name'                        => 'nullable|string|unique:component_types',
         'allows_multiple'             => 'nullable|boolean',
-        'has_dynamic_compatibilities' => 'nullable|boolean',
     ];
 
     protected $fillable = [
         'id',
         'name',
         'allows_multiple',
-        'has_dynamic_compatibilities',
     ];
 
     public function components()

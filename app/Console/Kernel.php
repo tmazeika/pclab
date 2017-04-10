@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule
             ->command(UpdateAmazonPrices::class)
-            ->hourly()
+            ->twiceDaily(6, 18)
             ->evenInMaintenanceMode();
     }
 

@@ -65,8 +65,8 @@ class UpdateAmazonPrices implements ShouldQueue
                 $currentPrice = intval($listing->Price->Amount);
 
                 Component::where('asin', $asin)->update([
+                    'is_available' => true, // TODO: $available
                     'price'        => $currentPrice,
-                    'is_available' => true // TODO: $available
                 ]);
 
                 break;
