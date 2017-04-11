@@ -78,6 +78,11 @@ class ChassisComponent extends Model implements CompatibilityNode
             ->pluck('component_id')
             ->all();
 
+        // power
+        $components[] = PowerComponent
+            ::pluck('component_id')
+            ->all();
+
         return array_merge(...$components);
     }
 

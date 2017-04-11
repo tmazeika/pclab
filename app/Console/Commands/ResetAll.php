@@ -3,6 +3,7 @@
 namespace PCForge\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Redis;
 use PCForge\Events\ComponentModified;
 
 class ResetAll extends Command
@@ -12,14 +13,14 @@ class ResetAll extends Command
      *
      * @var string
      */
-    protected $signature = 'reset-all {--compatibilities}';
+    protected $signature = 'reset-all';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Refreshes and seeds the database, clears cache, updates Amazon prices, and optionally updates the compatibilities table';
+    protected $description = 'Refreshes and seeds the database, clears cache and sessions, updates Amazon prices, and optionally updates the compatibilities table';
 
     /**
      * Create a new command instance.
@@ -34,14 +35,15 @@ class ResetAll extends Command
      */
     public function handle(): void
     {
-        if ($this->confirm('This will refresh migrations and clear cache! Continue?')) {
-            $this->call('migrate:refresh', ['--seed' => true]);
+        if ($this->confirm('This will refresh migrations and clear cache and sessions! Continue?')) {
+            // flush cache and sessions
             $this->call('cache:clear');
-            $this->call('update-amazon-prices');
+            Redis::flushdb();
 
-            if ($this->option('compatibilities')) {
-                event(new ComponentModified);
-            }
+            // update database
+            $this->call('migrate:refresh', ['--seed' => true]);
+            $this->call('update-amazon-prices');
+            event(new ComponentModified);
         }
     }
 }

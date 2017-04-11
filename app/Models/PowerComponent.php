@@ -39,11 +39,20 @@ class PowerComponent extends Model implements CompatibilityNode
 
     public function getStaticallyCompatibleComponents(): array
     {
-        return [$this->id];
+        // chassis
+        return ChassisComponent
+            ::pluck('component_id')
+            ->all();
     }
 
     public function getStaticallyIncompatibleComponents(): array
     {
+        // motherboard
+        $components[] = MotherboardComponent
+            ::where('atx12v_pins', '>', $this->atx12v_pins)
+            ->pluck('component_id')
+            ->all();
+
         // power
         $components[] = PowerComponent
             ::where('id', '!=', $this->id)
@@ -55,27 +64,48 @@ class PowerComponent extends Model implements CompatibilityNode
 
     public function getDynamicallyCompatibleComponents(array $selected): array
     {
-        // TODO: check atx12v_pins + sata_powers
-
-        return PowerComponent
-            ::where('watts_out', '>=', $this->getTotalWattsUsage($selected))
-            ->pluck('component_id')
-            ->all();
+        return [];
     }
 
     public function getDynamicallyIncompatibleComponents(array $selected): array
     {
-        // TODO: check atx12v_pins + sata_powers
+        // power
+        $systemWattsUsage = $this->getSystemWattsUsage($selected);
 
-        return PowerComponent
-            ::where('watts_out', '<', $this->getTotalWattsUsage($selected))
-            ->pluck('component_id')
-            ->all();
+        if ($this->watts_out < $systemWattsUsage) {
+            $components[] = Component
+                ::where('watts_usage', '>', 0)
+                ->pluck('id')
+                ->all();
+
+            $components[] = [$this->component_id];
+        } else {
+            $components[] = Component
+                ::where('watts_usage', '>', $this->watts_out - $systemWattsUsage)
+                ->pluck('id')
+                ->all();
+        }
+
+        // storage
+        $storageCount = StorageComponent
+            ::whereIn('component_id', array_keys($selected))
+            ->count();
+
+        if ($storageCount === $this->sata_powers) {
+            $components[] = StorageComponent
+                ::whereNotIn('component_id', array_keys($selected))
+                ->pluck('component_id')
+                ->all();
+        } else if ($storageCount > $this->sata_powers) {
+            $components[] = [$this->component_id];
+        }
+
+        return !empty($components) ? array_merge(...$components) : [];
     }
 
-    private function getTotalWattsUsage(array $selected): int
+    private function getSystemWattsUsage(array $selected): int
     {
-        $totalWattsUsage = 100;
+        $totalWattsUsage = 150;
         $selectedComponents = Component
             ::whereIn('id', array_keys($selected))
             ->pluck('watts_usage', 'id');

@@ -3,6 +3,7 @@
 namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use PCForge\Services\CompatibilityService;
 
 class Component extends Model
 {
@@ -53,7 +54,7 @@ class Component extends Model
 
     public function getSelectedCountInSession(): int
     {
-        return session("c$this->id-selected-count", 0);
+        return session(CompatibilityService::SELECTED_SESSION_KEY . ".$this->id", 0);
     }
 
     public function img()
@@ -63,7 +64,7 @@ class Component extends Model
 
     public function isDisabledInSession(): bool
     {
-        return !empty(session("c$this->id-disabled-from", []));
+        return in_array($this->id, session(CompatibilityService::INCOMPATIBILITIES_SESSION_KEY, []), true);
     }
 
     public function toCompatibilityNode(): CompatibilityNode

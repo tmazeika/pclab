@@ -25,11 +25,11 @@ class BuildController extends Controller
     public function customSelect(Request $request, CompatibilityServiceContract $compatibilityService)
     {
         $this->validate($request, [
-            'component-id' => 'required|exists:components,id',
-            'count'        => 'required|integer|min:0',
+            'id'    => 'required|exists:components,id',
+            'count' => 'required|integer|min:0',
         ]);
 
-        $id = intval($request->input('component-id'));
+        $id = intval($request->input('id'));
         $count = intval($request->input('count'));
 
         if (!$compatibilityService->isAllowed($id, $count)) {
@@ -37,7 +37,7 @@ class BuildController extends Controller
         }
 
         return json_encode([
-            ($count === 0 ? 'enable' : 'disable') => $compatibilityService->select($id, $count),
+            'disable' => $compatibilityService->select($id, $count),
         ]);
     }
 }

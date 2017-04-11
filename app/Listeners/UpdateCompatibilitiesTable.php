@@ -9,6 +9,6 @@ class UpdateCompatibilitiesTable
      */
     public function handle(): void
     {
-        cache()->tags(['static-compatibilities', 'static-incompatibilities'])->flush();
+        cache()->tags(['static.compatibilities', 'static.incompatibilities'])->flush();
     }
 }

@@ -15,8 +15,7 @@
                 <div class="build-chooser-item
                         {{ $component->parent->getSelectedCountInSession() > 0 ? 'selected' : '' }}
                         {{ $component->parent->isDisabledInSession() ? 'disabled' : '' }}"
-                     data-component-id="{{ $component->parent->id }}"
-                     data-component-type="{{ $component->parent->type->name }}">
+                     data-component-id="{{ $component->parent->id }}">
                     <img class="build-chooser-item-img" src="{{ $component->parent->img() }}"/>
                     <h1 class="build-chooser-item-heading">
                         {{ $component->parent->name }}

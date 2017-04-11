@@ -10,93 +10,104 @@ use PCForge\Models\Component;
 
 class CompatibilityService implements CompatibilityServiceContract
 {
+    public const SELECTED_SESSION_KEY = 'selected';
+
+    public const INCOMPATIBILITIES_SESSION_KEY = 'incompatibilities';
+
     public function isAllowed(int $id, int $count): bool
     {
-        return !$this->isDisabled($id);
+        return !in_array($id, $this->getIncompatibilities(), true);
     }
 
     public function select(int $id, int $count): array
     {
-        session(["c$id-selected-count" => $count]);
+        $selectedSessionKey = self::SELECTED_SESSION_KEY . ".$id";
 
-        if ($count === 0) {
-            session()->forget("selected.$id");
-        } else if (!session()->exists("selected.$id")) {
-            session()->push('selected', $id);
+        if ($count > 0) {
+            session([$selectedSessionKey => $count]);
+        } else {
+            session()->forget($selectedSessionKey);
         }
 
-        /** @var array $selected */
-        $selected = session()->get('selected', []);
-
-        /** @var Collection $components */
-        $components = Component::where('is_available', true)->get();
-
-        return collect($this->getIncompatibilities($components, $id, $selected))
-            ->map(function (int $incompatId) {
-                return $incompatId + 1;
-            })
-            ->filter(function (int $incompatId) use ($id, $count) {
-                /** @var array $disabledFrom */
-                $disabledFrom = session("c$incompatId-disabled-from", []);
-
-                /** @var bool $disabledFromId */
-                $disabledFromId = in_array($id, $disabledFrom);
-
-                // if we're not deselecting and this component hasn't already been disabled by the selected component...
-                if ($count > 0 && !$disabledFromId) {
-                    session()->push("c$incompatId-disabled-from", $id);
-
-                    return true;
-                }
-
-                // if we're deselecting and this component has previously been disabled by the selected component...
-                if ($count === 0 && $disabledFromId && ($key = array_search($id, $disabledFrom, true)) !== false) {
-                    session()->forget("c$incompatId-disabled-from.$key");
-
-                    return !$this->isDisabled($incompatId);
-                }
-
-                return false;
-            })
-            ->values()
-            ->all();
+        return $this->getIncompatibilities(true);
     }
 
-    private function getIncompatibilities(Collection $components, int $componentId, array $selected): array
+    private function getIncompatibilities(bool $recompute = false): array
     {
+        if (!$recompute) {
+            return session(self::INCOMPATIBILITIES_SESSION_KEY, []);
+        }
+
+        /** @var Collection $components */
+        // TODO: probably some other checks to make?
+        $components = Component
+            ::where('is_available', true)
+            ->get();
+
+        /** @var array $selected */
+        $selected = session('selected', []);
+
         $compatibilities = [];
         $incompatibilities = [];
 
         foreach ($components as $component) {
             /** @var CompatibilityNode $node */
             $node = $component->toCompatibilityNode();
-            $key = $component->id - 1;
 
-            $compatibilities[$key] = array_unique(array_merge(
-                // static
-                cache()->tags('static-compatibilities')->rememberForever("c$key", function () use ($node) {
-                    return $node->getStaticallyCompatibleComponents();
-                }),
-                // dynamic
-                $node->getDynamicallyCompatibleComponents($selected)
-            ));
+            /** @var int $key */
+            $key = $component->id - 1;
 
             $incompatibilities[$key] = array_unique(array_merge(
                 // static
-                cache()->tags('static-incompatibilities')->rememberForever("c$key", function () use ($node) {
+                cache()->tags('static.incompatibilities')->rememberForever($key, function () use ($node) {
                     return $node->getStaticallyIncompatibleComponents();
                 }),
                 // dynamic
                 $node->getDynamicallyIncompatibleComponents($selected)
             ));
+
+            $compatibilities[$key] = array_diff(array_unique(array_merge(
+                // static
+                cache()->tags('static.compatibilities')->rememberForever($key, function () use ($node) {
+                    return $node->getStaticallyCompatibleComponents();
+                }),
+                // dynamic
+                $node->getDynamicallyCompatibleComponents($selected)
+            )), $incompatibilities[$key]);
         }
 
-        return $components
-            ->map(function (Component $component) {
-                return $component->id - 1;
-            })
-            ->diff($this->getCompatibilities($compatibilities, $incompatibilities)[$componentId - 1])
-            ->toArray();
+        $computedCompatibilities = $this->computeCompatibilities($compatibilities, $incompatibilities);
+
+        // gets all components and subtracts out all that are considered compatible with the current selection
+        $computedIncompatibilities = empty($selected) ? [] : $components
+            ->pluck('id')
+            ->diff(collect($selected)
+                // get just the ID's
+                ->keys()
+                // map ID's to an array of their adjacent ID's
+                ->map(function (int $id) use ($computedCompatibilities) {
+                    return $computedCompatibilities[$id - 1] ?? [];
+                })
+                // don't include empty adjacency arrays
+                ->reject(function (array $adjacent) {
+                    return empty($adjacent);
+                })
+                // get intersection of all adjacency arrays
+                ->pipe(function (Collection $collection) {
+                    return $collection->count() > 1
+                        ? collect(array_intersect(...$collection->toArray()))
+                        : $collection->flatten();
+                })
+                // map ID's to their ID's as represented in the session and the database
+                ->map(function (int $id) {
+                    return $id + 1;
+                }))
+            ->values()
+            ->all();
+
+        session([self::INCOMPATIBILITIES_SESSION_KEY => $computedIncompatibilities]);
+
+        return $computedIncompatibilities;
     }
 
     /**
@@ -112,7 +123,7 @@ class CompatibilityService implements CompatibilityServiceContract
      *
      * @return array
      */
-    private function getCompatibilities(array $compatibilities, array $incompatibilities): array
+    private function computeCompatibilities(array $compatibilities, array $incompatibilities): array
     {
         $arr = [];
 
@@ -150,16 +161,13 @@ class CompatibilityService implements CompatibilityServiceContract
         for ($i = 0; $i < count($componentsToAdjacent); $i++) {
             if (isset($componentsToAdjacent[$i])) {
                 for ($j = 0; $j < count($componentsToAdjacent[$i]); $j++) {
-                    $componentsToAdjacent[$i][$j]--;
+                    if (isset($componentsToAdjacent[$i][$j])) {
+                        $componentsToAdjacent[$i][$j]--;
+                    }
                 }
             }
         }
 
         return $componentsToAdjacent;
-    }
-
-    private function isDisabled(int $id): bool
-    {
-        return !empty(session("c$id-disabled-from"));
     }
 }

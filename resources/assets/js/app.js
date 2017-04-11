@@ -9,48 +9,39 @@ function enableClassIf(enabledCondition, target, clazz) {
     }
 }
 
-$('.build-chooser-item').on('click', function() {
+$('.build-chooser-item').on('click', function () {
     if ($(this).hasClass('disabled')) {
         return;
     }
 
-    const target = $(this);
-    const componentId = $(this).attr('data-component-id');
-    const componentType = $(this).attr('data-component-type');
     const selected = $(this).hasClass('selected');
 
-    enableClassIf(!selected, target, 'selected');
+    enableClassIf(!selected, this, 'selected');
 
     $.ajax(ajaxSelectUrl, {
         data: {
-            'component-id': componentId,
-            'component-type': componentType,
+            'id': $(this).attr('data-component-id'),
             // the selected property was toggled
             'count': selected ? 0 : 1,
         },
         dataType: 'json'
     }).done((data) => {
-        if (data.disable) {
-            for (let componentId of data.disable) {
-                $(`.build-chooser-item[data-component-id=${componentId}]`).addClass('disabled');
-            }
-        }
-        else if (data.enable) {
-            for (let componentId of data.enable) {
-                $(`.build-chooser-item[data-component-id=${componentId}]`).removeClass('disabled');
-            }
-        }
+        $('.build-chooser-item').each(function (i, item) {
+            const id = parseInt($(item).attr('data-component-id'));
+
+            $(`.build-chooser-item[data-component-id=${id}]`).toggleClass('disabled', data.disable.indexOf(id) !== -1);
+        });
     });
 })/*.find('.build-chooser-item-quantity-button').on('click', function() {
-    const chooserItem = $(this).closest('.build-chooser-item');
-    const textElem = $(this).siblings('.build-chooser-item-quantity-text');
-    const selected = $(chooserItem).hasClass('selected');
-    let propagate = false;
+ const chooserItem = $(this).closest('.build-chooser-item');
+ const textElem = $(this).siblings('.build-chooser-item-quantity-text');
+ const selected = $(chooserItem).hasClass('selected');
+ let propagate = false;
 
-    if (!selected && $(this).hasClass('add')) {
-        textElem.text('1');
-        propagate = true;
-    }
+ if (!selected && $(this).hasClass('add')) {
+ textElem.text('1');
+ propagate = true;
+ }
 
-    return propagate;
-})*/;
+ return propagate;
+ })*/;
