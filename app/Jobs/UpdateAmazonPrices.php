@@ -54,6 +54,7 @@ class UpdateAmazonPrices implements ShouldQueue
             'Timestamp'      => gmdate('Y-m-d\TH:i:s\Z'),
         ];
 
+
         $xml = simplexml_load_file($this->getAwsRequestUrl($params));
 
         foreach ($xml->Items->Item as $item) {
@@ -61,11 +62,12 @@ class UpdateAmazonPrices implements ShouldQueue
                 $listing = $offer->OfferListing;
                 $asin = $item->ASIN;
                 $available = strval($listing->AvailabilityAttributes->AvailabilityType) === 'now'
+                    && intval($listing->AvailabilityAttributes->MaximumHours) === 0
                     && intval($listing->IsEligibleForPrime) === 1;
                 $currentPrice = intval($listing->Price->Amount);
 
                 Component::where('asin', $asin)->update([
-                    'is_available' => true, // TODO: $available
+                    'is_available' => $available,
                     'price'        => $currentPrice,
                 ]);
 

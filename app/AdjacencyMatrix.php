@@ -69,7 +69,7 @@ class AdjacencyMatrix implements Iterator
             if (!in_array($i, $reachableNodes, true)) {
                 for ($j = 0; $j < $this->n; $j++) {
                     // if this row has an edge with this column...
-                    if ($this->arr[$i][$j] ?? 0 === 1) {
+                    if (isset($this->arr[$i]) && $this->arr[$i][$j] ?? 0 === 1) {
                         // check that this node hasn't already been added once
                         if (!in_array($i, $reachableNodes, true)) {
                             $reachableNodes[] = $i;
@@ -92,7 +92,9 @@ class AdjacencyMatrix implements Iterator
      */
     public function hasEdgeAt(int $i, int $j): bool
     {
-        return isset($this->arr[$i]) ? $this->arr[$i][$j] === 1 : false;
+        return isset($this->arr[$i])
+            ? $this->arr[$i][$j] ?? 0 === 1
+            : false;
     }
 
     /**
