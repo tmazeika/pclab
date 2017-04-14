@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use InvalidArgumentException;
+use PCForge\Events\ComponentModified;
 use PCForge\Models\Component;
 
 class UpdateAmazonComponents implements ShouldQueue
@@ -80,6 +81,8 @@ class UpdateAmazonComponents implements ShouldQueue
                 'price'        => $currentPrice,
             ]);
         }
+
+        event(new ComponentModified);
     }
 
     private function getAwsRequestUrl(array $params): string

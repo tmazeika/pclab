@@ -126,9 +126,7 @@ class MotherboardComponent extends ComponentChild
             ->pluck('component_id');
 
         // processor
-        $components[] = ProcessorComponent
-            ::where('socket_id', $socketId)
-            ->pluck('component_id');
+        $components[] = ProcessorComponent::where('socket_id', $socketId)->pluck('component_id');
 
         return collect($components)->flatten();
     }
@@ -171,14 +169,10 @@ class MotherboardComponent extends ComponentChild
             ->pluck('component_id');
 
         // motherboard
-        $components[] = MotherboardComponent
-            ::where('id', '!=', $this->id)
-            ->pluck('component_id');
+        $components[] = MotherboardComponent::where('id', '!=', $this->id)->pluck('component_id');
 
         // processor
-        $components[] = ProcessorComponent
-            ::where('socket_id', '!=', $socketId)
-            ->pluck('component_id');
+        $components[] = ProcessorComponent::where('socket_id', '!=', $socketId)->pluck('component_id');
 
         return collect($components)->flatten();
     }

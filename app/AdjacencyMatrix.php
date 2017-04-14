@@ -27,8 +27,7 @@ class AdjacencyMatrix implements Iterator
 
         for ($i = 0; $i < $this->n; $i++) {
             for ($j = 0; $j < $this->n; $j++) {
-                $this->arr[$i][$j] = $this->arr[$j][$i] =
-                    in_array($j, $nodesToAdjacent[$i] ?? [], true) ? 1 : 0;
+                $this->arr[$i][$j] = $this->arr[$j][$i] = in_array($j, $nodesToAdjacent[$i] ?? []) ? 1 : 0;
             }
         }
     }
@@ -66,12 +65,12 @@ class AdjacencyMatrix implements Iterator
             $i = array_pop($stack);
 
             // check that this node hasn't already been reached
-            if (!in_array($i, $reachableNodes, true)) {
+            if (!in_array($i, $reachableNodes)) {
                 for ($j = 0; $j < $this->n; $j++) {
                     // if this row has an edge with this column...
-                    if (isset($this->arr[$i]) && $this->arr[$i][$j] ?? 0 === 1) {
+                    if (@$this->arr[$i][$j] === 1) {
                         // check that this node hasn't already been added once
-                        if (!in_array($i, $reachableNodes, true)) {
+                        if (!in_array($i, $reachableNodes)) {
                             $reachableNodes[] = $i;
                         }
 

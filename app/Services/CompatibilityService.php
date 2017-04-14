@@ -7,7 +7,6 @@ use PCForge\AdjacencyMatrix;
 use PCForge\Contracts\CompatibilityServiceContract;
 use PCForge\Contracts\ComponentRepositoryContract;
 use PCForge\Contracts\ComponentSelectionRepositoryContract;
-use PCForge\Models\Component;
 use PCForge\Models\ComponentChild;
 
 class CompatibilityService implements CompatibilityServiceContract
@@ -39,19 +38,25 @@ class CompatibilityService implements CompatibilityServiceContract
     public function isUnavailable(int $id): bool
     {
         return cache()->tags(['components', 'incompatibilities'])->rememberForever('empty', function () {
-            $computedCompatibilities = array_keys($this->computeCompatibilities([]));
+            $components = $this->componentRepo->all();
 
-            return $this->componentRepo->getAllAvailableComponentsWithIds()
-                ->reject(function (Component $component) use ($computedCompatibilities) {
-                    return in_array($component->id - 1, $computedCompatibilities);
-                });
+            return $components
+                ->pluck('id')
+                ->diff(collect($this->computeCompatibilities([]))
+                    ->keys()
+                    ->map(function (int $id) {
+                        return $id + 1;
+                    }))
+                ->merge($components
+                    ->where('is_available', false)
+                    ->pluck('id'));
         })->contains($id);
     }
 
     private function computeIncompatibilities(bool $recompute = false): Collection
     {
         if (!$recompute) {
-            return collect(session('incompatibilities'));
+            return collect(session('incompatibilities', []));
         }
 
         $selected = $this->componentSelectionRepo->all();
@@ -60,7 +65,7 @@ class CompatibilityService implements CompatibilityServiceContract
         // gets all components and subtracts out all that are considered compatible with the current selection
         $computedIncompatibilities = empty($selected)
             ? collect()
-            : $this->componentRepo->getAllAvailableComponentsWithIds()
+            : $this->componentRepo->all()
                 ->pluck('id')
                 ->diff(collect($selected)
                     // get just the ID's
@@ -85,7 +90,7 @@ class CompatibilityService implements CompatibilityServiceContract
                     }))
                 ->values();
 
-        session(['incompatibilities' => $computedIncompatibilities]);
+        session(['incompatibilities' => $computedIncompatibilities->toArray()]);
 
         return $computedIncompatibilities;
     }
@@ -105,7 +110,7 @@ class CompatibilityService implements CompatibilityServiceContract
     private function computeCompatibilities(array $selected): array
     {
         /** @var Collection $components */
-        $components = $this->componentRepo->getAllAvailableComponentsWithIds();
+        $components = $this->componentRepo->all();
 
         // build compatibility and incompatibility arrays
         foreach ($components as $component) {
@@ -124,6 +129,9 @@ class CompatibilityService implements CompatibilityServiceContract
                     ->map(function (int $id) {
                         return $id - 1;
                     })
+                    ->when(!$component->is_available, function () {
+                        return collect();
+                    })
                     ->toArray();
 
             $compatibilities[$key] =
@@ -132,9 +140,12 @@ class CompatibilityService implements CompatibilityServiceContract
                 })
                     ->merge($compatNode->getDynamicallyCompatibleComponents($selected))
                     ->unique()
-                    ->diff($incompatibilities[$key])
                     ->map(function (int $id) {
                         return $id - 1;
+                    })
+                    ->diff($incompatibilities[$key])
+                    ->when(!$component->is_available, function () {
+                        return collect();
                     })
                     ->toArray();
         }

@@ -89,7 +89,7 @@ class ChassisComponent extends ComponentChild
         // cooling TODO: check radiators
         $components[] = CoolingComponent::where('height', '>', $this->max_cooling_fan_height)->pluck('component_id');
 
-        // graphics
+        // graphics TODO: check unblocked lengths
         $components[] = GraphicsComponent::where('length', '>', $this->max_graphics_length_blocked)->pluck('component_id');
 
         // motherboard

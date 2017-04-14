@@ -20,12 +20,12 @@ class BuildController extends Controller
                                CompatibilityServiceContract $compatibilityService,
                                ComponentSelectionRepositoryContract $componentSelectionRepo)
     {
-        $components = $componentRepo->getAllAvailableComponents()
+        $components = $componentRepo->all()
             ->reject(function (Component $component) use ($compatibilityService) {
                 return $compatibilityService->isUnavailable($component->id);
             })
             ->each(function (Component $component) use ($componentSelectionRepo) {
-                $component->disabled = session('incompatibilities', collect())->contains($component->id);
+                $component->disabled = in_array($component->id, session('incompatibilities', []));
                 $component->selected = $componentSelectionRepo->isSelected($component->id);
             })
             ->groupBy('component_type_id')

@@ -55,11 +55,25 @@ class GraphicsComponent extends ComponentChild
 
     public function getDynamicallyCompatibleComponents(array $selected): Collection
     {
-        return collect();
+        // motherboard
+        $count = $selected[$this->id] ?? 0;
+
+        return MotherboardComponent
+            ::whereIn('component_id', array_keys($selected))
+            ->where('pcie3_slots', '>=', $count)
+            ->pluck('component_id')
+            ->flatten();
     }
 
     public function getDynamicallyIncompatibleComponents(array $selected): Collection
     {
-        return collect();
+        // motherboard
+        $count = $selected[$this->id] ?? 0;
+
+        return MotherboardComponent
+            ::whereIn('component_id', array_keys($selected))
+            ->where('pcie3_slots', '<', $count)
+            ->pluck('component_id')
+            ->flatten();
     }
 }
