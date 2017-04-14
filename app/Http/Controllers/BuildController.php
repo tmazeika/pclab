@@ -56,7 +56,7 @@ class BuildController extends Controller
         $id = intval($request->input('id'));
         $count = intval($request->input('count'));
 
-        return json_encode([
+        return response()->json([
             'disable' => $compatibilityService->select($id, $count)->toArray(),
         ]);
     }
