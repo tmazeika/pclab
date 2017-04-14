@@ -2,12 +2,12 @@
 
 namespace PCForge\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-class MotherboardComponent extends Model implements CompatibilityNode
+class MotherboardComponent extends ComponentChild
 {
-    use ExtendedModel, ComponentChild, Validatable, VideoOutputer;
+    use VideoOutputer;
 
     private const CREATE_RULES = [
         'id'                  => 'nullable|integer|unique:motherboard_components|min:0',
@@ -88,14 +88,10 @@ class MotherboardComponent extends Model implements CompatibilityNode
         return $this->belongsTo('PCForge\Models\Socket');
     }
 
-    public function getStaticallyCompatibleComponents(): array
+    public function getStaticallyCompatibleComponents(): Collection
     {
         $formFactorId = $this->form_factor->id;
         $socketId = $this->socket->id;
-        $chassisComponentFormFactorTable = (new ChassisComponentFormFactor)->getTable();
-        $coolingComponentSocketTable = (new CoolingComponentSocket)->getTable();
-        $chassisComponentsTable = (new ChassisComponent)->getTable();
-        $coolingComponentsTable = (new CoolingComponent)->getTable();
 
         // chassis
         $components[] = ChassisComponent
@@ -103,52 +99,44 @@ class MotherboardComponent extends Model implements CompatibilityNode
             ->where('fan_headers', '<=', $this->fan_headers)
             ->where('usb2_headers', '<=', $this->usb2_headers)
             ->where('usb3_headers', '<=', $this->usb3_headers)
-            ->whereExists(function ($query) use ($formFactorId, $chassisComponentFormFactorTable, $chassisComponentsTable) {
+            ->whereExists(function ($query) use ($formFactorId) {
                 $query
                     ->select(DB::raw(1))
-                    ->from($chassisComponentFormFactorTable)
-                    ->whereRaw("$chassisComponentFormFactorTable.chassis_component_id = $chassisComponentsTable.id")
+                    ->from('chassis_component_form_factor')
+                    ->whereRaw('chassis_component_form_factor.chassis_component_id = chassis_components.id')
                     ->where('form_factor_id', $formFactorId);
             })
-            ->pluck('component_id')
-            ->all();
+            ->pluck('component_id');
 
         // cooling
         $components[] = CoolingComponent
-            ::whereExists(function ($query) use ($socketId, $coolingComponentSocketTable, $coolingComponentsTable) {
+            ::whereExists(function ($query) use ($socketId) {
                 $query
                     ->select(DB::raw(1))
-                    ->from($coolingComponentSocketTable)
-                    ->whereRaw("$coolingComponentSocketTable.cooling_component_id = $coolingComponentsTable.id")
+                    ->from('cooling_component_socket')
+                    ->whereRaw('cooling_component_socket.cooling_component_id = cooling_components.id')
                     ->where('socket_id', $socketId);
             })
-            ->pluck('component_id')
-            ->all();
+            ->pluck('component_id');
 
         // memory
         $components[] = MemoryComponent
             ::where('ddr_gen', $this->dimm_gen)
             ->where('pins', $this->dimm_pins)
-            ->pluck('component_id')
-            ->all();
+            ->pluck('component_id');
 
         // processor
         $components[] = ProcessorComponent
             ::where('socket_id', $socketId)
-            ->pluck('component_id')
-            ->all();
+            ->pluck('component_id');
 
-        return array_merge(...$components);
+        return collect($components)->flatten();
     }
 
-    public function getStaticallyIncompatibleComponents(): array
+    public function getStaticallyIncompatibleComponents(): Collection
     {
         $formFactorId = $this->form_factor_id;
         $socketId = $this->socket_id;
-        $chassisComponentFormFactorTable = (new ChassisComponentFormFactor)->getTable();
-        $coolingComponentSocketTable = (new CoolingComponentSocket)->getTable();
-        $chassisComponentsTable = (new ChassisComponent)->getTable();
-        $coolingComponentsTable = (new CoolingComponent)->getTable();
 
         // chassis
         $components[] = ChassisComponent
@@ -156,57 +144,52 @@ class MotherboardComponent extends Model implements CompatibilityNode
             ->orWhere('fan_headers', '>', $this->fan_headers)
             ->orWhere('usb2_headers', '>', $this->usb2_headers)
             ->orWhere('usb3_headers', '>', $this->usb3_headers)
-            ->orWhereNotExists(function ($query) use ($formFactorId, $chassisComponentFormFactorTable, $chassisComponentsTable) {
+            ->orWhereNotExists(function ($query) use ($formFactorId) {
                 $query
                     ->select(DB::raw(1))
-                    ->from($chassisComponentFormFactorTable)
-                    ->whereRaw("$chassisComponentFormFactorTable.chassis_component_id = $chassisComponentsTable.id")
+                    ->from('chassis_component_form_factor')
+                    ->whereRaw('chassis_component_form_factor.chassis_component_id = chassis_components.id')
                     ->where('form_factor_id', $formFactorId);
             })
-            ->pluck('component_id')
-            ->all();
+            ->pluck('component_id');
 
         // cooling
         $components[] = CoolingComponent
-            ::whereNotExists(function ($query) use ($socketId, $coolingComponentSocketTable, $coolingComponentsTable) {
+            ::whereNotExists(function ($query) use ($socketId) {
                 $query
                     ->select(DB::raw(1))
-                    ->from($coolingComponentSocketTable)
-                    ->whereRaw("$coolingComponentSocketTable.cooling_component_id = $coolingComponentsTable.id")
+                    ->from('cooling_component_socket')
+                    ->whereRaw('cooling_component_socket.cooling_component_id = cooling_components.id')
                     ->where('socket_id', $socketId);
             })
-            ->pluck('component_id')
-            ->all();
+            ->pluck('component_id');
 
         // memory
         $components[] = MemoryComponent
             ::where('ddr_gen', '!=', $this->dimm_gen)
             ->orWhere('pins', '!=', $this->dimm_pins)
-            ->pluck('component_id')
-            ->all();
+            ->pluck('component_id');
 
         // motherboard
         $components[] = MotherboardComponent
             ::where('id', '!=', $this->id)
-            ->pluck('component_id')
-            ->all();
+            ->pluck('component_id');
 
         // processor
         $components[] = ProcessorComponent
             ::where('socket_id', '!=', $socketId)
-            ->pluck('component_id')
-            ->all();
+            ->pluck('component_id');
 
-        return array_merge(...$components);
+        return collect($components)->flatten();
     }
 
-    public function getDynamicallyCompatibleComponents(array $selected): array
+    public function getDynamicallyCompatibleComponents(array $selected): Collection
     {
-        return [];
+        return collect();
     }
 
-    public function getDynamicallyIncompatibleComponents(array $selected): array
+    public function getDynamicallyIncompatibleComponents(array $selected): Collection
     {
-        return [];
+        return collect();
     }
 }

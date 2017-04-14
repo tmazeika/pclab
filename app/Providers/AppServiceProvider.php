@@ -27,5 +27,15 @@ class AppServiceProvider extends ServiceProvider
             'PCForge\Contracts\CompatibilityServiceContract',
             'PCForge\Services\CompatibilityService'
         );
+
+        $this->app->bind(
+            'PCForge\Contracts\ComponentRepositoryContract',
+            'PCForge\Repositories\ComponentRepository'
+        );
+
+        $this->app->bind(
+            'PCForge\Contracts\ComponentSelectionRepositoryContract',
+            'PCForge\Repositories\ComponentSelectionRepository'
+        );
     }
 }

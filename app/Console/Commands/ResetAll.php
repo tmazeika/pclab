@@ -36,13 +36,12 @@ class ResetAll extends Command
     public function handle(): void
     {
         if ($this->confirm('This will refresh migrations and clear cache and sessions! Continue?')) {
-            // flush cache and sessions
+            // clear cache
             $this->call('cache:clear');
-            Redis::flushdb();
 
             // update database
             $this->call('migrate:refresh', ['--seed' => true]);
-            $this->call('update-amazon-prices');
+            $this->call('update-amazon-components');
             event(new ComponentModified);
         }
     }

@@ -5,107 +5,87 @@ namespace PCForge\Services;
 use Illuminate\Support\Collection;
 use PCForge\AdjacencyMatrix;
 use PCForge\Contracts\CompatibilityServiceContract;
-use PCForge\Models\CompatibilityNode;
+use PCForge\Contracts\ComponentRepositoryContract;
+use PCForge\Contracts\ComponentSelectionRepositoryContract;
 use PCForge\Models\Component;
+use PCForge\Models\ComponentChild;
 
 class CompatibilityService implements CompatibilityServiceContract
 {
-    public const SELECTED_SESSION_KEY = 'selected';
+    /** @var ComponentSelectionRepositoryContract $componentSelectionRepo */
+    private $componentSelectionRepo;
 
-    public const INCOMPATIBILITIES_SESSION_KEY = 'incompatibilities';
+    /** @var ComponentRepositoryContract $componentRepo */
+    private $componentRepo;
 
-    public function isAllowed(int $id, int $count): bool
+    public function __construct(ComponentSelectionRepositoryContract $componentSelectionRepo,
+                                ComponentRepositoryContract $componentRepo)
     {
-        return !in_array($id, $this->getIncompatibilities(), true);
+        $this->componentSelectionRepo = $componentSelectionRepo;
+        $this->componentRepo = $componentRepo;
     }
 
-    public function select(int $id, int $count): array
+    public function select(int $id, int $count): Collection
     {
-        $selectedSessionKey = self::SELECTED_SESSION_KEY . ".$id";
-
-        if ($count > 0) {
-            session([$selectedSessionKey => $count]);
-        } else {
-            session()->forget($selectedSessionKey);
+        if ($this->computeIncompatibilities()->contains($id)) {
+            abort(400, 'Component Not Selectable');
         }
 
-        return $this->getIncompatibilities(true);
+        $this->componentSelectionRepo->select($id, $count);
+
+        return $this->computeIncompatibilities(true);
     }
 
-    private function getIncompatibilities(bool $recompute = false): array
+    public function isUnavailable(int $id): bool
+    {
+        return cache()->tags(['components', 'incompatibilities'])->rememberForever('empty', function () {
+            $computedCompatibilities = array_keys($this->computeCompatibilities([]));
+
+            return $this->componentRepo->getAllAvailableComponentsWithIds()
+                ->reject(function (Component $component) use ($computedCompatibilities) {
+                    return in_array($component->id - 1, $computedCompatibilities);
+                });
+        })->contains($id);
+    }
+
+    private function computeIncompatibilities(bool $recompute = false): Collection
     {
         if (!$recompute) {
-            return session(self::INCOMPATIBILITIES_SESSION_KEY, []);
+            return collect(session('incompatibilities'));
         }
 
-        /** @var Collection $components */
-        // TODO: probably some other checks to make?
-        $components = Component
-            ::where('is_available', true)
-            ->get();
-
-        /** @var array $selected */
-        $selected = session('selected', []);
-
-        $compatibilities = [];
-        $incompatibilities = [];
-
-        foreach ($components as $component) {
-            /** @var CompatibilityNode $node */
-            $node = $component->toCompatibilityNode();
-
-            /** @var int $key */
-            $key = $component->id - 1;
-
-            $incompatibilities[$key] = array_unique(array_merge(
-                // static
-                cache()->tags('static.incompatibilities')->rememberForever($key, function () use ($node) {
-                    return $node->getStaticallyIncompatibleComponents();
-                }),
-                // dynamic
-                $node->getDynamicallyIncompatibleComponents($selected)
-            ));
-
-            $compatibilities[$key] = array_diff(array_unique(array_merge(
-                // static
-                cache()->tags('static.compatibilities')->rememberForever($key, function () use ($node) {
-                    return $node->getStaticallyCompatibleComponents();
-                }),
-                // dynamic
-                $node->getDynamicallyCompatibleComponents($selected)
-            )), $incompatibilities[$key]);
-        }
-
-        $computedCompatibilities = $this->computeCompatibilities($compatibilities, $incompatibilities);
+        $selected = $this->componentSelectionRepo->all();
+        $computedCompatibilities = $this->computeCompatibilities($selected);
 
         // gets all components and subtracts out all that are considered compatible with the current selection
-        $computedIncompatibilities = empty($selected) ? [] : $components
-            ->pluck('id')
-            ->diff(collect($selected)
-                // get just the ID's
-                ->keys()
-                // map ID's to an array of their adjacent ID's
-                ->map(function (int $id) use ($computedCompatibilities) {
-                    return $computedCompatibilities[$id - 1] ?? [];
-                })
-                // don't include empty adjacency arrays
-                ->reject(function (array $adjacent) {
-                    return empty($adjacent);
-                })
-                // get intersection of all adjacency arrays
-                ->pipe(function (Collection $collection) {
-                    return $collection->count() > 1
-                        ? collect(array_intersect(...$collection->toArray()))
-                        : $collection->flatten();
-                })
-                // map ID's to their ID's as represented in the session and the database
-                ->map(function (int $id) {
-                    return $id + 1;
-                }))
-            ->values()
-            ->all();
+        $computedIncompatibilities = empty($selected)
+            ? collect()
+            : $this->componentRepo->getAllAvailableComponentsWithIds()
+                ->pluck('id')
+                ->diff(collect($selected)
+                    // get just the ID's
+                    ->keys()
+                    // map ID's to an array of their adjacent ID's
+                    ->map(function (int $id) use ($computedCompatibilities) {
+                        return $computedCompatibilities[$id - 1] ?? [];
+                    })
+                    // don't include empty adjacency arrays
+                    ->reject(function (array $adjacent) {
+                        return empty($adjacent);
+                    })
+                    // get intersection of all adjacency arrays
+                    ->pipe(function (Collection $collection) {
+                        return $collection->count() > 1
+                            ? collect(array_intersect(...$collection->toArray()))
+                            : $collection->flatten();
+                    })
+                    // map ID's to their ID's as represented in the session and the database
+                    ->map(function (int $id) {
+                        return $id + 1;
+                    }))
+                ->values();
 
-        session([self::INCOMPATIBILITIES_SESSION_KEY => $computedIncompatibilities]);
+        session(['incompatibilities' => $computedIncompatibilities]);
 
         return $computedIncompatibilities;
     }
@@ -118,31 +98,59 @@ class CompatibilityService implements CompatibilityServiceContract
      * 3. Mark all reachable components from the picked component's compatibility adjacency matrix column as
      *    'compatible'
      *
-     * @param array $compatibilities
-     * @param array $incompatibilities
+     * @param array $selected
      *
      * @return array
      */
-    private function computeCompatibilities(array $compatibilities, array $incompatibilities): array
+    private function computeCompatibilities(array $selected): array
     {
-        $arr = [];
+        /** @var Collection $components */
+        $components = $this->componentRepo->getAllAvailableComponentsWithIds();
 
-        $compatibilityAdjacencyMatrix = new AdjacencyMatrix(
-            $this->zeroBaseAdjacentIds($compatibilities)
-        );
+        // build compatibility and incompatibility arrays
+        foreach ($components as $component) {
+            /** @var int $key */
+            $key = $component->id - 1;
 
-        $incompatibilityAdjacencyMatrix = new AdjacencyMatrix(
-            $this->zeroBaseAdjacentIds($incompatibilities)
-        );
+            /** @var ComponentChild $compatNode */
+            $compatNode = $component->child();
+
+            $incompatibilities[$key] =
+                cache()->tags(['components', 'incompatibilities'])->rememberForever($key, function () use ($compatNode) {
+                    return $compatNode->getStaticallyIncompatibleComponents();
+                })
+                    ->merge($compatNode->getDynamicallyIncompatibleComponents($selected))
+                    ->unique()
+                    ->map(function (int $id) {
+                        return $id - 1;
+                    })
+                    ->toArray();
+
+            $compatibilities[$key] =
+                cache()->tags(['components', 'compatibilities'])->rememberForever($key, function () use ($compatNode) {
+                    return $compatNode->getStaticallyCompatibleComponents();
+                })
+                    ->merge($compatNode->getDynamicallyCompatibleComponents($selected))
+                    ->unique()
+                    ->diff($incompatibilities[$key])
+                    ->map(function (int $id) {
+                        return $id - 1;
+                    })
+                    ->toArray();
+        }
+
+        // build adjacency matrices
+        $compatibilitiesAdjacencyMatrix = new AdjacencyMatrix($compatibilities ?? []);
+        $incompatibilitiesAdjacencyMatrix = new AdjacencyMatrix($incompatibilities ?? []);
 
         // step 1
-        foreach ($compatibilityAdjacencyMatrix as $node) {
+        foreach ($compatibilitiesAdjacencyMatrix as $node) {
             // clone for traversal and zeroing
-            $compatAM = clone $compatibilityAdjacencyMatrix;
+            $compatAM = clone $compatibilitiesAdjacencyMatrix;
 
             // step 2
             foreach ($compatAM as $row) {
-                if ($incompatibilityAdjacencyMatrix->hasEdgeAt($node, $row)) {
+                if ($incompatibilitiesAdjacencyMatrix->hasEdgeAt($node, $row)) {
                     $compatAM->zeroNode($row);
                 }
             }
@@ -153,21 +161,6 @@ class CompatibilityService implements CompatibilityServiceContract
             }
         }
 
-        return $arr;
-    }
-
-    private function zeroBaseAdjacentIds(array $componentsToAdjacent): array
-    {
-        for ($i = 0; $i < count($componentsToAdjacent); $i++) {
-            if (isset($componentsToAdjacent[$i])) {
-                for ($j = 0; $j < count($componentsToAdjacent[$i]); $j++) {
-                    if (isset($componentsToAdjacent[$i][$j])) {
-                        $componentsToAdjacent[$i][$j]--;
-                    }
-                }
-            }
-        }
-
-        return $componentsToAdjacent;
+        return $arr ?? [];
     }
 }

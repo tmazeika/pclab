@@ -2,12 +2,8 @@
 
 namespace PCForge\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class ChassisComponentFormFactor extends Model
+class ChassisComponentFormFactor extends PCForgeModel
 {
-    use ExtendedModel, Validatable;
-
     private const CREATE_RULES = [
         'chassis_component_id' => 'required|exists:chassis_components,id',
         'form_factor_id'       => 'required|exists:form_factors,id',

@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use InvalidArgumentException;
 use PCForge\Models\Component;
 
-class UpdateAmazonPrices implements ShouldQueue
+class UpdateAmazonComponents implements ShouldQueue
 {
     const MAX_ASINS_PER_REQUEST = 10;
 
@@ -54,25 +54,31 @@ class UpdateAmazonPrices implements ShouldQueue
             'Timestamp'      => gmdate('Y-m-d\TH:i:s\Z'),
         ];
 
-
         $xml = simplexml_load_file($this->getAwsRequestUrl($params));
 
         foreach ($xml->Items->Item as $item) {
-            foreach ($item->Offers->Offer as $offer) {
-                $listing = $offer->OfferListing;
-                $asin = $item->ASIN;
-                $available = strval($listing->AvailabilityAttributes->AvailabilityType) === 'now'
-                    && intval($listing->AvailabilityAttributes->MaximumHours) === 0
-                    && intval($listing->IsEligibleForPrime) === 1;
-                $currentPrice = intval($listing->Price->Amount);
+            $asin = $item->ASIN;
+            $available = false;
+            $currentPrice = 0;
 
-                Component::where('asin', $asin)->update([
-                    'is_available' => $available,
-                    'price'        => $currentPrice,
-                ]);
+            if (intval($item->Offers->TotalOffers) > 0) {
+                foreach ($item->Offers->Offer as $offer) {
+                    $listing = $offer->OfferListing;
+                    $available = strval($listing->AvailabilityAttributes->AvailabilityType) === 'now'
+                        && intval($listing->AvailabilityAttributes->MaximumHours) === 0
+                        && intval($listing->IsEligibleForPrime) === 1;
+                    $currentPrice = intval($listing->Price->Amount);
 
-                break;
+                    if ($available) {
+                        break;
+                    }
+                }
             }
+
+            Component::where('asin', $asin)->update([
+                'is_available' => $available,
+                'price'        => $currentPrice,
+            ]);
         }
     }
 
@@ -80,13 +86,11 @@ class UpdateAmazonPrices implements ShouldQueue
     {
         ksort($params);
 
-        $pairs = [];
-
         foreach ($params as $key => $val) {
             $pairs[] = rawurlencode($key) . '=' . rawurlencode($val);
         }
 
-        $canonQueryStr = join('&', $pairs);
+        $canonQueryStr = join('&', $pairs ?? []);
         $strToSign = "GET\n" . self::ENDPOINT . "\n" . self::URI . "\n$canonQueryStr";
         $signature = base64_encode(hash_hmac('sha256', $strToSign, env('AWS_SECRET_ACCESS_KEY'), true));
 

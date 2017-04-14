@@ -3,7 +3,11 @@
 namespace PCForge\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use PCForge\Contracts\CompatibilityServiceContract;
+use PCForge\Contracts\ComponentRepositoryContract;
+use PCForge\Contracts\ComponentSelectionRepositoryContract;
+use PCForge\Models\Component;
 
 class BuildController extends Controller
 {
@@ -12,9 +16,29 @@ class BuildController extends Controller
         return view('build.index');
     }
 
-    public function showCustom()
+    public function showCustom(ComponentRepositoryContract $componentRepo,
+                               CompatibilityServiceContract $compatibilityService,
+                               ComponentSelectionRepositoryContract $componentSelectionRepo)
     {
-        return view('build.custom');
+        $components = $componentRepo->getAllAvailableComponents()
+            ->reject(function (Component $component) use ($compatibilityService) {
+                return $compatibilityService->isUnavailable($component->id);
+            })
+            ->each(function (Component $component) use ($componentSelectionRepo) {
+                $component->disabled = session('incompatibilities', collect())->contains($component->id);
+                $component->selected = $componentSelectionRepo->isSelected($component->id);
+            })
+            ->groupBy('component_type_id')
+            ->sortBy(function ($value, int $key) {
+                return $key;
+            })
+            ->map(function (Collection $collection) {
+                return $collection->map(function (Component $component) {
+                    return $component->child();
+                });
+            });
+
+        return view('build.custom', compact('components'));
     }
 
     public function showPreset()
@@ -32,12 +56,8 @@ class BuildController extends Controller
         $id = intval($request->input('id'));
         $count = intval($request->input('count'));
 
-        if (!$compatibilityService->isAllowed($id, $count)) {
-            abort(400, 'Component not selectable');
-        }
-
         return json_encode([
-            'disable' => $compatibilityService->select($id, $count),
+            'disable' => $compatibilityService->select($id, $count)->toArray(),
         ]);
     }
 }

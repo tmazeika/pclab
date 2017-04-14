@@ -2,12 +2,10 @@
 
 namespace PCForge\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
-class StorageComponent extends Model implements CompatibilityNode
+class StorageComponent extends ComponentChild
 {
-    use ExtendedModel, ComponentChild, Validatable;
-
     private const CREATE_RULES = [
         'id'               => 'nullable|integer|unique:storage_components|min:0',
         'component_id'     => 'required|exists:components,id|unique:storage_components',
@@ -37,23 +35,23 @@ class StorageComponent extends Model implements CompatibilityNode
         return $this->hasMany('PCForge\Models\StorageWidth');
     }
 
-    public function getStaticallyCompatibleComponents(): array
+    public function getStaticallyCompatibleComponents(): Collection
     {
-        return [$this->id];
+        return collect($this->id);
     }
 
-    public function getStaticallyIncompatibleComponents(): array
+    public function getStaticallyIncompatibleComponents(): Collection
     {
-        return [];
+        return collect();
     }
 
-    public function getDynamicallyCompatibleComponents(array $selected): array
+    public function getDynamicallyCompatibleComponents(array $selected): Collection
     {
-        return [];
+        return collect();
     }
 
-    public function getDynamicallyIncompatibleComponents(array $selected): array
+    public function getDynamicallyIncompatibleComponents(array $selected): Collection
     {
-        return [];
+        return collect();
     }
 }

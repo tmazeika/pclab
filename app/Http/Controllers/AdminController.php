@@ -42,7 +42,7 @@ class AdminController extends Controller
 
     public function update(Request $request, string $modelFqn, $id)
     {
-        $model = $modelFqn::find($id);
+        $model = $modelFqn::lockForUpdate()->find($id);
 
         $changes = $this->isolateChanges($model->getAttributes(), $request->all());
         $this->validateModelInput($model, $changes, 'UPDATE');

@@ -4,16 +4,7 @@
 
 @section('content')
 <main class="content">
-    @each('partials.build.component', [
-        'PCForge\Models\ChassisComponent',
-        'PCForge\Models\ProcessorComponent',
-        'PCForge\Models\CoolingComponent',
-        'PCForge\Models\GraphicsComponent',
-        'PCForge\Models\MemoryComponent',
-        'PCForge\Models\MotherboardComponent',
-        'PCForge\Models\StorageComponent',
-        'PCForge\Models\PowerComponent',
-    ], 'model')
+    @each('partials.build.section', $components, 'components')
 </main>
 @endsection
 

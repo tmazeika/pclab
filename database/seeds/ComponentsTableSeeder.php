@@ -14,7 +14,7 @@ class ComponentsTableSeeder extends Seeder
     {
         DB::table('components')->insert([
             [
-                'component_type_id' => 7,
+                'component_type_id' => 2,
                 'asin'              => 'B01MXSI216',
                 'name'              => 'Intel Core i7-7700K',
                 'watts_usage'       => 91,
@@ -28,7 +28,7 @@ class ComponentsTableSeeder extends Seeder
                 'weight'            => 10200,
             ],
             [
-                'component_type_id' => 2,
+                'component_type_id' => 6,
                 'asin'              => 'B005O65JXI',
                 'name'              => 'Cooler Master Hyper 212 EVO',
                 'watts_usage'       => 3,
@@ -56,42 +56,42 @@ class ComponentsTableSeeder extends Seeder
                 'weight'            => 998,
             ],
             [
-                'component_type_id' => 8,
+                'component_type_id' => 7,
                 'asin'              => 'B00OBRE5UE',
                 'name'              => 'Samsung 850 EVO',
                 'watts_usage'       => 2,
                 'weight'            => 54,
             ],
             [
-                'component_type_id' => 6,
+                'component_type_id' => 8,
                 'asin'              => 'B00M2UINC8',
                 'name'              => 'Corsair HX750i',
                 'watts_usage'       => 0,
                 'weight'            => 3227,
             ],
             [
-                'component_type_id' => 7,
+                'component_type_id' => 2,
                 'asin'              => 'B010T6CWI2',
                 'name'              => 'Intel Core i5-6500',
                 'watts_usage'       => 35,
                 'weight'            => 295,
             ],
             [
-                'component_type_id' => 7,
+                'component_type_id' => 2,
                 'asin'              => 'B015VPX2EO',
                 'name'              => 'Intel Core i3-6100',
                 'watts_usage'       => 51,
                 'weight'            => 272,
             ],
             [
-                'component_type_id' => 7,
+                'component_type_id' => 2,
                 'asin'              => 'B06W9JXK4G',
                 'name'              => 'AMD Ryzen 7 1800X',
                 'watts_usage'       => 95,
                 'weight'            => 119,
             ],
             [
-                'component_type_id' => 7,
+                'component_type_id' => 2,
                 'asin'              => 'B009O7YUF6',
                 'name'              => 'AMD FX-8350',
                 'watts_usage'       => 125,

@@ -2,13 +2,13 @@
 
 namespace PCForge\Listeners;
 
-class UpdateCompatibilitiesTable
+class ForceStaticCompatibilitiesUpdate
 {
     /**
      * Handle the event.
      */
     public function handle(): void
     {
-        cache()->tags(['static.compatibilities', 'static.incompatibilities'])->flush();
+        cache()->tags('components')->flush();
     }
 }

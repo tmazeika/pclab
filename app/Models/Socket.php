@@ -4,10 +4,8 @@ namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Socket extends Model
+class Socket extends PCForgeModel
 {
-    use ExtendedModel, Validatable;
-
     private const CREATE_RULES = [
         'id'   => 'nullable|integer|unique:sockets|min:0',
         'name' => 'required|string|unique:sockets',

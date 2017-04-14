@@ -2,12 +2,10 @@
 
 namespace PCForge\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
-class ChassisComponent extends Model implements CompatibilityNode
+class ChassisComponent extends ComponentChild
 {
-    use ExtendedModel, ComponentChild, Validatable;
-
     private const CREATE_RULES = [
         'id'                          => 'nullable|integer|unique:chassis_components|min:0',
         'component_id'                => 'required|exists:components,id|unique:chassis_components',
@@ -66,7 +64,7 @@ class ChassisComponent extends Model implements CompatibilityNode
         return $this->belongsToMany('PCForge\Models\ChassisRadiator');
     }
 
-    public function getStaticallyCompatibleComponents(): array
+    public function getStaticallyCompatibleComponents(): Collection
     {
         // motherboard
         $components[] = MotherboardComponent
@@ -74,37 +72,25 @@ class ChassisComponent extends Model implements CompatibilityNode
             ->where('fan_headers', '>=', $this->fan_headers)
             ->where('usb2_headers', '>=', $this->usb2_headers)
             ->where('usb3_headers', '>=', $this->usb3_headers)
-            ->whereIn('form_factor_id', $this->form_factors->pluck('id')->all())
-            ->pluck('component_id')
-            ->all();
+            ->whereIn('form_factor_id', $this->form_factors->pluck('id'))
+            ->pluck('component_id');
 
         // power
-        $components[] = PowerComponent
-            ::pluck('component_id')
-            ->all();
+        $components[] = PowerComponent::pluck('component_id');
 
-        return array_merge(...$components);
+        return collect($components)->flatten();
     }
 
-    public function getStaticallyIncompatibleComponents(): array
+    public function getStaticallyIncompatibleComponents(): Collection
     {
         // chassis
-        $components[] = ChassisComponent
-            ::where('id', '!=', $this->id)
-            ->pluck('component_id')
-            ->all();
+        $components[] = ChassisComponent::where('id', '!=', $this->id)->pluck('component_id');
 
         // cooling TODO: check radiators
-        $components[] = CoolingComponent
-            ::where('height', '>', $this->max_cooling_fan_height)
-            ->pluck('component_id')
-            ->all();
+        $components[] = CoolingComponent::where('height', '>', $this->max_cooling_fan_height)->pluck('component_id');
 
         // graphics
-        $components[] = GraphicsComponent
-            ::where('length', '>', $this->max_graphics_length_blocked)
-            ->pluck('component_id')
-            ->all();
+        $components[] = GraphicsComponent::where('length', '>', $this->max_graphics_length_blocked)->pluck('component_id');
 
         // motherboard
         $components[] = MotherboardComponent
@@ -112,20 +98,19 @@ class ChassisComponent extends Model implements CompatibilityNode
             ->orWhere('fan_headers', '<', $this->fan_headers)
             ->orWhere('usb2_headers', '<', $this->usb2_headers)
             ->orWhere('usb3_headers', '<', $this->usb3_headers)
-            ->orWhereNotIn('form_factor_id', $this->form_factors->pluck('id')->all())
-            ->pluck('component_id')
-            ->all();
+            ->orWhereNotIn('form_factor_id', $this->form_factors->pluck('id'))
+            ->pluck('component_id');
 
-        return array_merge(...$components);
+        return collect($components)->flatten();
     }
 
-    public function getDynamicallyCompatibleComponents(array $selected): array
+    public function getDynamicallyCompatibleComponents(array $selected): Collection
     {
-        return [];
+        return collect();
     }
 
-    public function getDynamicallyIncompatibleComponents(array $selected): array
+    public function getDynamicallyIncompatibleComponents(array $selected): Collection
     {
-        return [];
+        return collect();
     }
 }

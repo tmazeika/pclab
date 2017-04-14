@@ -4,10 +4,8 @@ namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ChassisComponentsRadiator extends Model
+class ChassisComponentsRadiator extends PCForgeModel
 {
-    use ExtendedModel, Validatable;
-
     private const CREATE_RULES = [
         'id'                   => 'nullable|integer|unique:chassis_components_radiators|min:0',
         'chassis_component_id' => 'required|exists:chassis_components,id',

@@ -2,12 +2,10 @@
 
 namespace PCForge\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
-class ProcessorComponent extends Model implements CompatibilityNode
+class ProcessorComponent extends ComponentChild
 {
-    use ExtendedModel, ComponentChild, Validatable;
-
     private const CREATE_RULES = [
         'id'               => 'nullable|integer|unique:processor_components|min:0',
         'component_id'     => 'required|exists:components,id|unique:processor_components',
@@ -43,41 +41,37 @@ class ProcessorComponent extends Model implements CompatibilityNode
         return $this->belongsTo('PCForge\Models\Socket');
     }
 
-    public function getStaticallyCompatibleComponents(): array
+    public function getStaticallyCompatibleComponents(): Collection
     {
         // motherboard
-        $components[] = MotherboardComponent
+        return MotherboardComponent
             ::where('socket_id', $this->socket_id)
             ->pluck('component_id')
-            ->all();
-
-        return array_merge(...$components);
+            ->flatten();
     }
 
-    public function getStaticallyIncompatibleComponents(): array
+    public function getStaticallyIncompatibleComponents(): Collection
     {
         // motherboard
         $components[] = MotherboardComponent
             ::where('socket_id', '!=', $this->socket_id)
-            ->pluck('component_id')
-            ->all();
+            ->pluck('component_id');
 
         // processor
         $components[] = ProcessorComponent
             ::where('id', '!=', $this->id)
-            ->pluck('component_id')
-            ->all();
+            ->pluck('component_id');
 
-        return array_merge(...$components);
+        return collect($components)->flatten();
     }
 
-    public function getDynamicallyCompatibleComponents(array $selected): array
+    public function getDynamicallyCompatibleComponents(array $selected): Collection
     {
-        return [];
+        return collect();
     }
 
-    public function getDynamicallyIncompatibleComponents(array $selected): array
+    public function getDynamicallyIncompatibleComponents(array $selected): Collection
     {
-        return [];
+        return collect();
     }
 }

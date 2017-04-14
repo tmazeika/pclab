@@ -2,12 +2,8 @@
 
 namespace PCForge\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class StorageWidth extends Model
+class StorageWidth extends PCForgeModel
 {
-    use ExtendedModel, Validatable;
-
     private const CREATE_RULES = [
         'id'   => 'nullable|integer|unique:storage_widths|min:0',
         'name' => 'required|string|unique:storage_widths',

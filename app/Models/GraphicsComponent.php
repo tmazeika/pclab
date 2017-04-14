@@ -3,10 +3,11 @@
 namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
-class GraphicsComponent extends Model implements CompatibilityNode
+class GraphicsComponent extends ComponentChild
 {
-    use ExtendedModel, ComponentChild, Validatable, VideoOutputer;
+    use VideoOutputer;
 
     private const CREATE_RULES = [
         'id'                  => 'nullable|integer|unique:graphics_components|min:0',
@@ -41,29 +42,24 @@ class GraphicsComponent extends Model implements CompatibilityNode
         'length',
     ];
 
-    public function getStaticallyCompatibleComponents(): array
+    public function getStaticallyCompatibleComponents(): Collection
     {
-        return [$this->id];
+        return collect([$this->id]);
     }
 
-    public function getStaticallyIncompatibleComponents(): array
+    public function getStaticallyIncompatibleComponents(): Collection
     {
         // graphics
-        $components[] = GraphicsComponent
-            ::where('id', '!=', $this->id)
-            ->pluck('component_id')
-            ->all();
-
-        return array_merge(...$components);
+        return GraphicsComponent::where('id', '!=', $this->id)->pluck('component_id')->flatten();
     }
 
-    public function getDynamicallyCompatibleComponents(array $selected): array
+    public function getDynamicallyCompatibleComponents(array $selected): Collection
     {
-        return [];
+        return collect();
     }
 
-    public function getDynamicallyIncompatibleComponents(array $selected): array
+    public function getDynamicallyIncompatibleComponents(array $selected): Collection
     {
-        return [];
+        return collect();
     }
 }

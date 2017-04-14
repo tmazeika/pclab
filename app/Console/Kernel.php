@@ -5,7 +5,7 @@ namespace PCForge\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use PCForge\Console\Commands\ResetAll;
-use PCForge\Console\Commands\UpdateAmazonPrices;
+use PCForge\Console\Commands\UpdateAmazonComponents;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         ResetAll::class,
-        UpdateAmazonPrices::class,
+        UpdateAmazonComponents::class,
     ];
 
     /**
@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule
-            ->command(UpdateAmazonPrices::class)
+            ->command(UpdateAmazonComponents::class)
             ->twiceDaily(6, 18)
             ->evenInMaintenanceMode();
     }

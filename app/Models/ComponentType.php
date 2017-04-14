@@ -4,10 +4,8 @@ namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ComponentType extends Model
+class ComponentType extends PCForgeModel
 {
-    use ExtendedModel, Validatable;
-
     private const CREATE_RULES = [
         'id'                          => 'nullable|integer|unique:component_types|min:0',
         'name'                        => 'required|string|unique:component_types',

@@ -5,10 +5,8 @@ namespace PCForge\Models;
 use Illuminate\Database\Eloquent\Model;
 use PCForge\Services\CompatibilityService;
 
-class Component extends Model
+class Component extends PCForgeModel
 {
-    use ExtendedModel, Validatable;
-
     private const CREATE_RULES = [
         'id'                => 'nullable|integer|unique:components|min:0',
         'component_type_id' => 'required|exists:component_types,id',
@@ -52,22 +50,12 @@ class Component extends Model
         return '$' . number_format($this->price / 100.0, 2);
     }
 
-    public function getSelectedCountInSession(): int
-    {
-        return session(CompatibilityService::SELECTED_SESSION_KEY . ".$this->id", 0);
-    }
-
     public function img()
     {
         return asset('img/components/' . str_pad($this->id, 6, '0', STR_PAD_LEFT) . '.jpg');
     }
 
-    public function isDisabledInSession(): bool
-    {
-        return in_array($this->id, session(CompatibilityService::INCOMPATIBILITIES_SESSION_KEY, []), true);
-    }
-
-    public function toCompatibilityNode(): CompatibilityNode
+    public function child(): ComponentChild
     {
         $model = 'PCForge\Models\\' . ucfirst($this->type->name) . 'Component';
 

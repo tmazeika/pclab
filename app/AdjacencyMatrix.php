@@ -126,6 +126,10 @@ class AdjacencyMatrix implements Iterator
 
         for ($i = 0; $i < $this->n; $i++) {
             $str .= $i + 1 . ' ';
+
+            if ($i < 9) {
+                $str .= ' ';
+            }
         }
 
         $str .= PHP_EOL;
@@ -138,11 +142,7 @@ class AdjacencyMatrix implements Iterator
             }
 
             for ($i = 0; $i < $this->n; $i++) {
-                $str .= $this->arr[$i][$j] . ' ';
-
-                if ($i > 8) {
-                    $str .= ' ';
-                }
+                $str .= $this->arr[$i][$j] . '  ';
             }
 
             $str .= PHP_EOL;

@@ -18,7 +18,7 @@ class ComponentTypesTableSeeder extends Seeder
                 'allows_multiple'             => false,
             ],
             [
-                'name'                        => 'cooling',
+                'name'                        => 'processor',
                 'allows_multiple'             => false,
             ],
             [
@@ -34,16 +34,16 @@ class ComponentTypesTableSeeder extends Seeder
                 'allows_multiple'             => false,
             ],
             [
-                'name'                        => 'power',
-                'allows_multiple'             => false,
-            ],
-            [
-                'name'                        => 'processor',
+                'name'                        => 'cooling',
                 'allows_multiple'             => false,
             ],
             [
                 'name'                        => 'storage',
                 'allows_multiple'             => true,
+            ],
+            [
+                'name'                        => 'power',
+                'allows_multiple'             => false,
             ],
         ]);
     }

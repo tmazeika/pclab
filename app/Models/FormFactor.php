@@ -4,10 +4,8 @@ namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FormFactor extends Model
+class FormFactor extends PCForgeModel
 {
-    use ExtendedModel, Validatable;
-
     private const CREATE_RULES = [
         'id'   => 'nullable|integer|unique:form_factors|min:0',
         'name' => 'required|string|unique:form_factors',

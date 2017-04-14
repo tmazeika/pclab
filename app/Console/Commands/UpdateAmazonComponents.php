@@ -4,24 +4,24 @@ namespace PCForge\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
-use PCForge\Jobs\UpdateAmazonPrices as UpdateAmazonPricesJob;
+use PCForge\Jobs\UpdateAmazonComponents as UpdateAmazonComponentsJob;
 use PCForge\Models\Component;
 
-class UpdateAmazonPrices extends Command
+class UpdateAmazonComponents extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'update-amazon-prices';
+    protected $signature = 'update-amazon-components';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Updates Amazon prices';
+    protected $description = 'Updates Amazon availability and prices';
 
     /**
      * Create a new command instance.
@@ -37,10 +37,11 @@ class UpdateAmazonPrices extends Command
     public function handle(): void
     {
         Component
-            ::pluck('asin')
-            ->chunk(UpdateAmazonPricesJob::MAX_ASINS_PER_REQUEST)
+            ::lockForUpdate()
+            ->pluck('asin')
+            ->chunk(UpdateAmazonComponentsJob::MAX_ASINS_PER_REQUEST)
             ->each(function (Collection $asins, int $i) {
-                $job = new UpdateAmazonPricesJob($asins->toArray());
+                $job = new UpdateAmazonComponentsJob($asins->toArray());
 
                 dispatch($job->delay($i));
             });

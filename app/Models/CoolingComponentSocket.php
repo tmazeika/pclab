@@ -4,10 +4,8 @@ namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CoolingComponentSocket extends Model
+class CoolingComponentSocket extends PCForgeModel
 {
-    use ExtendedModel, Validatable;
-
     private const CREATE_RULES = [
         'cooling_component_id' => 'required|exists:cooling_components,id',
         'socket_id'            => 'required|exists:sockets,id',
