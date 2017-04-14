@@ -79,10 +79,10 @@ class CompatibilityService implements CompatibilityServiceContract
                         return empty($adjacent);
                     })
                     // get intersection of all adjacency arrays
-                    ->pipe(function (Collection $collection) {
-                        return $collection->count() > 1
-                            ? collect(array_intersect(...$collection->toArray()))
-                            : $collection->flatten();
+                    ->reduce(function ($carry, array $adjacent) {
+                        return $carry
+                            ? $carry->intersect($adjacent)
+                            : collect($adjacent);
                     })
                     // map ID's to their ID's as represented in the session and the database
                     ->map(function (int $id) {
