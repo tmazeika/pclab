@@ -12,11 +12,11 @@ a {
     transition: color $anim-time;
 
     &:hover {
-      color: $dark-accent-color;
+      color: $accent-color;
     }
 
     &.active {
-      color: $dark-accent-color;
+      color: $accent-color;
     }
   }
 }
