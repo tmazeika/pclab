@@ -13,9 +13,9 @@
         <div style="overflow-x: auto">
             <table cellpadding="7">
                 <thead>
-                    <tr style="font-weight: bold">
+                    <tr>
                         @foreach($columns as $column)
-                            <td class="text">{{ $column }}</td>
+                            <td class="text" style="font-weight: bold">{{ $column }}</td>
                         @endforeach
                     </tr>
                 </thead>

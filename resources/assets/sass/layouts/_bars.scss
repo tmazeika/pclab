@@ -8,6 +8,7 @@
 
 .bar-border-bottom {
   border-bottom: $bar-border-size solid $accent-color;
+  box-shadow: 0 0 10px $accent-color;
 }
 
 .bar-container {

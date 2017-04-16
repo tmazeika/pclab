@@ -12,11 +12,11 @@ a {
     transition: color $anim-time;
 
     &:hover {
-      color: darken($accent-color, 10%);
+      color: $dark-accent-color;
     }
 
     &.active {
-      color: $accent-color;
+      color: $dark-accent-color;
     }
   }
 }
@@ -24,7 +24,7 @@ a {
 // h1 .. h6
 @for $i from 1 through 6 {
   h#{$i}, .h#{$i} {
-    font: normal #{7 - $i}em/1 $heading-font;
+    font: normal #{7 - $i}em/1 $font;
 
     margin: 0;
   }

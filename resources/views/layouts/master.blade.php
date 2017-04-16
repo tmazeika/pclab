@@ -6,13 +6,8 @@
 
     <style>
         @font-face {
-            font-family: Gidole;
-            src: url({{ asset('fonts/gidole.ttf') }}) format('truetype');
-        }
-
-        @font-face {
-            font-family: Quattrocento Sans;
-            src: url({{ asset('fonts/quattrocento-sans.ttf') }}) format('truetype');
+            font-family: 'PT Sans Narrow';
+            src: url({{ asset('fonts/pt_sans_narrow.ttf') }}) format('truetype');
         }
     </style>
 

@@ -2,6 +2,7 @@
 
 namespace PCForge\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use PCForge\Contracts\BraintreeServiceContract;
 use PCForge\Contracts\ComponentCompatibilityServiceContract;
@@ -21,7 +22,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Blade::directive('active', function ($page) {
+            $page = addslashes($page);
+
+            return "<?php if ((\$active ?? '') === '$page') echo 'active'; ?>";
+        });
     }
 
     /**

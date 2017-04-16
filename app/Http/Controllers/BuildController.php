@@ -33,7 +33,7 @@ class BuildController extends Controller
         //    });
         //
 
-        return redirect()->to('/'); // TODO: view('build.index');
+        return view('build.index');
     }
 
     public function select(SelectComponent $request)

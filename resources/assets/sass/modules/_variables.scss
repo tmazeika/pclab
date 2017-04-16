@@ -6,11 +6,13 @@ $bar-hori-spacing: 1em;
 $bar-border-size: 3px;
 
 // fonts
-$heading-font: Gidole, sans-serif;
-$normal-font: Quattrocento Sans, sans-serif;
+$font: 'PT Sans Narrow', sans-serif;
 
 // colors
 $accent-color: #61d43a;
+$blue-color: #22c0e7;
+$dark-accent-color: darken($accent-color, 10%);
+$dark-blue-color: darken($blue-color, 10%);
 $dark-color: #33333a;
 $dark-text: #333;
 $dim-color: #999;
