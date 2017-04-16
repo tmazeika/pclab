@@ -21,9 +21,9 @@
     <title>@yield('title') &mdash; PCForge</title>
 </head>
 <body class="dark-bg">
-    @include('partials.header')
-    @yield('content')
-    @include('partials.footer')
-    @stack('scripts')
+@include('partials.header')
+@yield('content')
+@include('partials.footer')
+@stack('scripts')
 </body>
 </html>

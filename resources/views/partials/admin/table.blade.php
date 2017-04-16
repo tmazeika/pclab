@@ -5,28 +5,27 @@
         $columns = \Illuminate\Support\Facades\Schema::getColumnListing($tableName);
     @endphp
 
-    <header class="bar">
-        <h5>{{ $tableName }}</h5>
-    </header>
+    <h5>{{ $tableName }}</h5>
+    <br/>
 
     @if($items->count())
         <div style="overflow-x: auto">
             <table cellpadding="7">
                 <thead>
-                    <tr>
-                        @foreach($columns as $column)
-                            <td class="text" style="font-weight: bold">{{ $column }}</td>
-                        @endforeach
-                    </tr>
+                <tr>
+                    @foreach($columns as $column)
+                        <td class="text" style="font-weight: bold">{{ $column }}</td>
+                    @endforeach
+                </tr>
                 </thead>
                 <tbody>
-                    @foreach($items as $item)
-                        <tr>
-                            @foreach($columns as $column)
-                                <td class="text">{{ $item->$column }}</td>
-                            @endforeach
-                        </tr>
-                    @endforeach
+                @foreach($items as $item)
+                    <tr {!! $loop->index % 2 === 0 ? 'style="background-color: #222229"' : '' !!}>
+                        @foreach($columns as $column)
+                            <td class="text">{{ $item->$column }}</td>
+                        @endforeach
+                    </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>
