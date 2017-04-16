@@ -4,16 +4,6 @@ namespace PCForge\Models;
 
 class ChassisComponentFormFactor extends PCForgeModel
 {
-    private const CREATE_RULES = [
-        'chassis_component_id' => 'required|exists:chassis_components,id',
-        'form_factor_id'       => 'required|exists:form_factors,id',
-    ];
-
-    private const UPDATE_RULES = [
-        'chassis_component_id' => 'nullable|exists:chassis_components,id',
-        'form_factor_id'       => 'nullable|exists:form_factors,id',
-    ];
-
     public $table = 'chassis_component_form_factor';
 
     public $timestamps = false;
@@ -25,11 +15,11 @@ class ChassisComponentFormFactor extends PCForgeModel
 
     public function chassis_component()
     {
-        return $this->belongsTo('PCForge\Models\ChassisComponent');
+        return $this->belongsTo(ChassisComponent::class);
     }
 
     public function form_factors()
     {
-        return $this->belongsTo('PCForge\Models\FormFactor');
+        return $this->belongsTo(FormFactor::class);
     }
 }

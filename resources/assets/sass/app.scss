@@ -1,20 +1,2 @@
-@import "variables";
-@import "helpers";
-
-// partials
-@import "header";
-@import "footer";
-
-// pages
-@import "build";
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  background-color: #f4f4f4;
-  color: #333;
-
-  margin: 0;
-}
+@import "modules/modules";
+@import "layouts/layouts";

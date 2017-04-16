@@ -13,12 +13,4 @@ abstract class PCForgeModel extends Model
 
         return (new $calledClass)->getTable();
     }
-
-    public static function validate(array $data, string $op)
-    {
-        $ruleSet = $op . '_RULES';
-        $validator = Validator::make($data, constant("self::$ruleSet"));
-
-        return $validator->fails() ? $validator->errors() : true;
-    }
 }

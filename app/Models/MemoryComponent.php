@@ -6,28 +6,7 @@ use Illuminate\Support\Collection;
 
 class MemoryComponent extends ComponentChild
 {
-    private const CREATE_RULES = [
-        'id'            => 'nullable|integer|unique:memory_components|min:0',
-        'component_id'  => 'required|exists:components,id|unique:memory_components',
-        'count'         => 'required|integer|min:0',
-        'height'        => 'required|integer|min:0',
-        'capacity_each' => 'required|integer|min:0',
-        'ddr_gen'       => 'required|integer|min:0',
-        'pins'          => 'required|integer|min:0',
-    ];
-
-    private const UPDATE_RULES = [
-        'id'            => 'nullable|integer|unique:memory_components|min:0',
-        'component_id'  => 'nullable|exists:components,id|unique:memory_components',
-        'count'         => 'nullable|integer|min:0',
-        'height'        => 'nullable|integer|min:0',
-        'capacity_each' => 'nullable|integer|min:0',
-        'ddr_gen'       => 'nullable|integer|min:0',
-        'pins'          => 'nullable|integer|min:0',
-    ];
-
     protected $fillable = [
-        'id',
         'component_id',
         'count',
         'height',
@@ -35,6 +14,8 @@ class MemoryComponent extends ComponentChild
         'ddr_gen',
         'pins',
     ];
+
+    protected $presenter = 'PCForge\Presenters\MemoryComponentPresenter';
 
     public function getStaticallyCompatibleComponents(): Collection
     {

@@ -3,23 +3,20 @@
 @section('title', 'Build')
 
 @section('content')
-<main class="content">
-    <section>
-        <h1 class="build-heading">
-            <a class="link" href="{{ url('build/custom') }}">Custom</a>
-        </h1>
-        <p class="build-desc">
-            If you know exactly what parts you want, choose this route.
-        </p>
-    </section>
+<main>
+    @each('partials.build.section', $components, 'components')
 
-    <section>
-        <h1 class="build-heading">
-            <a class="link" href="{{ url('build/preset') }}">Preset</a>
-        </h1>
-        <p class="build-desc">
-            If you're not sure what you want inside but you have a specific need, go here.
-        </p>
-    </section>
+    <a href="{{ url('checkout') }}">
+        <button class="checkout-button">Finished</button>
+    </a>
 </main>
 @endsection
+
+@push('scripts')
+<script>
+    const ajaxSelectUrl = "{{ url('build/custom/select') }}";
+    const csrfToken = "{{ csrf_token() }}";
+</script>
+
+<script src="{{ asset('js/app.js') }}"></script>
+@endpush

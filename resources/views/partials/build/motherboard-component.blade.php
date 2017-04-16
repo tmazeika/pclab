@@ -2,8 +2,8 @@
     <li><span class="bold">Form Factor:</span> {{ $component->form_factor->name }}</li>
     <li><span class="bold">Socket:</span> {{ $component->socket->name }}</li>
     <li>
-        @if($component->outputsString())
-            <span class="bold">Outputs:</span> {{ $component->outputsString() }}
+        @if($component->present()->buildVideoOutputStr())
+            <span class="bold">Outputs:</span> {{ $component->present()->buildVideoOutputStr() }}
         @else
             <span class="bold">No Video Outputs</span>
         @endif

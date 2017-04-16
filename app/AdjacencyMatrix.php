@@ -2,178 +2,89 @@
 
 namespace PCForge;
 
-use Iterator;
-
-class AdjacencyMatrix implements Iterator
+class AdjacencyMatrix
 {
-    /** @var int $in */
+    /** @var int $n */
     private $n;
-
-    /** @var int[] $nodes */
-    private $nodes = [];
 
     /** @var array $arr */
     private $arr = [];
 
     /**
-     * Constructs an AdjacencyMatrix for the given edges.
+     * AdjacencyMatrix constructor.
      *
-     * @param array $nodesToAdjacent an associative array of nodes to an array of their adjacent nodes, all as integers
+     * @param array $nodesToAdjacent
      */
     public function __construct(array $nodesToAdjacent)
     {
         $this->n = count($nodesToAdjacent);
-        $this->nodes = array_keys($nodesToAdjacent);
 
         for ($i = 0; $i < $this->n; $i++) {
             for ($j = 0; $j < $this->n; $j++) {
-                $this->arr[$i][$j] = $this->arr[$j][$i] = in_array($j, $nodesToAdjacent[$i] ?? []) ? 1 : 0;
+                $this->arr[$i][$j] = $this->arr[$j][$i] = in_array($j, $nodesToAdjacent[$i]) ? 1 : 0;
             }
         }
     }
 
     /**
-     * Sets the given node's row and column in the adjacency matrix to 0, effectively removing all edges that node may
-     * have with others.
+     * Removes the given node from the adjacency matrix, effectively zeroing its row and column.
      *
-     * @param int $node the node whose column and row are to be zeroed
-     *
-     * @return AdjacencyMatrix
+     * @param int $node
      */
-    public function zeroNode(int $node): AdjacencyMatrix
+    public function removeNode(int $node): void
     {
-        foreach ($this->nodes as $row) {
-            $this->arr[$node][$row] = $this->arr[$row][$node] = 0;
+        for ($j = 0; $j < $this->n; $j++) {
+            $this->arr[$node][$j] = $this->arr[$j][$node] = 0;
         }
-
-        return $this;
     }
 
     /**
-     * Gets an array of nodes that are reachable through adjacency from the given node.
+     * Gets an array of reachable nodes from the given one.
      *
-     * @param int $node the node from which to start
+     * @param int $node
      *
-     * @return int[] reachable nodes
+     * @return array
      */
-    public function getAllReachableNodesFrom(int $node): array
+    public function getReachable(int $node): array
     {
         $stack = [$node];
-        $reachableNodes = [];
+        $reachable = [];
 
         while (!empty($stack)) {
             $i = array_pop($stack);
 
-            // check that this node hasn't already been reached
-            if (!in_array($i, $reachableNodes)) {
-                for ($j = 0; $j < $this->n; $j++) {
-                    // if this row has an edge with this column...
-                    if (@$this->arr[$i][$j] === 1) {
-                        // check that this node hasn't already been added once
-                        if (!in_array($i, $reachableNodes)) {
-                            $reachableNodes[] = $i;
-                        }
+            if (!in_array($i, $reachable)) {
+                $reachable[] = $i;
 
+                for ($j = 0; $j < $this->n; $j++) {
+                    if ($this->haveEdge($i, $j)) {
                         $stack[] = $j;
                     }
                 }
             }
         }
 
-        return $reachableNodes;
+        return $reachable;
     }
 
     /**
-     * @param int $i the column
-     * @param int $j the row
+     * Gets whether or not the two given nodes have an edge connecting them.
      *
-     * @return bool whether there is an edge at the intersection between $i and $j
-     */
-    public function hasEdgeAt(int $i, int $j): bool
-    {
-        return isset($this->arr[$i])
-            ? $this->arr[$i][$j] ?? 0 === 1
-            : false;
-    }
-
-    /**
-     * @return int the number of nodes in this adjacency matrix
-     */
-    public function getN(): int
-    {
-        return $this->n;
-    }
-
-    /**
-     * Gets the adjacency matrix in its 2D array form.
+     * @param int $node1
+     * @param int $node2
      *
-     * @return int[][] an n by n adjacency matrix, where n is the number of nodes
+     * @return bool
+     */
+    public function haveEdge(int $node1, int $node2): bool
+    {
+        return $this->arr[$node1][$node2] === 1;
+    }
+
+    /**
+     * @return array
      */
     public function toArray(): array
     {
         return $this->arr;
-    }
-
-    /**
-     * Stringify the adjacency matrix.
-     *
-     * @return string
-     */
-    function __toString(): string
-    {
-        $str = '   ';
-
-        for ($i = 0; $i < $this->n; $i++) {
-            $str .= $i + 1 . ' ';
-
-            if ($i < 9) {
-                $str .= ' ';
-            }
-        }
-
-        $str .= PHP_EOL;
-
-        for ($j = 0; $j < $this->n; $j++) {
-            $str .= $j + 1 . ' ';
-
-            if ($j < 9) {
-                $str .= ' ';
-            }
-
-            for ($i = 0; $i < $this->n; $i++) {
-                $str .= $this->arr[$i][$j] . '  ';
-            }
-
-            $str .= PHP_EOL;
-        }
-
-        return $str;
-    }
-
-    public function current()
-    {
-        return current($this->nodes);
-    }
-
-    public function next()
-    {
-        next($this->nodes);
-    }
-
-    public function key()
-    {
-        return key($this->nodes);
-    }
-
-    public function valid()
-    {
-        $key = key($this->nodes);
-
-        return $key !== null && $key !== false;
-    }
-
-    public function rewind()
-    {
-        reset($this->nodes);
     }
 }

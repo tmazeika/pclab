@@ -3,6 +3,14 @@
 namespace PCForge\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use PCForge\Contracts\BraintreeServiceContract;
+use PCForge\Contracts\ComponentCompatibilityServiceContract;
+use PCForge\Contracts\ComponentRepositoryContract;
+use PCForge\Contracts\ComponentSelectionServiceContract;
+use PCForge\Repositories\ComponentRepository;
+use PCForge\Repositories\ComponentSelectionService;
+use PCForge\Services\BraintreeService;
+use PCForge\Services\ComponentCompatibilityService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,19 +31,24 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(
-            'PCForge\Contracts\CompatibilityServiceContract',
-            'PCForge\Services\CompatibilityService'
+        $this->app->singleton(
+            ComponentCompatibilityServiceContract::class,
+            ComponentCompatibilityService::class
         );
 
-        $this->app->bind(
-            'PCForge\Contracts\ComponentRepositoryContract',
-            'PCForge\Repositories\ComponentRepository'
+        $this->app->singleton(
+            BraintreeServiceContract::class,
+            BraintreeService::class
         );
 
-        $this->app->bind(
-            'PCForge\Contracts\ComponentSelectionRepositoryContract',
-            'PCForge\Repositories\ComponentSelectionRepository'
+        $this->app->singleton(
+            ComponentSelectionServiceContract::class,
+            ComponentSelectionService::class
+        );
+
+        $this->app->singleton(
+            ComponentRepositoryContract::class,
+            ComponentRepository::class
         );
     }
 }

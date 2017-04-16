@@ -7,56 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class MotherboardComponent extends ComponentChild
 {
-    use VideoOutputer;
-
-    private const CREATE_RULES = [
-        'id'                  => 'nullable|integer|unique:motherboard_components|min:0',
-        'component_id'        => 'required|exists:components,id|unique:motherboard_components',
-        'audio_headers'       => 'required|integer|min:0',
-        'fan_headers'         => 'required|integer|min:0',
-        'usb2_headers'        => 'required|integer|min:0',
-        'usb3_headers'        => 'required|integer|min:0',
-        'form_factor_id'      => 'required|exists:form_factors,id',
-        'has_displayport_out' => 'required|boolean',
-        'has_dvi_out'         => 'required|boolean',
-        'has_hdmi_out'        => 'required|boolean',
-        'has_vga_out'         => 'required|boolean',
-        'pcie3_slots'         => 'required|integer|min:0',
-        'supports_sli'        => 'required|boolean',
-        'dimm_gen'            => 'required|integer|min:0',
-        'dimm_pins'           => 'required|integer|min:0',
-        'dimm_slots'          => 'required|integer|min:0',
-        'dimm_max_capacity'   => 'required|integer|min:0',
-        'atx12v_pins'         => 'required|integer|min:0',
-        'socket_id'           => 'required|exists:sockets,id',
-        'sata_slots'          => 'required|integer|min:0',
-    ];
-
-    private const UPDATE_RULES = [
-        'id'                  => 'nullable|integer|unique:motherboard_components|min:0',
-        'component_id'        => 'nullable|exists:components,id|unique:motherboard_components',
-        'audio_headers'       => 'nullable|integer|min:0',
-        'fan_headers'         => 'nullable|integer|min:0',
-        'usb2_headers'        => 'nullable|integer|min:0',
-        'usb3_headers'        => 'nullable|integer|min:0',
-        'form_factor_id'      => 'nullable|exists:form_factors,id',
-        'has_displayport_out' => 'nullable|boolean',
-        'has_dvi_out'         => 'nullable|boolean',
-        'has_hdmi_out'        => 'nullable|boolean',
-        'has_vga_out'         => 'nullable|boolean',
-        'pcie3_slots'         => 'nullable|integer|min:0',
-        'supports_sli'        => 'nullable|boolean',
-        'dimm_gen'            => 'nullable|integer|min:0',
-        'dimm_pins'           => 'nullable|integer|min:0',
-        'dimm_slots'          => 'nullable|integer|min:0',
-        'dimm_max_capacity'   => 'nullable|integer|min:0',
-        'atx12v_pins'         => 'nullable|integer|min:0',
-        'socket_id'           => 'nullable|exists:sockets,id',
-        'sata_slots'          => 'nullable|integer|min:0',
-    ];
-
     protected $fillable = [
-        'id',
         'component_id',
         'audio_headers',
         'fan_headers',
@@ -78,14 +29,16 @@ class MotherboardComponent extends ComponentChild
         'sata_slots',
     ];
 
+    protected $presenter = 'PCForge\Presenters\MotherboardComponentPresenter';
+
     public function form_factor()
     {
-        return $this->belongsTo('PCForge\Models\FormFactor');
+        return $this->belongsTo(FormFactor::class);
     }
 
     public function socket()
     {
-        return $this->belongsTo('PCForge\Models\Socket');
+        return $this->belongsTo(Socket::class);
     }
 
     public function getStaticallyCompatibleComponents(): Collection

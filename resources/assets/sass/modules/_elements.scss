@@ -1,0 +1,31 @@
+a {
+  color: $accent-color;
+  text-decoration: none;
+
+  &:hover:not(.btn-link) {
+    text-decoration: underline;
+  }
+
+  &.btn-link {
+    @extend .dim;
+
+    transition: color $anim-time;
+
+    &:hover {
+      color: darken($accent-color, 10%);
+    }
+
+    &.active {
+      color: $accent-color;
+    }
+  }
+}
+
+// h1 .. h6
+@for $i from 1 through 6 {
+  h#{$i}, .h#{$i} {
+    font: normal #{7 - $i}em/1 $heading-font;
+
+    margin: 0;
+  }
+}

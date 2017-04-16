@@ -6,40 +6,7 @@ use Illuminate\Support\Collection;
 
 class ChassisComponent extends ComponentChild
 {
-    private const CREATE_RULES = [
-        'id'                          => 'nullable|integer|unique:chassis_components|min:0',
-        'component_id'                => 'required|exists:components,id|unique:chassis_components',
-        'max_cooling_fan_height'      => 'required|integer|min:0',
-        'max_graphics_length_blocked' => 'required|integer|min:0',
-        'max_graphics_length_full'    => 'required|integer|min:0',
-        'audio_headers'               => 'required|integer|min:0',
-        'fan_headers'                 => 'required|integer|min:0',
-        'usb2_headers'                => 'required|integer|min:0',
-        'usb3_headers'                => 'required|integer|min:0',
-        'uses_sata_power'             => 'required|boolean',
-        '2p5_bays'                    => 'required|integer|min:0',
-        '3p5_bays'                    => 'required|integer|min:0',
-        'adaptable_bays'              => 'required|integer|min:0',
-    ];
-
-    private const UPDATE_RULES = [
-        'id'                          => 'nullable|integer|unique:chassis_components|min:0',
-        'component_id'                => 'nullable|exists:components,id|unique:chassis_components',
-        'max_cooling_fan_height'      => 'nullable|integer|min:0',
-        'max_graphics_length_blocked' => 'nullable|integer|min:0',
-        'max_graphics_length_full'    => 'nullable|integer|min:0',
-        'audio_headers'               => 'nullable|integer|min:0',
-        'fan_headers'                 => 'nullable|integer|min:0',
-        'usb2_headers'                => 'nullable|integer|min:0',
-        'usb3_headers'                => 'nullable|integer|min:0',
-        'uses_sata_power'             => 'nullable|boolean',
-        '2p5_bays'                    => 'nullable|integer|min:0',
-        '3p5_bays'                    => 'nullable|integer|min:0',
-        'adaptable_bays'              => 'nullable|integer|min:0',
-    ];
-
     protected $fillable = [
-        'id',
         'component_id',
         'max_cooling_fan_height',
         'max_graphics_length_blocked',
@@ -54,14 +21,16 @@ class ChassisComponent extends ComponentChild
         'adaptable_bays',
     ];
 
+    protected $presenter = 'PCForge\Presenters\ChassisComponentPresenter';
+
     public function form_factors()
     {
-        return $this->belongsToMany('PCForge\Models\FormFactor');
+        return $this->belongsToMany(FormFactor::class);
     }
 
     public function radiators()
     {
-        return $this->belongsToMany('PCForge\Models\ChassisRadiator');
+        return $this->belongsToMany(ChassisComponentsRadiator::class);
     }
 
     public function getStaticallyCompatibleComponents(): Collection

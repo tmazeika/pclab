@@ -6,33 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Socket extends PCForgeModel
 {
-    private const CREATE_RULES = [
-        'id'   => 'nullable|integer|unique:sockets|min:0',
-        'name' => 'required|string|unique:sockets',
-    ];
-
-    private const UPDATE_RULES = [
-        'id'   => 'nullable|integer|unique:sockets|min:0',
-        'name' => 'nullable|string|unique:sockets',
-    ];
-
     protected $fillable = [
-        'id',
         'name',
     ];
 
     public function cooling_components()
     {
-        return $this->hasMany('PCForge\Models\CoolingComponent');
+        return $this->hasMany(CoolingComponent::class);
     }
 
     public function motherboard_components()
     {
-        return $this->hasMany('PCForge\Models\MotherboardComponent');
+        return $this->hasMany(MotherboardComponent::class);
     }
 
     public function processor_components()
     {
-        return $this->hasMany('PCForge\Models\ProcessorComponent');
+        return $this->hasMany(ProcessorComponent::class);
     }
 }

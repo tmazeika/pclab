@@ -8,10 +8,5 @@ use PCForge\Models\Component;
 
 class ComponentRepository implements ComponentRepositoryContract
 {
-    public function all(): Collection
-    {
-        return cache()->tags('components')->rememberForever('all', function () {
-            return Component::all();
-        });
-    }
+    //
 }

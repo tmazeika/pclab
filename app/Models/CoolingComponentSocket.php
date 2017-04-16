@@ -6,16 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class CoolingComponentSocket extends PCForgeModel
 {
-    private const CREATE_RULES = [
-        'cooling_component_id' => 'required|exists:cooling_components,id',
-        'socket_id'            => 'required|exists:sockets,id',
-    ];
-
-    private const UPDATE_RULES = [
-        'cooling_component_id' => 'nullable|exists:cooling_components,id',
-        'socket_id'            => 'nullable|exists:sockets,id',
-    ];
-
     public $table = 'cooling_component_socket';
 
     public $timestamps = false;
@@ -27,11 +17,11 @@ class CoolingComponentSocket extends PCForgeModel
 
     public function cooling_component()
     {
-        return $this->belongsTo('PCForge\Models\CoolingComponent');
+        return $this->belongsTo(CoolingComponent::class);
     }
 
     public function socket()
     {
-        return $this->belongsTo('PCForge\Models\Socket');
+        return $this->belongsTo(Socket::class);
     }
 }

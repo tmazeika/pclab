@@ -3,6 +3,7 @@
 namespace PCForge\Models;
 
 use Illuminate\Support\Collection;
+use Laracasts\Presenter\PresentableTrait;
 
 abstract class ComponentChild extends PCForgeModel
 {
@@ -16,6 +17,8 @@ abstract class ComponentChild extends PCForgeModel
         // e.g. 'PCForge\Models\ProcessorComponent' -> 'processor'
         return strtolower(substr(class_basename(get_called_class()), 0, -strlen('Component')));
     }
+
+    use PresentableTrait;
 
     /**
      * Gets all components that are directly compatible with this component. More specifically, the components that can
@@ -65,6 +68,6 @@ abstract class ComponentChild extends PCForgeModel
 
     public function parent()
     {
-        return $this->belongsTo('PCForge\Models\Component', 'component_id', 'id');
+        return $this->belongsTo(Component::class, 'component_id', 'id');
     }
 }

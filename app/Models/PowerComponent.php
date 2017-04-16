@@ -8,32 +8,15 @@ class PowerComponent extends ComponentChild
 {
     const WATTS_INC = 50;
 
-    private const CREATE_RULES = [
-        'id'           => 'nullable|integer|unique:power_components|min:0',
-        'component_id' => 'required|exists:components,id|unique:power_components',
-        'atx12v_pins'  => 'required|integer|min:0',
-        'sata_powers'  => 'required|integer|min:0',
-        'is_modular'   => 'required|boolean',
-        'watts_out'    => 'required|integer|min:0',
-    ];
-
-    private const UPDATE_RULES = [
-        'id'           => 'nullable|integer|unique:power_components|min:0',
-        'component_id' => 'nullable|exists:components,id|unique:power_components',
-        'atx12v_pins'  => 'nullable|integer|min:0',
-        'sata_powers'  => 'nullable|integer|min:0',
-        'is_modular'   => 'nullable|boolean',
-        'watts_out'    => 'nullable|integer|min:0',
-    ];
-
     protected $fillable = [
-        'id',
         'component_id',
         'atx12v_pins',
         'sata_powers',
         'is_modular',
         'watts_out',
     ];
+
+    protected $presenter = 'PCForge\Presenters\PowerComponentPresenter';
 
     public function getStaticallyCompatibleComponents(): Collection
     {

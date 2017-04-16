@@ -1,51 +1,34 @@
-<section>
+<section class="bar">
     @php
         $items = $model::all();
         $tableName = $model::tableName();
-        $columns = Schema::getColumnListing($tableName);
+        $columns = \Illuminate\Support\Facades\Schema::getColumnListing($tableName);
     @endphp
 
-    <h1>{{ $tableName }}</h1>
+    <header class="bar">
+        <h5>{{ $tableName }}</h5>
+    </header>
 
-    @if($items->count() > 0)
+    @if($items->count())
         <div style="overflow-x: auto">
-            <table cellpadding="5">
+            <table cellpadding="7">
                 <thead>
                     <tr style="font-weight: bold">
                         @foreach($columns as $column)
-                            <td>{{ $column }}</td>
+                            <td class="text">{{ $column }}</td>
                         @endforeach
-
-                        <td></td>
-                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($items as $item)
                         <tr>
                             @foreach($columns as $column)
-                                <td>{{ $item->$column }}</td>
+                                <td class="text">{{ $item->$column }}</td>
                             @endforeach
-
-                            <td>
-                                <a href="{{ url('admin/update', [$tableName, $item->id]) }}">
-                                    <button>Update</button>
-                                </a>
-                            </td>
-
-                            <td>
-                                <a href="{{ url('admin/delete', [$tableName, $item->id]) }}">
-                                    <button>Delete</button>
-                                </a>
-                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     @endif
-
-    <a href="{{ url('admin/create', [$tableName]) }}">
-        <button>Create</button>
-    </a>
 </section>
