@@ -2,13 +2,11 @@
 
 namespace PCForge\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Laracasts\Presenter\PresentableTrait;
-use PCForge\Services\ComponentCompatibilityService;
+use PCForge\Presenters\ComponentPresenter;
 
 class Component extends PCForgeModel
 {
-    use PresentableTrait;
+    use HasPresenterTrait;
 
     protected $fillable = [
         'component_type_id',
@@ -20,7 +18,7 @@ class Component extends PCForgeModel
         'weight',
     ];
 
-    protected $presenter = 'PCForge\Presenters\ComponentPresenter';
+    protected $presenter = ComponentPresenter::class;
 
     public function type()
     {
@@ -29,7 +27,7 @@ class Component extends PCForgeModel
 
     public function child(): ComponentChild
     {
-        $model = 'PCForge\Models\\' . ucfirst($this->type->name) . 'Component';
+        $model = '\PCForge\Models\\' . ucfirst($this->type->name) . 'Component';
 
         return $model::where('component_id', $this->id)->first();
     }

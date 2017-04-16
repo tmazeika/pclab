@@ -3,18 +3,13 @@
 namespace PCForge\Repositories;
 
 use Illuminate\Support\Collection;
-use PCForge\Contracts\ComponentSelectionRepositoryContract;
 use PCForge\Contracts\ComponentSelectionServiceContract;
+use PCForge\Models\Component;
 use PCForge\Models\ComponentChild;
+use PCForge\Models\ComponentType;
 
 class ComponentSelectionService implements ComponentSelectionServiceContract
 {
-    /**
-     * Adds a component to the current selection with the given count.
-     *
-     * @param ComponentChild $component
-     * @param int $count
-     */
     public function select(ComponentChild $component, int $count): void
     {
         if ($count > 0) {
@@ -24,27 +19,47 @@ class ComponentSelectionService implements ComponentSelectionServiceContract
         }
     }
 
-    /**
-     * Gets the selected count of the given component.
-     *
-     * @param ComponentChild $component
-     *
-     * @return int
-     */
     public function getCount(ComponentChild $component): int
     {
         return session("selected.$component->component_id", 0);
     }
 
-    /**
-     * Gets whether or not the given component is in the current selection.
-     *
-     * @param ComponentChild $component
-     *
-     * @return bool
-     */
     public function isSelected(ComponentChild $component): bool
     {
         return $this->getCount($component) > 0;
+    }
+
+    public function allSelected(array $select = ['*'], string $type = ''): Collection
+    {
+        return $this->applyQuerySelectAndType($select, $type, Component::whereIn('id', $this->getSelected()->keys()))->get();
+    }
+
+    public function all(array $select = ['*'], string $type = ''): Collection
+    {
+        $selected = $this->getSelected();
+
+        return $this->applyQuerySelectAndType($select, $type, Component::whereIn('id', $selected->keys()))
+            ->get()
+            ->each(function (Component $component) use ($selected) {
+                $component->count = $selected->get($component->id);
+            });
+    }
+
+    private function getSelected(): Collection
+    {
+        return collect(session('selected', []));
+    }
+
+    private function applyQuerySelectAndType(array $select, string $type, $query)
+    {
+        if (count($select) > 0 && $select[0] !== '*') {
+            $query->select($select);
+        }
+
+        if ($type !== '') {
+            $query->where('component_type_id', ComponentType::select('id')->where('name', $type)->first()->id);
+        }
+
+        return $query;
     }
 }

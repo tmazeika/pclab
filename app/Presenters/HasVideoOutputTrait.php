@@ -8,19 +8,19 @@ trait HasVideoOutputTrait
     {
         $outputs = [];
 
-        if ($this->has_displayport_out) {
+        if ($this->entity->has_displayport_out) {
             $outputs[] = 'DisplayPort';
         }
 
-        if ($this->has_dvi_out) {
+        if ($this->entity->has_dvi_out) {
             $outputs[] = 'DVI';
         }
 
-        if ($this->has_hdmi_out) {
+        if ($this->entity->has_hdmi_out) {
             $outputs[] = 'HDMI';
         }
 
-        if ($this->has_vga_out) {
+        if ($this->entity->has_vga_out) {
             $outputs[] = 'VGA';
         }
 

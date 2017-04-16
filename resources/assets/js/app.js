@@ -1,5 +1,6 @@
 window.$ = require('jquery');
 
+/*
 function enableClassIf(enabledCondition, target, clazz) {
     if (enabledCondition) {
         $(target).addClass(clazz);
@@ -32,7 +33,7 @@ $('.build-chooser-item').on('click', function () {
             $(`.build-chooser-item[data-component-id=${id}]`).toggleClass('disabled', data.disable.indexOf(id) !== -1);
         });
     });
-})/*.find('.build-chooser-item-quantity-button').on('click', function() {
+})/!*.find('.build-chooser-item-quantity-button').on('click', function() {
  const chooserItem = $(this).closest('.build-chooser-item');
  const textElem = $(this).siblings('.build-chooser-item-quantity-text');
  const selected = $(chooserItem).hasClass('selected');
@@ -44,4 +45,5 @@ $('.build-chooser-item').on('click', function () {
  }
 
  return propagate;
- })*/;
+ })*!/;
+*/

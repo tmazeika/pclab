@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 interface ComponentCompatibilityServiceContract
 {
     /**
-     * Gets a collection of components that are incompatible with the current selection.
+     * Computes a collection of components that are incompatible with the current selection.
      *
      * @return Collection
      */

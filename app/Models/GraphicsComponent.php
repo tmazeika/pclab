@@ -2,7 +2,7 @@
 
 namespace PCForge\Models;
 
-use Illuminate\Support\Collection;
+use PCForge\Presenters\GraphicsComponentPresenter;
 
 class GraphicsComponent extends ComponentChild
 {
@@ -16,40 +16,5 @@ class GraphicsComponent extends ComponentChild
         'length',
     ];
 
-    protected $presenter = 'PCForge\Presenters\GraphicsComponentPresenter';
-
-    public function getStaticallyCompatibleComponents(): Collection
-    {
-        return collect([$this->id]);
-    }
-
-    public function getStaticallyIncompatibleComponents(): Collection
-    {
-        // graphics
-        return GraphicsComponent::where('id', '!=', $this->id)->pluck('component_id')->flatten();
-    }
-
-    public function getDynamicallyCompatibleComponents(array $selected): Collection
-    {
-        // motherboard
-        $count = $selected[$this->id] ?? 0;
-
-        return MotherboardComponent
-            ::whereIn('component_id', array_keys($selected))
-            ->where('pcie3_slots', '>=', $count)
-            ->pluck('component_id')
-            ->flatten();
-    }
-
-    public function getDynamicallyIncompatibleComponents(array $selected): Collection
-    {
-        // motherboard
-        $count = $selected[$this->id] ?? 0;
-
-        return MotherboardComponent
-            ::whereIn('component_id', array_keys($selected))
-            ->where('pcie3_slots', '<', $count)
-            ->pluck('component_id')
-            ->flatten();
-    }
+    protected $presenter = GraphicsComponentPresenter::class;
 }

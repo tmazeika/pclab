@@ -2,7 +2,7 @@
 
 namespace PCForge\Presenters;
 
-class CoolingComponentPresenter extends Presenter
+class PowerComponentPresenter extends Presenter
 {
     use ComponentPresenterTrait;
 }

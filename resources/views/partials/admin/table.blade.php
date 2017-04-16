@@ -1,6 +1,6 @@
 <section class="bar">
     @php
-        $items = $model::all();
+        $items = $model::orderBy('id')->get();
         $tableName = $model::tableName();
         $columns = \Illuminate\Support\Facades\Schema::getColumnListing($tableName);
     @endphp

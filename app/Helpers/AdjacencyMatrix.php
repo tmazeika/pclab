@@ -57,7 +57,7 @@ class AdjacencyMatrix
                 $reachable[] = $i;
 
                 for ($j = 0; $j < $this->n; $j++) {
-                    if ($this->haveEdge($i, $j)) {
+                    if ($this->hasEdge($i, $j)) {
                         $stack[] = $j;
                     }
                 }
@@ -75,9 +75,19 @@ class AdjacencyMatrix
      *
      * @return bool
      */
-    public function haveEdge(int $node1, int $node2): bool
+    public function hasEdge(int $node1, int $node2): bool
     {
         return $this->arr[$node1][$node2] === 1;
+    }
+
+    /**
+     * Gets the number of nodes in the adjacency matrix.
+     *
+     * @return int
+     */
+    public function getCount(): int
+    {
+        return $this->n;
     }
 
     /**

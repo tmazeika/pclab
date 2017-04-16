@@ -3,7 +3,6 @@
 namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
 
 abstract class PCForgeModel extends Model
 {

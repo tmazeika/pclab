@@ -2,17 +2,19 @@
 
 namespace PCForge\Presenters;
 
-use Laracasts\Presenter\Presenter;
-
 class ComponentPresenter extends Presenter
 {
+    use ComponentPresenterTrait;
+
     public function formattedPrice()
     {
-        return '$' . number_format($this->price / 100.0, 2);
+        return '$' . number_format($this->entity->price / 100.0, 2);
     }
 
     public function img()
     {
-        return asset("img/components/$this->id.jpg");
+        $id = $this->entity->id;
+
+        return asset("img/components/$id.jpg");
     }
 }

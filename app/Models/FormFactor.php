@@ -2,8 +2,6 @@
 
 namespace PCForge\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 class FormFactor extends PCForgeModel
 {
     protected $fillable = [

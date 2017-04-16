@@ -9,6 +9,11 @@
             font-family: 'PT Sans Narrow';
             src: url({{ asset('fonts/pt_sans_narrow.ttf') }}) format('truetype');
         }
+
+        @font-face {
+            font-family: 'PT Sans';
+            src: url({{ asset('fonts/pt_sans.ttf') }}) format('truetype');
+        }
     </style>
 
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">

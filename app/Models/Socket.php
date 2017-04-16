@@ -2,8 +2,6 @@
 
 namespace PCForge\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 class Socket extends PCForgeModel
 {
     protected $fillable = [

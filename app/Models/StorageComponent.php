@@ -2,7 +2,7 @@
 
 namespace PCForge\Models;
 
-use Illuminate\Support\Collection;
+use PCForge\Presenters\StorageComponentPresenter;
 
 class StorageComponent extends ComponentChild
 {
@@ -13,30 +13,10 @@ class StorageComponent extends ComponentChild
         'size',
     ];
 
-    protected $presenter = 'PCForge\Presenters\StorageComponentPresenter';
+    protected $presenter = StorageComponentPresenter::class;
 
     public function storage_size()
     {
         return $this->hasMany(StorageWidth::class);
-    }
-
-    public function getStaticallyCompatibleComponents(): Collection
-    {
-        return collect($this->id);
-    }
-
-    public function getStaticallyIncompatibleComponents(): Collection
-    {
-        return collect();
-    }
-
-    public function getDynamicallyCompatibleComponents(array $selected): Collection
-    {
-        return collect();
-    }
-
-    public function getDynamicallyIncompatibleComponents(array $selected): Collection
-    {
-        return collect();
     }
 }

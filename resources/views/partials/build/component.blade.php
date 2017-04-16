@@ -1,13 +1,13 @@
-<div class="build-chooser-item {{ $component->disabled ? 'disabled' : '' }} {{ $component->selected > 0 ? 'selected' : '' }}"
+<div class="{{ $component->presenter()->selectedClass() }} {{ $component->presenter()->disabledClass() }}"
      data-component-id="{{ $component->component_id }}">
-    <img class="build-chooser-item-img" src="{{ $component->parent->img() }}"/>
-    <h1 class="build-chooser-item-heading">
+    <img class="build-chooser-item-img" src="{{ $component->parent->presenter()->img() }}" width="100px"/>
+    <h5 class="build-chooser-item-heading">
         {{ $component->parent->name }}
-    </h1>
-    <h1 class="build-chooser-item-heading build-chooser-item-price">
-        {{ $component->parent->getPriceFormatted() }}
-    </h1>
-    @include($component->featuresView())
+    </h5>
+    <h5 class="build-chooser-item-heading build-chooser-item-price">
+        {{ $component->parent->presenter()->formattedPrice() }}
+    </h5>
+    @include('partials.build.' . $component::typeName() . '-component')
 
     @if($component->parent->type->allows_multiple)
         <div class="build-chooser-item-quantity">

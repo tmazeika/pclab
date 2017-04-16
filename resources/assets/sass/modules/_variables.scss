@@ -6,7 +6,8 @@ $bar-hori-spacing: 1em;
 $bar-border-size: 3px;
 
 // fonts
-$font: 'PT Sans Narrow', sans-serif;
+$heading-font: 'PT Sans Narrow', sans-serif;
+$normal-font: 'PT Sans', sans-serif;
 
 // colors
 $accent-color: #61d43a;
@@ -16,6 +17,7 @@ $dark-blue-color: darken($blue-color, 10%);
 $dark-color: #33333a;
 $dark-text: #333;
 $dim-color: #999;
+$light-accent-color: lighten($accent-color, 5%);
 $light-color: #f4f4f4;
 
 // timings
