@@ -14,9 +14,14 @@ class ComponentRepository implements ComponentRepositoryContract
     /** @var ComponentCompatibilityServiceContract $componentCompatibilityService */
     private $componentCompatibilityService;
 
-    public function __construct(ComponentCompatibilityServiceContract $componentCompatibilityService)
+    /** @var ComponentSelectionServiceContract $componentSelectionService */
+    private $componentSelectionService;
+
+    public function __construct(ComponentCompatibilityServiceContract $componentCompatibilityService,
+                                ComponentSelectionServiceContract $componentSelectionService)
     {
         $this->componentCompatibilityService = $componentCompatibilityService;
+        $this->componentSelectionService = $componentSelectionService;
     }
 
     public function buildGroupedReachable(): Collection
@@ -40,13 +45,8 @@ class ComponentRepository implements ComponentRepositoryContract
 
     public function computeUnreachable(): Collection
     {
-        $originalBinding = get_class(resolve(ComponentSelectionServiceContract::class));
-        app()->bind(ComponentSelectionServiceContract::class, NullComponentSelectionService::class);
-
         $unreachable = $this->componentCompatibilityService->computeIncompatibilities()
             ->union(Component::select('id')->where('is_available', false)->get());
-
-        app()->bind(ComponentSelectionServiceContract::class, $originalBinding);
 
         return $unreachable;
     }

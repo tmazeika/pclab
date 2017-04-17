@@ -24,6 +24,11 @@ trait ComponentPresenterTrait
         $this->componentDisabledService = $componentDisabledService;
     }
 
+    public function count(): int
+    {
+        return $this->componentSelectionService->getCount($this->entity);
+    }
+
     public function selectedClass(): string
     {
         if ($this->componentSelectionService->isSelected($this->entity)) {

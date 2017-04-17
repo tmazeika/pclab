@@ -1,23 +1,21 @@
-<div class="{{ $component->presenter()->selectedClass() }} {{ $component->presenter()->disabledClass() }}"
-     data-component-id="{{ $component->component_id }}">
-    <img class="build-chooser-item-img" src="{{ $component->parent->presenter()->img() }}" width="100px"/>
-    <h5 class="build-chooser-item-heading">
-        {{ $component->parent->name }}
-    </h5>
-    <h5 class="build-chooser-item-heading build-chooser-item-price">
-        {{ $component->parent->presenter()->formattedPrice() }}
-    </h5>
+<div class="product {{ $component->presenter()->selectedClass() }} {{ $component->presenter()->disabledClass() }}"
+     data-component="{{ $component->component_id }}"
+     data-count="{{ $component->presenter()->count() }}"
+     data-allows-multiple="{{ $component->parent->type->allows_multiple }}">
+    <img src="{{ $component->parent->presenter()->img() }}"/>
+
+    <header>
+        <h5>{{ $component->parent->name }}</h5>
+        <h5 class="dim">{{ $component->parent->presenter()->formattedPrice() }}</h5>
+    </header>
+
     @include('partials.build.' . $component::typeName() . '-component')
 
     @if($component->parent->type->allows_multiple)
-        <div class="build-chooser-item-quantity">
-            <button class="build-chooser-item-quantity-button subtract">
-                &minus;
-            </button>
-            <span class="build-chooser-item-quantity-text"></span>
-            <button class="build-chooser-item-quantity-button add">
-                &plus;
-            </button>
+        <div>
+            <button>&minus;</button>
+            <span>{{ $component->presenter()->count() }}</span>
+            <button>&plus;</button>
         </div>
     @endif
 </div>

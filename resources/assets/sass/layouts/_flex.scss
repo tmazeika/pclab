@@ -1,3 +1,16 @@
+.flex-container {
+  display: flex;
+  align-items: center;
+
+  > *:not(:last-child) {
+    margin-right: $flex-item-spacing;
+  }
+}
+
+.flex-grid {
+  flex-wrap: wrap;
+}
+
 .flex-fill {
   flex-grow: 1;
 }

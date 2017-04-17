@@ -1,32 +1,8 @@
 .bar {
   padding: $bar-vert-spacing $bar-hori-spacing;
-
-  &.full-page {
-    @extend %bar-flex-container;
-  }
 }
 
 .bar-border-bottom {
   border-bottom: $bar-border-size solid $accent-color;
   box-shadow: 0 0 10px $accent-color;
-}
-
-.bar-container {
-  @extend %bar-flex-container;
-
-  max-width: $content-width;
-  margin: {
-    left: auto;
-    right: auto;
-  }
-}
-
-%bar-flex-container {
-  // flex
-  display: flex;
-  align-items: center;
-
-  > *:not(:last-child) {
-    margin-right: $bar-item-spacing;
-  }
 }

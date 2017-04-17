@@ -10,9 +10,7 @@ class ComponentDisabledService implements ComponentDisabledServiceContract
 {
     public function setDisabled(Collection $components): void
     {
-        session(['disabled' => $components->map(function (ComponentChild $component) {
-            return $component->id;
-        })]);
+        session(['disabled' => $components->pluck('id')->toArray()]);
     }
 
     /**

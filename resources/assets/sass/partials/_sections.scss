@@ -1,0 +1,11 @@
+section {
+  > header {
+    @extend .bar;
+
+    border-bottom: 1px solid $dim-color;
+  }
+
+  > .content {
+    @extend .bar;
+  }
+}

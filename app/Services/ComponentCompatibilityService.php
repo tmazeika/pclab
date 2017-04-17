@@ -8,7 +8,6 @@ use PCForge\Compatibility\CompatibilityProvider;
 use PCForge\Contracts\ComponentCompatibilityServiceContract;
 use PCForge\Contracts\ComponentSelectionServiceContract;
 use PCForge\Models\Component;
-use PCForge\Models\ComponentChild;
 
 class ComponentCompatibilityService implements ComponentCompatibilityServiceContract
 {
@@ -24,7 +23,8 @@ class ComponentCompatibilityService implements ComponentCompatibilityServiceCont
      * @param ComponentSelectionServiceContract $componentSelectionService
      * @param CompatibilityProvider[] $compatibilityProviders
      */
-    public function __construct(ComponentSelectionServiceContract $componentSelectionService, array $compatibilityProviders)
+    public function __construct(ComponentSelectionServiceContract $componentSelectionService,
+                                array $compatibilityProviders)
     {
         $this->componentSelectionService = $componentSelectionService;
         $this->compatibilityProviders = $this->buildCompatibilityProvidersDictionary($compatibilityProviders);
@@ -32,16 +32,15 @@ class ComponentCompatibilityService implements ComponentCompatibilityServiceCont
 
     public function computeIncompatibilities(): Collection
     {
-        $selected = $this->componentSelectionService->allSelected(['id']);
+        $selected = $this->componentSelectionService->allSelected(['id'])->pluck('id');
 
         if ($selected->count() > 0) {
             $components = Component::select('id')->get();
             $computedCompatibilities = $this->computeCompatibilities();
 
-            return $components
+            return $components->whereIn('id', $components
                 ->pluck('id')
                 ->diff($selected
-                    ->pluck('id')
                     ->map(function (int $id) use ($computedCompatibilities) {
                         return $computedCompatibilities->get($id);
                     })
@@ -51,10 +50,7 @@ class ComponentCompatibilityService implements ComponentCompatibilityServiceCont
                     ->reduce(function ($carry, Collection $adjacent) {
                         return $carry ? $carry->intersect($adjacent) : $adjacent;
                     })
-                )
-                ->map(function (int $id) use ($components) {
-                    return $components->where('id', $id);
-                });
+                ));
         }
 
         return collect();
@@ -103,6 +99,7 @@ class ComponentCompatibilityService implements ComponentCompatibilityServiceCont
                     return $id - 1;
                 })
                 ->diff($incompatibilities[$key])
+                ->push($key)
                 ->when(!$component->is_available, function () {
                     return collect();
                 })

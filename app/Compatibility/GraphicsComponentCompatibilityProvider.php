@@ -33,7 +33,7 @@ class GraphicsComponentCompatibilityProvider implements CompatibilityProvider
     {
         // motherboard
         return MotherboardComponent
-            ::whereIn('component_id', $this->componentSelectionService->allSelected())
+            ::whereIn('component_id', $this->componentSelectionService->allSelected(['id'])->pluck('id'))
             ->where('pcie3_slots', '>=', $this->componentSelectionService->getCount($component))
             ->pluck('component_id')
             ->flatten();
@@ -43,7 +43,7 @@ class GraphicsComponentCompatibilityProvider implements CompatibilityProvider
     {
         // motherboard
         return MotherboardComponent
-            ::whereIn('component_id', $this->componentSelectionService->allSelected())
+            ::whereIn('component_id', $this->componentSelectionService->allSelected(['id'])->pluck('id'))
             ->where('pcie3_slots', '<', $this->componentSelectionService->getCount($component))
             ->pluck('component_id')
             ->flatten();

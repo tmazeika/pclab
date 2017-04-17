@@ -20,12 +20,3 @@ a {
     }
   }
 }
-
-// h1 .. h6
-@for $i from 1 through 6 {
-  h#{$i}, .h#{$i} {
-    font: normal #{7 - $i}em/1 $heading-font;
-
-    margin: 0;
-  }
-}

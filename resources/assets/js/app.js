@@ -1,49 +1,26 @@
 window.$ = require('jquery');
 
-/*
-function enableClassIf(enabledCondition, target, clazz) {
-    if (enabledCondition) {
-        $(target).addClass(clazz);
-    }
-    else {
-        $(target).removeClass(clazz);
-    }
-}
-
-$('.build-chooser-item').on('click', function () {
+$('.product').on('click', function () {
     if ($(this).hasClass('disabled')) {
         return;
     }
 
-    const selected = $(this).hasClass('selected');
+    const component = parseInt($(this).attr('data-component'));
+    let selected = $(this).hasClass('selected');
+    let count = parseInt($(this).attr('data-count'));
 
-    enableClassIf(!selected, this, 'selected');
+    $(this).toggleClass('selected', selected = !selected);
+    $(this).attr('data-count', count += selected ? 1 : -1);
 
-    $.ajax(ajaxSelectUrl, {
+    $.ajax('/build/select', {
         data: {
-            'id': $(this).attr('data-component-id'),
-            // the selected property was toggled
-            'count': selected ? 0 : 1,
+            id: component,
+            count: count
         },
         dataType: 'json'
     }).done((data) => {
-        $('.build-chooser-item').each(function (i, item) {
-            const id = parseInt($(item).attr('data-component-id'));
-
-            $(`.build-chooser-item[data-component-id=${id}]`).toggleClass('disabled', data.disable.indexOf(id) !== -1);
+        $('.product').each(function (i, item) {
+            $(item).toggleClass('disabled', data.disable.indexOf(parseInt($(item).attr('data-component'))) !== -1);
         });
-    });
-})/!*.find('.build-chooser-item-quantity-button').on('click', function() {
- const chooserItem = $(this).closest('.build-chooser-item');
- const textElem = $(this).siblings('.build-chooser-item-quantity-text');
- const selected = $(chooserItem).hasClass('selected');
- let propagate = false;
-
- if (!selected && $(this).hasClass('add')) {
- textElem.text('1');
- propagate = true;
- }
-
- return propagate;
- })*!/;
-*/
+    })
+});
