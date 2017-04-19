@@ -7,7 +7,6 @@ use PCForge\Contracts\ComponentCompatibilityServiceContract;
 use PCForge\Contracts\ComponentRepositoryContract;
 use PCForge\Contracts\ComponentSelectionServiceContract;
 use PCForge\Models\Component;
-use PCForge\Services\NullComponentSelectionService;
 
 class ComponentRepository implements ComponentRepositoryContract
 {

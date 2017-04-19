@@ -1,4 +1,4 @@
-<ul class="build-chooser-item-features">
+<ul class="text">
     <li><span class="bold">Form Factor:</span> {{ $component->form_factor->name }}</li>
     <li><span class="bold">Socket:</span> {{ $component->socket->name }}</li>
     <li>
