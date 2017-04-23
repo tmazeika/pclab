@@ -9,7 +9,7 @@
         <h5 class="dim">{{ $component->parent->presenter()->formattedPrice() }}</h5>
     </header>
 
-    @include('partials.build.' . $component::typeName() . '-component')
+    @include($component->featuresView())
 
     @if($component->parent->type->allows_multiple)
         <div>

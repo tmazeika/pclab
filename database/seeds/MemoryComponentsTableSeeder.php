@@ -14,7 +14,6 @@ class MemoryComponentsTableSeeder extends Seeder
     {
         DB::table('memory_components')->insert([
             [
-                'component_id'  => 5,
                 'count'         => 2,
                 'height'        => 12,
                 'capacity_each' => 8,
@@ -22,7 +21,6 @@ class MemoryComponentsTableSeeder extends Seeder
                 'pins'          => 288,
             ],
             [
-                'component_id'  => 16,
                 'count'         => 2,
                 'height'        => 10,
                 'capacity_each' => 8,

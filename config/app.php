@@ -174,6 +174,7 @@ return [
         PCForge\Providers\AppServiceProvider::class,
         PCForge\Providers\AuthServiceProvider::class,
         // PCForge\Providers\BroadcastServiceProvider::class,
+        PCForge\Providers\DBServiceProvider::class,
         PCForge\Providers\EventServiceProvider::class,
         PCForge\Providers\RouteServiceProvider::class,
 

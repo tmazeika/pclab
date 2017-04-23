@@ -14,7 +14,6 @@ class CoolingComponentsTableSeeder extends Seeder
     {
         DB::table('cooling_components')->insert([
             [
-                'component_id'      => 3,
                 'is_air'            => true,
                 'fan_width'         => 120,
                 'height'            => 159,

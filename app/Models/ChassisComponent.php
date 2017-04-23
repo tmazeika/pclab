@@ -7,7 +7,6 @@ use PCForge\Presenters\ChassisComponentPresenter;
 class ChassisComponent extends ComponentChild
 {
     protected $fillable = [
-        'component_id',
         'max_cooling_fan_height',
         'max_graphics_length_blocked',
         'max_graphics_length_full',

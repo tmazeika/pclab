@@ -19,6 +19,8 @@ class CreateComponentsTable extends Migration
             $table->integer('component_type_id')->unsigned();
             $table->foreign('component_type_id')->references('id')->on('component_types')->onDelete('restrict');
 
+            $table->morphs('child');
+
             $table->string('asin')->index()->unique();
             $table->boolean('is_available')->default(true); // TODO: false
             $table->string('name');

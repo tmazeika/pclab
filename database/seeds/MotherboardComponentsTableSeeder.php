@@ -14,7 +14,6 @@ class MotherboardComponentsTableSeeder extends Seeder
     {
         DB::table('motherboard_components')->insert([
             [
-                'component_id'        => 6,
                 'audio_headers'       => 1,
                 'fan_headers'         => 4,
                 'usb2_headers'        => 2,
@@ -35,7 +34,6 @@ class MotherboardComponentsTableSeeder extends Seeder
                 'sata_slots'          => 5,
             ],
             [
-                'component_id'        => 14,
                 'audio_headers'       => 1,
                 'fan_headers'         => 2,
                 'usb2_headers'        => 3,
@@ -56,7 +54,6 @@ class MotherboardComponentsTableSeeder extends Seeder
                 'sata_slots'          => 6,
             ],
             [
-                'component_id'        => 15,
                 'audio_headers'       => 1,
                 'fan_headers'         => 4,
                 'form_factor_id'      => 1,

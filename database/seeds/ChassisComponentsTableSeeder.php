@@ -14,7 +14,6 @@ class ChassisComponentsTableSeeder extends Seeder
     {
         DB::table('chassis_components')->insert([
             [
-                'component_id'                => 2,
                 'max_cooling_fan_height'      => 194,
                 'max_graphics_length_blocked' => 300,
                 'max_graphics_length_full'    => 420,
@@ -28,7 +27,6 @@ class ChassisComponentsTableSeeder extends Seeder
                 'adaptable_bays'              => 5,
             ],
             [
-                'component_id'                => 13,
                 'max_cooling_fan_height'      => 180,
                 'max_graphics_length_blocked' => 310,
                 'max_graphics_length_full'    => 440,

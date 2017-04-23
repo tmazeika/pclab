@@ -7,7 +7,6 @@ use PCForge\Presenters\MotherboardComponentPresenter;
 class MotherboardComponent extends ComponentChild
 {
     protected $fillable = [
-        'component_id',
         'audio_headers',
         'fan_headers',
         'usb2_headers',

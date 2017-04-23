@@ -15,8 +15,6 @@ class CreateChassisComponentsTable extends Migration
     {
         Schema::create('chassis_components', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('component_id')->unsigned()->unique();
-            $table->foreign('component_id')->references('id')->on('components')->onDelete('cascade');
 
             // cooling
             $table->smallInteger('max_cooling_fan_height')->unsigned();

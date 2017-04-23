@@ -32,7 +32,7 @@ class ComponentRepository implements ComponentRepositoryContract
             })
             ->map(function (Collection $components) {
                 return $components->map(function (Component $component) {
-                    return $component->child();
+                    return $component->child;
                 });
             });
     }

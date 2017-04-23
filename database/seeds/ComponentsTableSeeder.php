@@ -15,6 +15,8 @@ class ComponentsTableSeeder extends Seeder
         DB::table('components')->insert([
             [
                 'component_type_id' => 2,
+                'child_id'          => 1,
+                'child_type'        => 'processor',
                 'asin'              => 'B01MXSI216',
                 'name'              => 'Intel Core i7-7700K',
                 'watts_usage'       => 91,
@@ -22,6 +24,8 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'component_type_id' => 1,
+                'child_id'          => 1,
+                'child_type'        => 'chassis',
                 'asin'              => 'B01F0KWL6A',
                 'name'              => 'Phanteks Enthoo Evolv: Tempered Glass Edition',
                 'watts_usage'       => 0,
@@ -29,6 +33,8 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'component_type_id' => 6,
+                'child_id'          => 1,
+                'child_type'        => 'cooling',
                 'asin'              => 'B005O65JXI',
                 'name'              => 'Cooler Master Hyper 212 EVO',
                 'watts_usage'       => 3,
@@ -36,6 +42,8 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'component_type_id' => 3,
+                'child_id'          => 1,
+                'child_type'        => 'graphics',
                 'asin'              => 'B01GXOWUDQ',
                 'name'              => 'MSI GeForce GTX 1080 ARMOR',
                 'watts_usage'       => 180,
@@ -43,6 +51,8 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'component_type_id' => 4,
+                'child_id'          => 1,
+                'child_type'        => 'memory',
                 'asin'              => 'B01EIDY1EK',
                 'name'              => 'Crucial Ballistix Sport LT',
                 'watts_usage'       => 10,
@@ -50,6 +60,8 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'component_type_id' => 5,
+                'child_id'          => 1,
+                'child_type'        => 'motherboard',
                 'asin'              => 'B012NH05UW',
                 'name'              => 'ASUS Z170-A',
                 'watts_usage'       => 0,
@@ -57,6 +69,8 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'component_type_id' => 7,
+                'child_id'          => 1,
+                'child_type'        => 'storage',
                 'asin'              => 'B00OBRE5UE',
                 'name'              => 'Samsung 850 EVO',
                 'watts_usage'       => 2,
@@ -64,6 +78,8 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'component_type_id' => 8,
+                'child_id'          => 1,
+                'child_type'        => 'power',
                 'asin'              => 'B00M2UINC8',
                 'name'              => 'Corsair HX750i',
                 'watts_usage'       => 0,
@@ -71,6 +87,8 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'component_type_id' => 2,
+                'child_id'          => 2,
+                'child_type'        => 'processor',
                 'asin'              => 'B010T6CWI2',
                 'name'              => 'Intel Core i5-6500',
                 'watts_usage'       => 35,
@@ -78,6 +96,8 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'component_type_id' => 2,
+                'child_id'          => 3,
+                'child_type'        => 'processor',
                 'asin'              => 'B015VPX2EO',
                 'name'              => 'Intel Core i3-6100',
                 'watts_usage'       => 51,
@@ -85,6 +105,8 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'component_type_id' => 2,
+                'child_id'          => 4,
+                'child_type'        => 'processor',
                 'asin'              => 'B06W9JXK4G',
                 'name'              => 'AMD Ryzen 7 1800X',
                 'watts_usage'       => 95,
@@ -92,6 +114,8 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'component_type_id' => 2,
+                'child_id'          => 5,
+                'child_type'        => 'processor',
                 'asin'              => 'B009O7YUF6',
                 'name'              => 'AMD FX-8350',
                 'watts_usage'       => 125,
@@ -99,6 +123,8 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'component_type_id' => 1,
+                'child_id'          => 2,
+                'child_type'        => 'chassis',
                 'asin'              => 'B00Q2Z11QE',
                 'name'              => 'Fractal Design Define R5 Blackout Edition',
                 'watts_usage'       => 0,
@@ -106,6 +132,8 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'component_type_id' => 5,
+                'child_id'          => 2,
+                'child_type'        => 'motherboard',
                 'asin'              => 'B00CX4MUCC',
                 'name'              => 'Gigabyte AMD 970',
                 'watts_usage'       => 0,
@@ -113,6 +141,8 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'component_type_id' => 5,
+                'child_id'          => 3,
+                'child_type'        => 'motherboard',
                 'asin'              => 'B06WVFFXXL',
                 'name'              => 'MSI B350 TOMAHAWK',
                 'watts_usage'       => 0,
@@ -120,6 +150,8 @@ class ComponentsTableSeeder extends Seeder
             ],
             [
                 'component_type_id' => 4,
+                'child_id'          => 2,
+                'child_type'        => 'memory',
                 'asin'              => 'B0134EW7G8',
                 'name'              => 'Corsair Vengeance LPX',
                 'watts_usage'       => 10,

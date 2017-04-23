@@ -14,7 +14,6 @@ class PowerComponentsTableSeeder extends Seeder
     {
         DB::table('power_components')->insert([
             [
-                'component_id' => 8,
                 'atx12v_pins'  => 16,
                 'sata_powers'  => 12,
                 'is_modular'   => true,

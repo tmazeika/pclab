@@ -14,7 +14,6 @@ class ProcessorComponentsTableSeeder extends Seeder
     {
         DB::table('processor_components')->insert([
             [
-                'component_id'     => 1,
                 'cores'            => 4,
                 'has_apu'          => true,
                 'has_stock_cooler' => false,
@@ -22,7 +21,6 @@ class ProcessorComponentsTableSeeder extends Seeder
                 'socket_id'        => 3,
             ],
             [
-                'component_id'     => 9,
                 'cores'            => 4,
                 'has_apu'          => true,
                 'has_stock_cooler' => true,
@@ -30,7 +28,6 @@ class ProcessorComponentsTableSeeder extends Seeder
                 'socket_id'        => 3,
             ],
             [
-                'component_id'     => 10,
                 'cores'            => 2,
                 'has_apu'          => true,
                 'has_stock_cooler' => true,
@@ -38,7 +35,6 @@ class ProcessorComponentsTableSeeder extends Seeder
                 'socket_id'        => 3,
             ],
             [
-                'component_id'     => 11,
                 'cores'            => 8,
                 'has_apu'          => true,
                 'has_stock_cooler' => false,
@@ -46,7 +42,6 @@ class ProcessorComponentsTableSeeder extends Seeder
                 'socket_id'        => 15,
             ],
             [
-                'component_id'     => 12,
                 'cores'            => 8,
                 'has_apu'          => false,
                 'has_stock_cooler' => true,

@@ -7,7 +7,6 @@ use PCForge\Presenters\StorageComponentPresenter;
 class StorageComponent extends ComponentChild
 {
     protected $fillable = [
-        'component_id',
         'capacity',
         'is_ssd',
         'size',

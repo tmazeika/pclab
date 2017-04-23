@@ -7,7 +7,6 @@ use PCForge\Presenters\PowerComponentPresenter;
 class PowerComponent extends ComponentChild
 {
     protected $fillable = [
-        'component_id',
         'atx12v_pins',
         'sata_powers',
         'is_modular',

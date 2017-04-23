@@ -19,6 +19,6 @@ abstract class ComponentChild extends PCForgeModel
 
     public function parent()
     {
-        return $this->belongsTo(Component::class, 'component_id', 'id');
+        return $this->morphOne(Component::class, 'child');
     }
 }

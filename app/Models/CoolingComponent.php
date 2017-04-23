@@ -7,7 +7,6 @@ use PCForge\Presenters\CoolingComponentPresenter;
 class CoolingComponent extends ComponentChild
 {
     protected $fillable = [
-        'component_id',
         'is_air',
         'fan_width',
         'height',

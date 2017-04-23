@@ -15,8 +15,6 @@ class CreateCoolingComponentsTable extends Migration
     {
         Schema::create('cooling_components', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('component_id')->unsigned()->unique();
-            $table->foreign('component_id')->references('id')->on('components')->onDelete('cascade');
 
             // features
             $table->boolean('is_air');

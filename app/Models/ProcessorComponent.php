@@ -7,7 +7,6 @@ use PCForge\Presenters\ProcessorComponentPresenter;
 class ProcessorComponent extends ComponentChild
 {
     protected $fillable = [
-        'component_id',
         'cores',
         'has_apu',
         'has_stock_cooler',

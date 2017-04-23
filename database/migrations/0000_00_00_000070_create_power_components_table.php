@@ -15,8 +15,6 @@ class CreatePowerComponentsTable extends Migration
     {
         Schema::create('power_components', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('component_id')->unsigned()->unique();
-            $table->foreign('component_id')->references('id')->on('components')->onDelete('cascade');
 
             // cables
             $table->tinyInteger('atx12v_pins')->unsigned();

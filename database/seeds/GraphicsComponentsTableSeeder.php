@@ -14,7 +14,6 @@ class GraphicsComponentsTableSeeder extends Seeder
     {
         DB::table('graphics_components')->insert([
             [
-                'component_id'        => 4,
                 'has_displayport_out' => true,
                 'has_dvi_out'         => true,
                 'has_hdmi_out'        => true,

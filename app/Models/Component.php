@@ -10,6 +10,8 @@ class Component extends PCForgeModel
 
     protected $fillable = [
         'component_type_id',
+        'child_id',
+        'child_type',
         'asin',
         'is_available',
         'name',
@@ -25,10 +27,8 @@ class Component extends PCForgeModel
         return $this->belongsTo(ComponentType::class, 'component_type_id', 'id');
     }
 
-    public function child(): ComponentChild
+    public function child()
     {
-        $model = '\PCForge\Models\\' . ucfirst($this->type->name) . 'Component';
-
-        return $model::where('component_id', $this->id)->first();
+        return $this->morphTo();
     }
 }

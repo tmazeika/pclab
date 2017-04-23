@@ -14,7 +14,6 @@ class StorageComponentsTableSeeder extends Seeder
     {
         DB::table('storage_components')->insert([
             [
-                'component_id'     => 7,
                 'capacity'         => 500,
                 'is_ssd'           => true,
                 'storage_width_id' => 1,
