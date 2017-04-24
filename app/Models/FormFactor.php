@@ -2,12 +2,10 @@
 
 namespace PCForge\Models;
 
-class FormFactor extends PCForgeModel
-{
-    protected $fillable = [
-        'name',
-    ];
+use Illuminate\Database\Eloquent\Model;
 
+class FormFactor extends Model
+{
     public function chassis_components()
     {
         return $this->belongsToMany(ChassisComponent::class);

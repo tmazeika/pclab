@@ -2,6 +2,7 @@
 
 namespace PCForge\Models;
 
+use PCForge\Compatibility\Providers\MotherboardComponentCompatibilityProvider;
 use PCForge\Presenters\MotherboardComponentPresenter;
 
 class MotherboardComponent extends ComponentChild
@@ -28,6 +29,8 @@ class MotherboardComponent extends ComponentChild
     ];
 
     protected $presenter = MotherboardComponentPresenter::class;
+
+    protected $compatibilityProvider = MotherboardComponentCompatibilityProvider::class;
 
     public function form_factor()
     {

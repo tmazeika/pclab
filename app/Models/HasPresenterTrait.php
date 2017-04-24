@@ -3,6 +3,7 @@
 namespace PCForge\Models;
 
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 use PCForge\Presenters\Presenter;
 
 trait HasPresenterTrait
@@ -15,7 +16,7 @@ trait HasPresenterTrait
 
         app()
             ->when($this->presenter)
-            ->needs(PCForgeModel::class)
+            ->needs(Model::class)
             ->give(function () {
                 return $this;
             });

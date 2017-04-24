@@ -2,7 +2,9 @@
 
 namespace PCForge\Models;
 
-class ChassisComponentFormFactor extends PCForgeModel
+use Illuminate\Database\Eloquent\Model;
+
+class ChassisComponentFormFactor extends Model
 {
     public $table = 'chassis_component_form_factor';
 

@@ -2,36 +2,30 @@
 
 namespace PCForge\Presenters;
 
-use PCForge\Contracts\ComponentDisabledServiceContract;
+use Illuminate\Database\Eloquent\Model;
 use PCForge\Contracts\ComponentSelectionServiceContract;
-use PCForge\Models\PCForgeModel;
 
 trait ComponentPresenterTrait
 {
     /** @var ComponentSelectionServiceContract $componentSelectionService */
     private $componentSelectionService;
 
-    /** @var ComponentDisabledServiceContract $componentDisabledService */
-    private $componentDisabledService;
-
-    public function __construct(ComponentSelectionServiceContract $componentSelectionService,
-                                ComponentDisabledServiceContract $componentDisabledService, PCForgeModel $entity)
+    public function __construct(ComponentSelectionServiceContract $componentSelectionService, Model $entity)
     {
         /** @noinspection PhpUndefinedClassInspection */
         parent::__construct($entity);
 
         $this->componentSelectionService = $componentSelectionService;
-        $this->componentDisabledService = $componentDisabledService;
     }
 
     public function count(): int
     {
-        return $this->componentSelectionService->getCount($this->entity);
+        return $this->componentSelectionService->getCount($this->entity->id);
     }
 
     public function selectedClass(): string
     {
-        if ($this->componentSelectionService->isSelected($this->entity)) {
+        if ($this->componentSelectionService->isSelected($this->entity->id)) {
             return 'selected';
         }
 
@@ -40,10 +34,12 @@ trait ComponentPresenterTrait
 
     public function disabledClass(): string
     {
-        if ($this->componentDisabledService->isDisabled($this->entity)) {
-            return 'disabled';
-        }
-
         return '';
+
+        //if ($this->componentDisabledService->isDisabled($this->entity)) {
+        //    return 'disabled';
+        //}
+        //
+        //return '';
     }
 }

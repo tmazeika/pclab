@@ -2,7 +2,9 @@
 
 namespace PCForge\Models;
 
-class ComponentType extends PCForgeModel
+use Illuminate\Database\Eloquent\Model;
+
+class ComponentType extends Model
 {
     protected $fillable = [
         'name',

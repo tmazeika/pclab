@@ -2,6 +2,7 @@
 
 namespace PCForge\Models;
 
+use PCForge\Compatibility\Providers\MemoryComponentCompatibilityProvider;
 use PCForge\Presenters\MemoryComponentPresenter;
 
 class MemoryComponent extends ComponentChild
@@ -15,4 +16,6 @@ class MemoryComponent extends ComponentChild
     ];
 
     protected $presenter = MemoryComponentPresenter::class;
+
+    protected $compatibilityProvider = MemoryComponentCompatibilityProvider::class;
 }

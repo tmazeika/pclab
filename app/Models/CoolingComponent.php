@@ -2,6 +2,7 @@
 
 namespace PCForge\Models;
 
+use PCForge\Compatibility\Providers\CoolingComponentCompatibilityProvider;
 use PCForge\Presenters\CoolingComponentPresenter;
 
 class CoolingComponent extends ComponentChild
@@ -15,6 +16,8 @@ class CoolingComponent extends ComponentChild
     ];
 
     protected $presenter = CoolingComponentPresenter::class;
+
+    protected $compatibilityProvider = CoolingComponentCompatibilityProvider::class;
 
     public function sockets()
     {

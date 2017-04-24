@@ -1,5 +1,5 @@
 <div class="product {{ $component->presenter()->selectedClass() }} {{ $component->presenter()->disabledClass() }}"
-     data-component="{{ $component->component_id }}"
+     data-component="{{ $component->parent->id }}"
      data-count="{{ $component->presenter()->count() }}"
      data-allows-multiple="{{ $component->parent->type->allows_multiple }}">
     <img src="{{ $component->parent->presenter()->img() }}"/>

@@ -1,7 +1,7 @@
 <section class="bar">
     @php
         $items = $model::orderBy('id')->get();
-        $tableName = $model::tableName();
+        $tableName = (new $model)->getTable();
         $columns = \Illuminate\Support\Facades\Schema::getColumnListing($tableName);
     @endphp
 

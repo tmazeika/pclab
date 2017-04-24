@@ -2,12 +2,10 @@
 
 namespace PCForge\Models;
 
-class Socket extends PCForgeModel
-{
-    protected $fillable = [
-        'name',
-    ];
+use Illuminate\Database\Eloquent\Model;
 
+class Socket extends Model
+{
     public function cooling_components()
     {
         return $this->hasMany(CoolingComponent::class);

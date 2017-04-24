@@ -2,34 +2,53 @@
 
 namespace PCForge\Http\Controllers;
 
-use PCForge\Contracts\ComponentCompatibilityServiceContract;
-use PCForge\Contracts\ComponentDisabledServiceContract;
-use PCForge\Contracts\ComponentRepositoryContract;
+use Illuminate\Support\Collection;
+use PCForge\Contracts\ComponentIncompatibilityServiceContract;
 use PCForge\Contracts\ComponentSelectionServiceContract;
 use PCForge\Http\Requests\SelectComponent;
 use PCForge\Models\Component;
 
 class BuildController extends Controller
 {
-    public function index(ComponentRepositoryContract $componentRepo)
+    /** @var ComponentIncompatibilityServiceContract $componentIncompatibilityService */
+    private $componentIncompatibilityService;
+
+    /** @var ComponentSelectionServiceContract $componentSelectionService */
+    private $componentSelectionService;
+
+    public function __construct(ComponentIncompatibilityServiceContract $componentIncompatibilityService,
+                                ComponentSelectionServiceContract $componentSelectionService)
     {
-        $components = $componentRepo->buildGroupedReachable();
+        $this->componentIncompatibilityService = $componentIncompatibilityService;
+        $this->componentSelectionService = $componentSelectionService;
+    }
+
+    public function index()
+    {
+        $components = Component::whereNotIn('id', $this->componentIncompatibilityService->getIncompatibilities([])->pluck('id'))
+            ->get()
+            ->groupBy('component_type_id')
+            ->sortBy(function ($value, int $key) {
+                return $key;
+            })
+            ->map(function (Collection $components) {
+                return $components->map(function (Component $component) {
+                    return $component->child;
+                });
+            });
 
         return view('build.index', compact('components'));
     }
 
-    public function select(ComponentCompatibilityServiceContract $compatibilityService,
-                           ComponentDisabledServiceContract $componentDisabledServiceContract,
-                           ComponentSelectionServiceContract $componentSelectionService,
-                           SelectComponent $request)
+    public function select(SelectComponent $request)
     {
-        $component = Component::find($request->input('id'));
-        $componentSelectionService->select($component->child(), $request->input('count'));
-        $incompatibilities = $compatibilityService->computeIncompatibilities();
-        $componentDisabledServiceContract->setDisabled($incompatibilities);
+        $this->componentSelectionService->select($request->input('id'), $request->input('count'));
+
+        $incompatibilities = $this->componentIncompatibilityService
+            ->getIncompatibilities($this->componentSelectionService->selection());
 
         return response()->json([
-            'disable' => $incompatibilities->pluck('id')->flatten()->toArray(),
+            'disable' => $incompatibilities->pluck('id')->toArray(),
         ]);
     }
 }

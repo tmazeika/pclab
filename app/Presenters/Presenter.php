@@ -2,14 +2,14 @@
 
 namespace PCForge\Presenters;
 
-use PCForge\Models\PCForgeModel;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class Presenter
 {
-    /** @var PCForgeModel $entity */
+    /** @var Model $entity */
     protected $entity;
 
-    public function __construct(PCForgeModel $entity)
+    public function __construct(Model $entity)
     {
         $this->entity = $entity;
     }

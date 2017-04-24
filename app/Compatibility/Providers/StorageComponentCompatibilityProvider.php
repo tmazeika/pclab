@@ -1,12 +1,20 @@
 <?php
 
-namespace PCForge\Compatibility;
+namespace PCForge\Compatibility\Providers;
 
 use Illuminate\Support\Collection;
 use PCForge\Contracts\ComponentRepositoryContract;
 
 class StorageComponentCompatibilityProvider implements CompatibilityProvider
 {
+    /** @var ComponentRepositoryContract $components */
+    private $components;
+
+    public function __construct(ComponentRepositoryContract $componentRepo)
+    {
+        $this->components = $componentRepo;
+    }
+
     public function getStaticallyCompatible($component): Collection
     {
         return collect($component->id);
@@ -17,18 +25,13 @@ class StorageComponentCompatibilityProvider implements CompatibilityProvider
         return collect();
     }
 
-    public function getDynamicallyCompatible($component): Collection
+    public function getDynamicallyCompatible($component, array $selection): Collection
     {
         return collect();
     }
 
-    public function getDynamicallyIncompatible($component): Collection
+    public function getDynamicallyIncompatible($component, array $selection): Collection
     {
         return collect();
-    }
-
-    public function getComponentType(): string
-    {
-        return 'storage';
     }
 }

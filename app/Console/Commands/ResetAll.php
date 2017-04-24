@@ -3,8 +3,6 @@
 namespace PCForge\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Redis;
-use PCForge\Events\ComponentModified;
 
 class ResetAll extends Command
 {
@@ -35,14 +33,13 @@ class ResetAll extends Command
      */
     public function handle(): void
     {
-        if ($this->confirm('This will refresh migrations and clear cache and sessions! Continue?')) {
+        if (app()->isLocal() || $this->confirm('This will refresh migrations and clear cache and sessions! Continue?')) {
             // clear cache
             $this->call('cache:clear');
 
             // update database
             $this->call('migrate:refresh', ['--seed' => true]);
             $this->call('update-amazon-components');
-            event(new ComponentModified);
         }
     }
 }

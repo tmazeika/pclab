@@ -2,6 +2,7 @@
 
 namespace PCForge\Models;
 
+use PCForge\Compatibility\Providers\StorageComponentCompatibilityProvider;
 use PCForge\Presenters\StorageComponentPresenter;
 
 class StorageComponent extends ComponentChild
@@ -13,6 +14,8 @@ class StorageComponent extends ComponentChild
     ];
 
     protected $presenter = StorageComponentPresenter::class;
+
+    protected $compatibilityProvider = StorageComponentCompatibilityProvider::class;
 
     public function storage_size()
     {

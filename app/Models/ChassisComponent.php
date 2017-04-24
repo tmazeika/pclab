@@ -2,6 +2,7 @@
 
 namespace PCForge\Models;
 
+use PCForge\Compatibility\Providers\ChassisComponentCompatibilityProvider;
 use PCForge\Presenters\ChassisComponentPresenter;
 
 class ChassisComponent extends ComponentChild
@@ -21,6 +22,8 @@ class ChassisComponent extends ComponentChild
     ];
 
     protected $presenter = ChassisComponentPresenter::class;
+
+    protected $compatibilityProvider = ChassisComponentCompatibilityProvider::class;
 
     public function form_factors()
     {

@@ -2,7 +2,11 @@
 
 namespace PCForge\Models;
 
-abstract class ComponentChild extends PCForgeModel
+use Exception;
+use Illuminate\Database\Eloquent\Model;
+use PCForge\Compatibility\Providers\CompatibilityProvider;
+
+abstract class ComponentChild extends Model
 {
     use HasPresenterTrait;
 
@@ -15,6 +19,15 @@ abstract class ComponentChild extends PCForgeModel
     {
         // e.g. 'PCForge\Models\ProcessorComponent' -> 'processor'
         return strtolower(substr(class_basename(get_called_class()), 0, -strlen('Component')));
+    }
+
+    public function compatibilityProvider(): CompatibilityProvider
+    {
+        if (!$this->compatibilityProvider || !class_exists($this->compatibilityProvider)) {
+            throw new Exception('Invalid or nonexistent compatibilityProvider class');
+        }
+
+        return app()->make($this->compatibilityProvider);
     }
 
     public function parent()

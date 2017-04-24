@@ -12,9 +12,7 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'PCForge\Events\ComponentModified' => [
-            'PCForge\Listeners\ForceStaticCompatibilitiesUpdate',
-        ],
+        //
     ];
 
     /**

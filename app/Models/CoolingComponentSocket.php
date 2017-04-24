@@ -2,7 +2,9 @@
 
 namespace PCForge\Models;
 
-class CoolingComponentSocket extends PCForgeModel
+use Illuminate\Database\Eloquent\Model;
+
+class CoolingComponentSocket extends Model
 {
     public $table = 'cooling_component_socket';
 

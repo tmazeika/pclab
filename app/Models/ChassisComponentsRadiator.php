@@ -2,7 +2,9 @@
 
 namespace PCForge\Models;
 
-class ChassisComponentsRadiator extends PCForgeModel
+use Illuminate\Database\Eloquent\Model;
+
+class ChassisComponentsRadiator extends Model
 {
     protected $fillable = [
         'chassis_component_id',

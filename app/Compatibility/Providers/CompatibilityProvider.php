@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Compatibility;
+namespace PCForge\Compatibility\Providers;
 
 use Illuminate\Support\Collection;
 
@@ -28,24 +28,19 @@ interface CompatibilityProvider
      * Gets a collection of components that are compatible with the given one based on the current selection.
      *
      * @param $component
+     * @param array $selection
      *
      * @return Collection
      */
-    public function getDynamicallyCompatible($component): Collection;
+    public function getDynamicallyCompatible($component, array $selection): Collection;
 
     /**
      * Gets a collection of components that are incompatible with the given one based on the current selection.
      *
      * @param $component
+     * @param array $selection
      *
      * @return Collection
      */
-    public function getDynamicallyIncompatible($component): Collection;
-
-    /**
-     * Gets the component type name for which this provides compatibilities.
-     *
-     * @return string
-     */
-    public function getComponentType(): string;
+    public function getDynamicallyIncompatible($component, array $selection): Collection;
 }

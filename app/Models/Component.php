@@ -2,9 +2,10 @@
 
 namespace PCForge\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use PCForge\Presenters\ComponentPresenter;
 
-class Component extends PCForgeModel
+class Component extends Model
 {
     use HasPresenterTrait;
 
