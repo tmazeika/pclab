@@ -26,8 +26,7 @@ class GraphicsComponentCompatibilityProvider implements CompatibilityProvider
     {
         return $this->components->withParent(GraphicsComponent::class)
             ->where('graphics_components.id', '!=', $component->id)
-            ->pluck('components.id')
-            ->flatten();
+            ->pluck('components.id');
     }
 
     public function getDynamicallyCompatible($component, array $selection): Collection
@@ -35,8 +34,7 @@ class GraphicsComponentCompatibilityProvider implements CompatibilityProvider
         return $this->components->withParent(MotherboardComponent::class)
             ->whereIn('components.id', array_keys($selection))
             ->where('pcie3_slots', '>=', $selection[$component->parent->id] ?? 0)
-            ->pluck('components.id')
-            ->flatten();
+            ->pluck('components.id');
     }
 
     public function getDynamicallyIncompatible($component, array $selection): Collection
@@ -44,7 +42,6 @@ class GraphicsComponentCompatibilityProvider implements CompatibilityProvider
         return $this->components->withParent(MotherboardComponent::class)
             ->whereIn('components.id', array_keys($selection))
             ->where('pcie3_slots', '<', $selection[$component->parent->id] ?? 0)
-            ->pluck('components.id')
-            ->flatten();
+            ->pluck('components.id');
     }
 }

@@ -6,8 +6,6 @@ trait HasVideoOutputTrait
 {
     public function buildVideoOutputStr(): string
     {
-        $outputs = [];
-
         if ($this->entity->has_displayport_out) {
             $outputs[] = 'DisplayPort';
         }
@@ -24,6 +22,6 @@ trait HasVideoOutputTrait
             $outputs[] = 'VGA';
         }
 
-        return implode(' / ', $outputs);
+        return implode(' / ', $outputs ?? []);
     }
 }

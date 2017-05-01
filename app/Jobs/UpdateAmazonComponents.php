@@ -81,8 +81,6 @@ class UpdateAmazonComponents implements ShouldQueue
                 'price'        => $currentPrice,
             ]);
         }
-
-        event(new ComponentModified);
     }
 
     private function getAwsRequestUrl(array $params): string

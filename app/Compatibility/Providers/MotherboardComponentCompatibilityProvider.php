@@ -27,7 +27,8 @@ class MotherboardComponentCompatibilityProvider implements CompatibilityProvider
         $socketId = $component->socket->id;
 
         return collect([
-            $this->components->withParent(ChassisComponent::class)->where('audio_headers', '<=', $component->audio_headers)
+            $this->components->withParent(ChassisComponent::class)
+                ->where('audio_headers', '<=', $component->audio_headers)
                 ->where('fan_headers', '<=', $component->fan_headers)
                 ->where('usb2_headers', '<=', $component->usb2_headers)
                 ->where('usb3_headers', '<=', $component->usb3_headers)
@@ -52,7 +53,7 @@ class MotherboardComponentCompatibilityProvider implements CompatibilityProvider
                 ->pluck('components.id'),
             $this->components->withParent(ProcessorComponent::class)->where('socket_id', $socketId)
                 ->pluck('components.id'),
-        ])->flatten();
+        ]);
     }
 
     public function getStaticallyIncompatible($component): Collection
@@ -93,7 +94,7 @@ class MotherboardComponentCompatibilityProvider implements CompatibilityProvider
             $this->components->withParent(ProcessorComponent::class)
                 ->where('socket_id', '!=', $socketId)
                 ->pluck('components.id'),
-        ])->flatten();
+        ]);
     }
 
     public function getDynamicallyCompatible($component, array $selection): Collection

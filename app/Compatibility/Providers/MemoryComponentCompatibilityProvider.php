@@ -23,8 +23,7 @@ class MemoryComponentCompatibilityProvider implements CompatibilityProvider
         return $this->components->withParent(MotherboardComponent::class)
             ->where('dimm_gen', $component->ddr_gen)
             ->where('dimm_pins', $component->pins)
-            ->pluck('components.id')
-            ->flatten();
+            ->pluck('components.id');
     }
 
     public function getStaticallyIncompatible($component): Collection
@@ -40,7 +39,7 @@ class MemoryComponentCompatibilityProvider implements CompatibilityProvider
                 ->where('dimm_gen', '!=', $component->ddr_gen)
                 ->orWhere('dimm_pins', '!=', $component->pins)
                 ->pluck('components.id'),
-        ])->flatten();
+        ]);
     }
 
     public function getDynamicallyCompatible($component, array $selection): Collection

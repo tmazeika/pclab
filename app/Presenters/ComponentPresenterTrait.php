@@ -20,26 +20,16 @@ trait ComponentPresenterTrait
 
     public function count(): int
     {
-        return $this->componentSelectionService->getCount($this->entity->id);
+        return $this->componentSelectionService->getCount($this->entity->parent->id);
     }
 
     public function selectedClass(): string
     {
-        if ($this->componentSelectionService->isSelected($this->entity->id)) {
-            return 'selected';
-        }
-
-        return '';
+        return $this->componentSelectionService->isSelected($this->entity->parent->id) ? 'selected' : '';
     }
 
     public function disabledClass(): string
     {
-        return '';
-
-        //if ($this->componentDisabledService->isDisabled($this->entity)) {
-        //    return 'disabled';
-        //}
-        //
-        //return '';
+        return $this->entity->disabled ? 'disabled' : '';
     }
 }

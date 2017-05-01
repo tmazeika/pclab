@@ -69,7 +69,7 @@ class CoolingComponentCompatibilityProvider implements CompatibilityProvider
                         ->whereRaw("cooling_component_socket.socket_id = processor_components.socket_id");
                 })
                 ->pluck('components.id'),
-        ])->flatten();
+        ]);
     }
 
     public function getDynamicallyCompatible($component, array $selection): Collection

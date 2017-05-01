@@ -25,7 +25,7 @@ class SelectComponent extends FormRequest
     {
         return [
             'id'    => 'required|exists:components,id',
-            'count' => 'required|integer|min:0',
+            'count' => 'required|integer|min:0|max:999',
         ];
     }
 }

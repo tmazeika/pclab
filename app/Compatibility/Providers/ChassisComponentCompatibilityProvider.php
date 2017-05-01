@@ -32,7 +32,7 @@ class ChassisComponentCompatibilityProvider implements CompatibilityProvider
                 ->pluck('components.id'),
             $this->components->withParent(PowerComponent::class)
                 ->pluck('components.id'),
-        ])->flatten();
+        ]);
     }
 
     public function getStaticallyIncompatible($component): Collection
@@ -56,7 +56,7 @@ class ChassisComponentCompatibilityProvider implements CompatibilityProvider
                 ->orWhere('usb3_headers', '<', $component->usb3_headers)
                 ->orWhereNotIn('form_factor_id', $component->form_factors->pluck('id'))
                 ->pluck('components.id'),
-        ])->flatten();
+        ]);
     }
 
     public function getDynamicallyCompatible($component, array $selection): Collection

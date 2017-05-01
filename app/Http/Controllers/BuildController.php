@@ -25,8 +25,12 @@ class BuildController extends Controller
 
     public function index()
     {
-        $components = Component::whereNotIn('id', $this->componentIncompatibilityService->getIncompatibilities([])->pluck('id'))
-            ->get()
+        $incompatibilities = $this->componentIncompatibilityService->getIncompatibilities();
+
+        $components = Component::all()
+            ->each(function (Component $component) use ($incompatibilities) {
+                $component->child->disabled = $incompatibilities->contains($component->id);
+            })
             ->groupBy('component_type_id')
             ->sortBy(function ($value, int $key) {
                 return $key;
@@ -44,8 +48,7 @@ class BuildController extends Controller
     {
         $this->componentSelectionService->select($request->input('id'), $request->input('count'));
 
-        $incompatibilities = $this->componentIncompatibilityService
-            ->getIncompatibilities($this->componentSelectionService->selection());
+        $incompatibilities = $this->componentIncompatibilityService->getIncompatibilities();
 
         return response()->json([
             'disable' => $incompatibilities->pluck('id')->toArray(),

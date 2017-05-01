@@ -29,8 +29,7 @@ class PowerComponentCompatibilityProvider implements CompatibilityProvider
     public function getStaticallyCompatible($component): Collection
     {
         return $this->components->withParent(ChassisComponent::class)
-            ->pluck('components.id')
-            ->flatten();
+            ->pluck('components.id');
     }
 
     public function getStaticallyIncompatible($component): Collection
@@ -42,7 +41,7 @@ class PowerComponentCompatibilityProvider implements CompatibilityProvider
             $this->components->withParent(PowerComponent::class)
                 ->where('power_components.id', '!=', $component->id)
                 ->pluck('components.id'),
-        ])->flatten();
+        ]);
     }
 
     public function getDynamicallyCompatible($component, array $selection): Collection
@@ -81,7 +80,7 @@ class PowerComponentCompatibilityProvider implements CompatibilityProvider
             $components[] = $this->component_id;
         }
 
-        return collect($components)->flatten();
+        return collect($components);
     }
 
     private function computeSystemWattage(array $selection): int

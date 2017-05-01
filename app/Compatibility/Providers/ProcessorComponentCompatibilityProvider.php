@@ -34,7 +34,7 @@ class ProcessorComponentCompatibilityProvider implements CompatibilityProvider
             $this->components->withParent(ProcessorComponent::class)
                 ->where('processor_components.id', '!=', $component->id)
                 ->pluck('components.id'),
-        ])->flatten();
+        ]);
     }
 
     public function getDynamicallyCompatible($component, array $selection): Collection

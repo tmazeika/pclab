@@ -3,6 +3,7 @@
 namespace PCForge\Providers;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use PCForge\Models\ChassisComponent;
 use PCForge\Models\CoolingComponent;
@@ -32,6 +33,10 @@ class DBServiceProvider extends ServiceProvider
             'processor'   => ProcessorComponent::class,
             'storage'     => StorageComponent::class,
         ]);
+
+        //DB::listen(function($sql) {
+        //    var_dump($sql->sql);
+        //});
     }
 
     /**

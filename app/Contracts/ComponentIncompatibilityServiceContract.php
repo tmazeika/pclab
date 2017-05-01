@@ -6,5 +6,5 @@ use Illuminate\Support\Collection;
 
 interface ComponentIncompatibilityServiceContract
 {
-    public function getIncompatibilities(array $selection): Collection;
+    public function getIncompatibilities(): Collection;
 }
