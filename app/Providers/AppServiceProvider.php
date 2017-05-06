@@ -7,8 +7,8 @@ use PCForge\Contracts\BraintreeServiceContract;
 use PCForge\Contracts\ComponentRepositoryContract;
 use PCForge\Contracts\ComponentSelectionServiceContract;
 use PCForge\Repositories\ComponentRepository;
-use PCForge\Repositories\ComponentSelectionService;
 use PCForge\Services\BraintreeService;
+use PCForge\Services\ComponentSelectionService;
 
 class AppServiceProvider extends ServiceProvider
 {

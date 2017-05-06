@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Repositories;
+namespace PCForge\Services;
 
 use PCForge\Contracts\ComponentSelectionServiceContract;
 
