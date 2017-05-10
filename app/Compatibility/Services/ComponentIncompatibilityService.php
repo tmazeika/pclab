@@ -28,33 +28,32 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
     public function getIncompatibilities(): Collection
     {
         $selection = $this->componentSelectionService->selection();
-        $components = Component::all();
-        $availableComponents = $components->where('is_available', true);
+        $components = Component::pluck('id');
+        $availableComponents = Component::select('id', 'child_id', 'child_type')->where('is_available', true)->with('child')->get();
+        $availableComponentIds = $availableComponents->pluck('id');
         $compatibility = new Graph();
 
         // create vertices
-        $availableComponents
-            ->pluck('id')
-            ->each(function (int $id) use ($compatibility) {
-                $compatibility->createVertex($id);
-            });
+        $availableComponentIds->each(function (int $id) use ($compatibility) {
+            $compatibility->createVertex($id);
+        });
 
         $incompatibility = $compatibility->createGraphClone();
 
         // create edges between all compatible components and between all incompatible components
-        $availableComponents->each(function (Component $component) use ($selection, $compatibility, $incompatibility) {
+        $availableComponents->each(function (Component $component) use ($selection, $compatibility, $incompatibility, $availableComponentIds) {
             /** @var ComponentChild $child */
             $child = $component->child;
             /** @var CompatibilityProvider $provider */
             $provider = $child->compatibilityProvider();
 
-            //$start = microtime(true);
             // incompatibility
             $this->createEdges(
                 $provider->getStaticallyIncompatible($child),
                 $provider->getDynamicallyIncompatible($child, $selection),
                 $incompatibility,
-                $component->id
+                $component->id,
+                $availableComponentIds
             );
 
             // compatibility
@@ -62,9 +61,9 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
                 $provider->getStaticallyCompatible($child),
                 $provider->getDynamicallyCompatible($child, $selection),
                 $compatibility,
-                $component->id
+                $component->id,
+                $availableComponentIds
             );
-            //dd(((microtime(true) - $start) * 1000).' ms');
         });
 
         $computedCompatibilities = $this->computeCompatibilities($compatibility, $incompatibility);
@@ -85,19 +84,20 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
                 });
         }
 
-        return $components->whereNotIn('id', $compatibilities);
+        return $components
+            ->diff($compatibilities)
+            ->flatten();
     }
 
-    private function createEdges(Collection $static, Collection $dynamic, Graph $graph, int $id): void
+    private function createEdges(Collection $static, Collection $dynamic, Graph $graph, int $id, Collection $availableComponentIds): void
     {
         $vertex = $graph->getVertex($id);
 
         $static
             ->flatten()
-            ->union($dynamic
-                ->flatten())
-            ->filter(function (int $id) {
-                return Component::find($id)->is_available;
+            ->union($dynamic->flatten())
+            ->filter(function (int $id) use ($availableComponentIds) {
+                return $availableComponentIds->contains($id);
             })
             ->map(function (int $id) use ($graph) {
                 return $graph->getVertex($id);
@@ -127,11 +127,6 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
             $compatibilityCopy = $compatibility->createGraphClone();
             $incompatibilityVertex = $incompatibility->getVertex($compatibilityVertex->getId());
 
-            //if ($compatibilityVertex->getId() === 13) {
-            //    dump(Component::find($compatibilityVertex->getId())->name);
-            //    $this->ddGraph($incompatibility);
-            //}
-
             $incompatibilityVertices
                 // choose incompatibility vertices that are incident to the selected compatibility vertex
                 ->filter(function (Vertex $otherIncompatibilityVertex) use ($incompatibilityVertex) {
@@ -145,14 +140,8 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
                 // remove all incompatibility vertices that are incident to the selected compatibility vertex from the
                 // compatibility graph
                 ->each(function (Vertex $incompatibilityVertex) use ($compatibilityCopy) {
-                    //$compatibilityCopy->getVertex($incompatibilityVertex->getId())->setAttribute('graphviz.color', 'red');
                     $compatibilityCopy->getVertex($incompatibilityVertex->getId())->destroy();
                 });
-
-            //if ($compatibilityVertex->getId() === 13) {
-            //    dump(Component::find($compatibilityVertex->getId())->name);
-            //    $this->ddGraph($compatibilityCopy);
-            //}
 
             return [
                 $compatibilityVertex->getId() => $this->verticesToIds(

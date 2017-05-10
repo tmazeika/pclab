@@ -22,7 +22,7 @@ class CreateComponentsTable extends Migration
             $table->morphs('child');
 
             $table->string('asin')->index()->unique();
-            $table->boolean('is_available')->default(true); // TODO: false
+            $table->boolean('is_available')->default(false);
             $table->string('name');
             $table->integer('price')->unsigned()->default(0);
             $table->smallInteger('watts_usage')->unsigned();

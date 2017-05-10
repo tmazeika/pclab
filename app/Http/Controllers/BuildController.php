@@ -27,7 +27,10 @@ class BuildController extends Controller
     {
         $incompatibilities = $this->componentIncompatibilityService->getIncompatibilities();
 
-        $components = Component::all()
+        $components = Component
+            ::select('id', 'component_type_id', 'child_id', 'child_type')
+            ->with('child')
+            ->get()
             ->each(function (Component $component) use ($incompatibilities) {
                 $component->child->disabled = $incompatibilities->contains($component->id);
             })
@@ -48,10 +51,8 @@ class BuildController extends Controller
     {
         $this->componentSelectionService->select($request->input('id'), $request->input('count'));
 
-        $incompatibilities = $this->componentIncompatibilityService->getIncompatibilities();
-
         return response()->json([
-            'disable' => $incompatibilities->pluck('id')->toArray(),
+            'disable' => $this->componentIncompatibilityService->getIncompatibilities(),
         ]);
     }
 }

@@ -4,7 +4,6 @@ namespace PCForge\Compatibility\Providers;
 
 use Illuminate\Support\Collection;
 use PCForge\Contracts\ComponentRepositoryContract;
-use PCForge\Models\Component;
 use PCForge\Models\MotherboardComponent;
 use PCForge\Models\ProcessorComponent;
 

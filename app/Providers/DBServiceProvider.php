@@ -34,8 +34,12 @@ class DBServiceProvider extends ServiceProvider
             'storage'     => StorageComponent::class,
         ]);
 
-        //DB::listen(function($sql) {
-        //    var_dump($sql->sql);
+        //$i = 1;
+
+        //DB::listen(function($sql) use (&$i) {
+            //echo $i++ . ':';
+            //var_dump($i++.': '.$sql->sql);
+            //var_dump($sql->bindings);
         //});
     }
 
