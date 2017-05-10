@@ -66,23 +66,23 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
             );
         });
 
-        $computedCompatibilities = $this->computeCompatibilities($compatibility, $incompatibility);
-
-        if (empty($selection)) {
-            $compatibilities = $computedCompatibilities
-                ->filter(function (Collection $adjacentIds) {
-                    return $adjacentIds->isNotEmpty();
-                })
-                ->flatten();
-        } else {
-            $compatibilities = $computedCompatibilities
-                ->filter(function (Collection $adjacentIds, int $id) use ($selection) {
-                    return array_key_exists($id, $selection);
-                })
-                ->reduce(function ($carry, Collection $adjacentIds) {
-                    return $carry ? $carry->intersect($adjacentIds) : $adjacentIds;
-                });
-        }
+        $compatibilities = $this->computeCompatibilities($compatibility, $incompatibility)
+            ->when(empty($selection), function (Collection $collection) {
+                return $collection
+                    ->filter(function (Collection $adjacentIds) {
+                        return $adjacentIds->count() > 1;
+                    })
+                    ->flatten();
+            })
+            ->when(!empty($selection), function (Collection $collection) use ($selection) {
+                return $collection
+                    ->filter(function (Collection $adjacentIds, int $id) use ($selection) {
+                        return array_key_exists($id, $selection);
+                    })
+                    ->reduce(function ($carry, Collection $adjacentIds) {
+                        return $carry ? $carry->intersect($adjacentIds) : $adjacentIds;
+                    });
+            });
 
         return $components
             ->diff($compatibilities)
@@ -116,6 +116,8 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
     {
         $incompatibilityVertices = collect($incompatibility->getVertices()->getVector());
 
+        //$this->ddGraph($compatibility);
+
         /**
          * 1. Select a compatibility vertex.
          * 2. Go to the incompatibility graph and remove all incident vertices with the selected compatibility vertex
@@ -124,8 +126,9 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
          *    compatible with the selected compatibility vertex.
          */
         return collect($compatibility->getVertices()->getVector())->mapWithKeys(function (Vertex $compatibilityVertex) use ($compatibility, $incompatibility, $incompatibilityVertices) {
+            $id = $compatibilityVertex->getId();
             $compatibilityCopy = $compatibility->createGraphClone();
-            $incompatibilityVertex = $incompatibility->getVertex($compatibilityVertex->getId());
+            $incompatibilityVertex = $incompatibility->getVertex($id);
 
             $incompatibilityVertices
                 // choose incompatibility vertices that are incident to the selected compatibility vertex
@@ -143,10 +146,8 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
                     $compatibilityCopy->getVertex($incompatibilityVertex->getId())->destroy();
                 });
 
-            return [
-                $compatibilityVertex->getId() => $this->verticesToIds(
-                    (new DepthFirst($compatibilityCopy->getVertices()->getVector()[0]))->getVertices()),
-            ];
+            return [$compatibilityVertex->getId() =>
+                        $this->verticesToIds((new DepthFirst($compatibilityCopy->getVertices()->getMap()[$id]))->getVertices())];
         });
     }
 
