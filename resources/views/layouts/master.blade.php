@@ -20,7 +20,7 @@
 
     <title>@yield('title') &mdash; PCForge</title>
 </head>
-<body class="dark-bg">
+<body class="light-bg">
 @include('partials.header')
 @yield('content')
 @include('partials.footer')

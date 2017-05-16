@@ -8,14 +8,13 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use InvalidArgumentException;
-use PCForge\Events\ComponentModified;
 use PCForge\Models\Component;
 
 class UpdateAmazonComponents implements ShouldQueue
 {
-    const MAX_ASINS_PER_REQUEST = 10;
-
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    const MAX_ASINS_PER_REQUEST = 10;
 
     const ENDPOINT = 'webservices.amazon.com';
 
@@ -58,29 +57,11 @@ class UpdateAmazonComponents implements ShouldQueue
         $xml = simplexml_load_file($this->getAwsRequestUrl($params));
 
         foreach ($xml->Items->Item as $item) {
-            $asin = $item->ASIN;
-            $available = false;
-            $currentPrice = 0;
-
-            if (intval($item->Offers->TotalOffers) > 0) {
-                foreach ($item->Offers->Offer as $offer) {
-                    $listing = $offer->OfferListing;
-                    $available = strval($listing->AvailabilityAttributes->AvailabilityType) === 'now'
-                        && intval($listing->AvailabilityAttributes->MaximumHours) === 0
-                        && intval($listing->IsEligibleForPrime) === 1;
-                    $currentPrice = intval($listing->Price->Amount);
-
-                    if ($available) {
-                        break;
-                    }
-                }
-            }
-
-            Component::where('asin', $asin)->update([
-                'is_available' => $available,
-                'price'        => $currentPrice,
-            ]);
+            $this->updateComponent($item);
         }
+
+        // TODO: hopefully this happens before any other requests try to access the updated (and now unlocked) DB...
+        cache()->tags('sel_incompat')->flush();
     }
 
     private function getAwsRequestUrl(array $params): string
@@ -96,5 +77,43 @@ class UpdateAmazonComponents implements ShouldQueue
         $signature = base64_encode(hash_hmac('sha256', $strToSign, env('AWS_SECRET_ACCESS_KEY'), true));
 
         return 'http://' . self::ENDPOINT . self::URI . "?$canonQueryStr&Signature=" . rawurlencode($signature);
+    }
+
+    /**
+     * Updates the persisted component associated with the given item.
+     *
+     * @param $item
+     */
+    function updateComponent($item): void
+    {
+        $price = $this->getItemPrice($item);
+
+        Component::where('asin', $item->ASIN)->update([
+            'is_available' => $price > 0,
+            'price'        => $price,
+        ]);
+    }
+
+    /**
+     * Gets the price of an item. A price of 0 indicates that the item is not available for purchase.
+     *
+     * @param $item
+     *
+     * @return int
+     */
+    private function getItemPrice($item): int
+    {
+        $listing = collect($item->Offers->Offer)
+            ->map(function ($offer) {
+                return $offer->OfferListing;
+            })
+            ->filter(function ($listing) {
+                return strval($listing->AvailabilityAttributes->AvailabilityType) === 'now'
+                    && intval($listing->AvailabilityAttributes->MaximumHours) === 0
+                    && intval($listing->IsEligibleForPrime) === 1;
+            })
+            ->first();
+
+        return $listing ? intval($listing->Price->Amount) : 1;
     }
 }

@@ -6,7 +6,7 @@ $bar-border-size: 3px;
 $flex-item-spacing: 2em;
 $product-width: 15em;
 $product-padding: 1em;
-$product-selected-box-shadow-width: 15px;
+$product-selected-border-width: 2px;
 
 // fonts
 $heading-font: 'PT Sans Narrow', sans-serif;
@@ -16,6 +16,7 @@ $normal-font: 'PT Sans', sans-serif;
 $accent-color: #61d43a;
 $dark-accent-color: darken($accent-color, 10%);
 $dark-color: #33333a;
+$dark-light-color: #e1e1e1;
 $dark-text: #333;
 $dim-color: #999;
 $light-accent-color: lighten($accent-color, 5%);

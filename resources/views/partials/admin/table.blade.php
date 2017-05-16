@@ -20,7 +20,7 @@
                 </thead>
                 <tbody>
                 @foreach($items as $item)
-                    <tr {!! $loop->index % 2 === 0 ? 'style="background-color: #222229"' : '' !!}>
+                    <tr {!! $loop->index % 2 === 0 ? 'style="background-color: #ddd"' : '' !!}>
                         @foreach($columns as $column)
                             <td class="text">{{ $item->$column }}</td>
                         @endforeach

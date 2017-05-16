@@ -1,4 +1,4 @@
-<header class="bar bar-border-bottom light-bg">
+<header class="bar light-bg">
     <div class="content-container flex-container">
         <a href="{{ url('/') }}">@include('svg.logo')</a>
         <div class="flex-fill"></div>

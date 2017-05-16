@@ -1,22 +1,19 @@
 .product {
   cursor: pointer;
 
-  transition: background-color $anim-time, box-shadow $anim-time, opacity $anim-time;
+  transition: opacity $anim-time;
 
   width: $product-width;
   padding: $product-padding;
 
   &:not(.selected):not(.disabled):hover {
-    background-color: $light-dark-color;
+    border: $product-selected-border-width solid $dark-light-color;
+    padding: calc(#{$product-padding} - #{$product-selected-border-width});
   }
 
   &.selected {
-    background-color: $subtle-accent-color;
-    box-shadow: 0 0 $product-selected-box-shadow-width $accent-color;
-
-    &:hover {
-      background-color: $light-subtle-accent-color;
-    }
+    border: $product-selected-border-width solid $accent-color;
+    padding: calc(#{$product-padding} - #{$product-selected-border-width});
   }
 
   &.disabled {

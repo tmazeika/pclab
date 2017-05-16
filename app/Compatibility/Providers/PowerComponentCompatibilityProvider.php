@@ -12,6 +12,12 @@ use PCForge\Models\StorageComponent;
 
 class PowerComponentCompatibilityProvider implements CompatibilityProvider
 {
+    /** The computed system wattage should be reported in increments of this number. */
+    private const WATTS_INCREMENT = 50;
+
+    /** The least number of watts above the computed system wattage the power supply must be. */
+    private const WATTS_BUFFER = 150;
+
     /** @var ComponentRepositoryContract $components */
     private $components;
 
@@ -19,12 +25,6 @@ class PowerComponentCompatibilityProvider implements CompatibilityProvider
     {
         $this->components = $componentRepo;
     }
-
-    /** The computed system wattage should be reported in increments of this number. */
-    private const WATTS_INCREMENT = 50;
-
-    /** The least number of watts above the computed system wattage the power supply must be. */
-    private const WATTS_BUFFER = 150;
 
     public function getStaticallyCompatible($component): Collection
     {
@@ -85,10 +85,15 @@ class PowerComponentCompatibilityProvider implements CompatibilityProvider
 
     private function computeSystemWattage(array $selection): int
     {
-        $systemWattage = collect($selection)->map(function (int $count, int $id) {
-            return Component::find($id)->first()->watts_usage * $count;
-        })->sum() + self::WATTS_BUFFER;
+        /** @var Collection $components */
+        $components = Component::select('id', 'watts_usage')->whereIn('id', array_keys($selection))->get();
 
-        return ceil((float)$systemWattage / self::WATTS_INCREMENT) * self::WATTS_INCREMENT;
+        $systemWattage = collect($selection)
+            ->map(function (int $count, int $id) use ($components) {
+                return $components->where('id', $id)->first()->watts_usage * $count;
+            })
+            ->sum();
+
+        return ceil((float)($systemWattage + self::WATTS_BUFFER) / self::WATTS_INCREMENT) * self::WATTS_INCREMENT;
     }
 }
