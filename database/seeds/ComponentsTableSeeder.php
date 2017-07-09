@@ -71,7 +71,7 @@ class ComponentsTableSeeder extends Seeder
                 'component_type_id' => 7,
                 'child_id'          => 1,
                 'child_type'        => 'storage',
-                'asin'              => 'B00OBRE5UE',
+                'asin'              => 'B00OBRFFAS',
                 'name'              => 'Samsung 850 EVO',
                 'watts_usage'       => 2,
                 'weight'            => 54,

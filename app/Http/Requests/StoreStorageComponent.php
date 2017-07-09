@@ -24,10 +24,10 @@ class StoreStorageComponent extends FormRequest
     public function rules()
     {
         return [
-            'component_id'     => 'required|exists:components,id|unique:storage_components',
-            'capacity'         => 'required|integer|min:0',
-            'is_ssd'           => 'required|boolean',
-            'storage_width_id' => 'required|exists:storage_widths,id',
+            'component_id' => 'required|exists:components,id|unique:storage_components',
+            'capacity'     => 'required|integer|min:0',
+            'is_ssd'       => 'required|boolean',
+            'width'        => 'required|string|in:2p5,3p5',
         ];
     }
 }

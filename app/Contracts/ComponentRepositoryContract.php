@@ -2,9 +2,17 @@
 
 namespace PCForge\Contracts;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 interface ComponentRepositoryContract
 {
-    public function withParent($modelClass): Builder;
+    /**
+     * Gets a collection of all components
+     *
+     * @param array $selects
+     * @param array $withs
+     *
+     * @return Collection
+     */
+    public function all(array $selects = ['*'], array $withs = []): Collection;
 }

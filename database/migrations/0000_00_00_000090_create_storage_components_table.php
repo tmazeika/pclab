@@ -19,9 +19,7 @@ class CreateStorageComponentsTable extends Migration
             // specs
             $table->integer('capacity')->unsigned();
             $table->boolean('is_ssd');
-
-            $table->integer('storage_width_id')->unsigned();
-            $table->foreign('storage_width_id')->references('id')->on('storage_widths')->onDelete('restrict');
+            $table->string('width')->unsigned();
 
             $table->timestamps();
         });

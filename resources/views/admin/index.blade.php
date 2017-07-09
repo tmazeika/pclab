@@ -20,7 +20,6 @@
             \PCForge\Models\ProcessorComponent::class,
             \PCForge\Models\Socket::class,
             \PCForge\Models\StorageComponent::class,
-            \PCForge\Models\StorageWidth::class,
         ], 'model')
     </main>
 @endsection

@@ -10,15 +10,10 @@ class StorageComponent extends ComponentChild
     protected $fillable = [
         'capacity',
         'is_ssd',
-        'size',
+        'width',
     ];
 
     protected $presenter = StorageComponentPresenter::class;
 
     protected $compatibilityProvider = StorageComponentCompatibilityProvider::class;
-
-    public function storage_size()
-    {
-        return $this->hasMany(StorageWidth::class);
-    }
 }

@@ -114,6 +114,8 @@ class UpdateAmazonComponents implements ShouldQueue
             })
             ->first();
 
-        return $listing ? intval($listing->Price->Amount) : 1;
+        $price = $listing ? intval($listing->Price->Amount) : 0;
+
+        return $price === 0 ? 1 : $price; // TODO: don't make everything available
     }
 }

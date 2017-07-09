@@ -10,6 +10,9 @@ abstract class ComponentChild extends Model
 {
     use HasPresenterTrait;
 
+    /** @var int $selectCount */
+    public $selectCount = 0;
+
     public static function featuresView()
     {
         return 'partials.build.' . self::typeName() . '-component';

@@ -3,14 +3,14 @@
 namespace PCForge\Presenters;
 
 use Illuminate\Database\Eloquent\Model;
-use PCForge\Contracts\ComponentSelectionServiceContract;
+use PCForge\Contracts\SelectionStorageServiceContract;
 
 trait ComponentPresenterTrait
 {
-    /** @var ComponentSelectionServiceContract $componentSelectionService */
+    /** @var SelectionStorageServiceContract $componentSelectionService */
     private $componentSelectionService;
 
-    public function __construct(ComponentSelectionServiceContract $componentSelectionService, Model $entity)
+    public function __construct(SelectionStorageServiceContract $componentSelectionService, Model $entity)
     {
         /** @noinspection PhpUndefinedClassInspection */
         parent::__construct($entity);

@@ -4,7 +4,7 @@ namespace PCForge\Http\Controllers;
 
 use Illuminate\Support\Collection;
 use PCForge\Contracts\ComponentIncompatibilityServiceContract;
-use PCForge\Contracts\ComponentSelectionServiceContract;
+use PCForge\Contracts\SelectionStorageServiceContract;
 use PCForge\Http\Requests\SelectComponent;
 use PCForge\Models\Component;
 
@@ -13,11 +13,11 @@ class BuildController extends Controller
     /** @var ComponentIncompatibilityServiceContract $componentIncompatibilityService */
     private $componentIncompatibilityService;
 
-    /** @var ComponentSelectionServiceContract $componentSelectionService */
+    /** @var SelectionStorageServiceContract $componentSelectionService */
     private $componentSelectionService;
 
     public function __construct(ComponentIncompatibilityServiceContract $componentIncompatibilityService,
-                                ComponentSelectionServiceContract $componentSelectionService)
+                                SelectionStorageServiceContract $componentSelectionService)
     {
         $this->componentIncompatibilityService = $componentIncompatibilityService;
         $this->componentSelectionService = $componentSelectionService;

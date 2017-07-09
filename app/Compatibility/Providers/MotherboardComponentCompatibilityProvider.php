@@ -6,10 +6,12 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use PCForge\Contracts\ComponentRepositoryContract;
 use PCForge\Models\ChassisComponent;
+use PCForge\Models\Component;
 use PCForge\Models\CoolingComponent;
 use PCForge\Models\MemoryComponent;
 use PCForge\Models\MotherboardComponent;
 use PCForge\Models\ProcessorComponent;
+use PCForge\Models\StorageComponent;
 
 class MotherboardComponentCompatibilityProvider implements CompatibilityProvider
 {
@@ -104,6 +106,18 @@ class MotherboardComponentCompatibilityProvider implements CompatibilityProvider
 
     public function getDynamicallyIncompatible($component, array $selection): Collection
     {
-        return collect();
+        // TODO: DRY
+        $storageCount = Component
+            ::whereIn('id', array_keys($selection))
+            ->where('child_type', 'storage')
+            ->get()
+            ->reduce(function ($carry, Component $component) use ($selection) {
+                return $selection[$component->id] + $carry ?? 0;
+            }, 0);
+
+        // storage
+        return $storageCount > $component-> Component
+            ::where('child_type', 'storage')
+            ->pluck('id');
     }
 }

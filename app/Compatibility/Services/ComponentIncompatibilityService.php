@@ -3,6 +3,7 @@
 namespace PCForge\Compatibility\Services;
 
 use Exception;
+use Fhaculty\Graph\Edge\Base as Edge;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Set\Vertices;
 use Fhaculty\Graph\Vertex;
@@ -11,87 +12,86 @@ use Graphp\GraphViz\GraphViz;
 use Illuminate\Support\Collection;
 use PCForge\Compatibility\Providers\CompatibilityProvider;
 use PCForge\Contracts\ComponentIncompatibilityServiceContract;
-use PCForge\Contracts\ComponentSelectionServiceContract;
+use PCForge\Contracts\SelectionStorageServiceContract;
 use PCForge\Models\Component;
 use PCForge\Models\ComponentChild;
 
 class ComponentIncompatibilityService implements ComponentIncompatibilityServiceContract
 {
-    /** @var ComponentSelectionServiceContract $componentSelectionService */
-    private $componentSelectionService;
+    /** @var SelectionStorageServiceContract $selectionStorage */
+    private $selectionStorage;
 
-    public function __construct(ComponentSelectionServiceContract $componentSelectionService)
+    public function __construct(SelectionStorageServiceContract $selectionStorage)
     {
-        $this->componentSelectionService = $componentSelectionService;
+        $this->componentSelectionService = $selectionStorage;
     }
 
     public function getIncompatibilities(): Collection
     {
         $selection = $this->componentSelectionService->selection();
+        $this->selectionStorage->
 
         ksort($selection);
 
-        return cache()->tags('sel_incompat')->rememberForever(md5(json_encode($selection)), function () use ($selection) {
-            $components = Component::pluck('id');
-            $availableComponents = Component::select('id', 'child_id', 'child_type')->where('is_available', true)->with('child')->get();
-            $availableComponentIds = $availableComponents->pluck('id');
-            $compatibility = new Graph();
+        $components = Component::pluck('id');
+        $availableComponents = Component::select('id', 'child_id', 'child_type')->where('is_available', true)->with('child')->get();
+        $availableComponentIds = $availableComponents->pluck('id');
+        $compatibility = new Graph();
 
-            // create vertices
-            $availableComponentIds->each(function (int $id) use ($compatibility) {
-                $compatibility->createVertex($id);
-            });
-
-            $incompatibility = $compatibility->createGraphClone();
-
-            // create edges between all compatible components and between all incompatible components
-            $availableComponents->each(function (Component $component) use ($selection, $compatibility, $incompatibility, $availableComponentIds) {
-                /** @var ComponentChild $child */
-                $child = $component->child;
-                /** @var CompatibilityProvider $provider */
-                $provider = $child->compatibilityProvider();
-
-                // incompatibility
-                $this->createEdges(
-                    $provider->getStaticallyIncompatible($child),
-                    $provider->getDynamicallyIncompatible($child, $selection),
-                    $incompatibility,
-                    $component->id,
-                    $availableComponentIds
-                );
-
-                // compatibility
-                $this->createEdges(
-                    $provider->getStaticallyCompatible($child),
-                    $provider->getDynamicallyCompatible($child, $selection),
-                    $compatibility,
-                    $component->id,
-                    $availableComponentIds
-                );
-            });
-
-            $compatibilities = $this->computeCompatibilities($compatibility, $incompatibility)
-                ->when(empty($selection), function (Collection $collection) {
-                    return $collection
-                        ->filter(function (Collection $adjacentIds) {
-                            return $adjacentIds->count() > 1;
-                        })
-                        ->flatten();
-                })
-                ->when(!empty($selection), function (Collection $collection) use ($selection) {
-                    return $collection
-                        ->filter(function (Collection $adjacentIds, int $id) use ($selection) {
-                            return array_key_exists($id, $selection);
-                        })
-                        ->reduce(function ($carry, Collection $adjacentIds) {
-                            return $carry ? $carry->intersect($adjacentIds) : $adjacentIds;
-                        });
-                });
-
-            return $components
-                ->diff($compatibilities)
-                ->flatten();
+        // create vertices
+        $availableComponentIds->each(function (int $id) use ($compatibility) {
+            $compatibility->createVertex($id);
         });
+
+        $incompatibility = $compatibility->createGraphClone();
+
+        // create edges between all compatible components and between all incompatible components
+        $availableComponents->each(function (Component $component) use ($selection, $compatibility, $incompatibility, $availableComponentIds) {
+            /** @var ComponentChild $child */
+            $child = $component->child;
+            /** @var CompatibilityProvider $provider */
+            $provider = $child->compatibilityProvider();
+
+            // incompatibility
+            $this->createEdges(
+                $provider->getStaticallyIncompatible($child),
+                $provider->getDynamicallyIncompatible($child, $selection),
+                $incompatibility,
+                $component->id,
+                $availableComponentIds
+            );
+
+            // compatibility
+            $this->createEdges(
+                $provider->getStaticallyCompatible($child),
+                $provider->getDynamicallyCompatible($child, $selection),
+                $compatibility,
+                $component->id,
+                $availableComponentIds
+            );
+        });
+
+        $compatibilities = $this->computeCompatibilities($compatibility, $incompatibility)
+            ->when(empty($selection), function (Collection $collection) {
+                return $collection
+                    ->filter(function (Collection $adjacentIds) {
+                        return $adjacentIds->count() > 1;
+                    })
+                    ->flatten();
+            })
+            ->when(!empty($selection), function (Collection $collection) use ($selection) {
+                return $collection
+                    ->filter(function (Collection $adjacentIds, int $id) use ($selection) {
+                        return array_key_exists($id, $selection);
+                    })
+                    ->reduce(function ($carry, Collection $adjacentIds) {
+                        return $carry ? $carry->intersect($adjacentIds) : $adjacentIds;
+                    });
+            });
+
+        return $components
+            ->diff($compatibilities)
+            ->flatten();
     }
 
     private function createEdges(Collection $static, Collection $dynamic, Graph $graph, int $id, Collection $availableComponentIds): void
@@ -160,6 +160,51 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
         return collect($vertices->getVector())->map(function (Vertex $vertex) {
             return $vertex->getId();
         });
+    }
+
+    private function generateCompatibilityGraph(Graph $incompatibilityGraph, Graph $typeTree): Graph
+    {
+        $compatibilityGraph = $this->generateGraphComplement($incompatibilityGraph);
+        $vertices = $compatibilityGraph->getVertices()->getVector();
+
+        for ($i = 0; $i < count($vertices); $i++) {
+            for ($j = 0; $j < count($vertices); $j++) {
+                $t1 = $vertices[$i]->getAttribute('type');
+                $t2 = $vertices[$j]->getAttribute('type');
+                $distanceOverOne = !$typeTree->getEdges()->hasEdgeMatch(function (Edge $edge) use ($t1, $t2) {
+                    $fromType = $edge->getVerticesStart()->getVertexFirst()->getAttribute('type');
+                    $toType = $edge->getVerticesTarget()->getVertexFirst()->getAttribute('type');
+
+                    return ($fromType === $t1 && $toType === $t2) || ($fromType === $t2 && $toType === $t1);
+                });
+
+                if ($t1 !== $t2 && $distanceOverOne) {
+                    $vertices[$i]->getEdgesTo($vertices[$j])->getEdgeFirst()->destroy();
+                };
+            }
+        }
+
+        return $compatibilityGraph;
+    }
+
+    private function generateGraphComplement(Graph $g): Graph
+    {
+        $complement = $g->createGraphClone();
+        $vertices = $complement->getVertices()->getVector();
+
+        for ($i = 0; $i < count($vertices); $i++) {
+            for ($j = 0; $j < count($vertices); $j++) {
+                $edges = $vertices[$i]->getEdgesTo($vertices[$j]);
+
+                if ($edges->count()) {
+                    $edges->getEdgeFirst()->destroy();
+                } else {
+                    $vertices[$i]->createEdge($vertices[$j]);
+                }
+            }
+        }
+
+        return $complement;
     }
 
     private function ddGraph(Graph $graph): void
