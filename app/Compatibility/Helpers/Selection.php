@@ -12,6 +12,7 @@ class Selection
 
     public function select(ComponentChild $component): void
     {
+        // set to 1 if not already set
         $component->selectCount = $component->selectCount ?: 1;
 
         $this->components->push($component);
@@ -21,16 +22,19 @@ class Selection
     {
         $component->selectCount = 0;
 
-        $this->components = $this->components->reject(function (ComponentChild $component) {
-            return $component->selectCount === 0;
-        });
+        // remove components that aren't selected
+        $this->components = $this->components
+            ->reject(function (ComponentChild $component) {
+                return $component->selectCount === 0;
+            });
     }
 
     public function getAllOfType(string $class): Collection
     {
-        return $this->components->filter(function (ComponentChild $component) use ($class) {
-            return get_class($component) === $class;
-        });
+        return $this->components
+            ->filter(function (ComponentChild $component) use ($class) {
+                return get_class($component) === $class;
+            });
     }
 
     public function getAll(): Collection

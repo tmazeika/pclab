@@ -5,6 +5,16 @@ namespace PCForge\Models;
 use PCForge\Compatibility\Providers\ProcessorComponentCompatibilityProvider;
 use PCForge\Presenters\ProcessorComponentPresenter;
 
+/**
+ * @property int id
+ * @property int cores
+ * @property bool has_apu
+ * @property bool has_stock_cooler
+ * @property int speed
+ * @property int socket_id
+ *
+ * @property Socket socket
+ */
 class ProcessorComponent extends ComponentChild
 {
     protected $fillable = [

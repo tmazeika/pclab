@@ -27,26 +27,6 @@ class StorageComponentCompatibilityProvider implements CompatibilityProvider
         $this->components = $componentRepo;
     }
 
-    public function getStaticallyCompatible($component): Collection
-    {
-        return collect([
-            $this->components->withParent(ChassisComponent::class)
-                ->pluck('components.id'),
-            $this->components->withParent(MotherboardComponent::class)
-                ->pluck('components.id'),
-            $this->components->withParent(PowerComponent::class)
-                ->pluck('components.id'),
-            $component->id,
-        ]);
-    }
-
-    public function getStaticallyIncompatible($component): Collection
-    {
-        return /*$this->components->withParent(MotherboardComponent::class)
-            ->where('sata_slots', 0)
-            ->pluck('components.id')*/collect();
-    }
-
     public function getDynamicallyCompatible($component, array $selection): Collection
     {
         return collect();

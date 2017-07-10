@@ -3,7 +3,14 @@
 namespace PCForge\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
+/**
+ * @property int id
+ *
+ * @property Collection chassis_components
+ * @property Collection motherboard_components
+ */
 class FormFactor extends Model
 {
     public function chassis_components()

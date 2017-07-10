@@ -5,6 +5,14 @@ namespace PCForge\Models;
 use PCForge\Compatibility\Providers\MemoryComponentCompatibilityProvider;
 use PCForge\Presenters\MemoryComponentPresenter;
 
+/**
+ * @property int id
+ * @property int count
+ * @property int height
+ * @property int capacity_each
+ * @property int ddr_gen
+ * @property int pins
+ */
 class MemoryComponent extends ComponentChild
 {
     protected $fillable = [

@@ -4,28 +4,29 @@ namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\IncompatibilityComparator;
 use PCForge\Models\MotherboardComponent;
+use PCForge\Models\PowerComponent;
 use PCForge\Models\ProcessorComponent;
 
-class MotherboardProcessorComparator implements IncompatibilityComparator
+class MotherboardPowerComparator implements IncompatibilityComparator
 {
     // motherboard
     public $select0 = [
         'socket_id',
     ];
 
-    // processor
+    // power
     public $select1 = [
         'socket_id',
     ];
 
     /**
      * @param MotherboardComponent $motherboard
-     * @param ProcessorComponent $processor
+     * @param PowerComponent $power
      *
      * @return bool
      */
-    public function isIncompatible($motherboard, $processor): bool
+    public function isIncompatible($motherboard, $power): bool
     {
-        return $motherboard->socket_id !== $processor->socket_id;
+        return $power->atx12v_pins < $motherboard->atx12v_pins;
     }
 }

@@ -5,6 +5,30 @@ namespace PCForge\Models;
 use PCForge\Compatibility\Providers\MotherboardComponentCompatibilityProvider;
 use PCForge\Presenters\MotherboardComponentPresenter;
 
+/**
+ * @property int id
+ * @property int audio_headers
+ * @property int fan_headers
+ * @property int usb2_headers
+ * @property int usb3_headers
+ * @property int form_factor_id
+ * @property bool has_displayport_out
+ * @property bool has_dvi_out
+ * @property bool has_hdmi_out
+ * @property bool has_vga_out
+ * @property int pcie3_slots
+ * @property bool supports_sli
+ * @property int dimm_gen
+ * @property int dimm_pins
+ * @property int dimm_slots
+ * @property int dimm_max_capacity
+ * @property int atx12v_pins
+ * @property int socket_id
+ * @property int sata_slots
+ *
+ * @property FormFactor form_factor
+ * @property Socket socket
+ */
 class MotherboardComponent extends ComponentChild
 {
     protected $fillable = [

@@ -26,24 +26,6 @@ class PowerComponentCompatibilityProvider implements CompatibilityProvider
         $this->components = $componentRepo;
     }
 
-    public function getStaticallyCompatible($component): Collection
-    {
-        return $this->components->withParent(ChassisComponent::class)
-            ->pluck('components.id');
-    }
-
-    public function getStaticallyIncompatible($component): Collection
-    {
-        return collect([
-            $this->components->withParent(MotherboardComponent::class)
-                ->where('atx12v_pins', '>', $component->atx12v_pins)
-                ->pluck('components.id'),
-            $this->components->withParent(PowerComponent::class)
-                ->where('power_components.id', '!=', $component->id)
-                ->pluck('components.id'),
-        ]);
-    }
-
     public function getDynamicallyCompatible($component, array $selection): Collection
     {
         return collect();

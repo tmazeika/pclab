@@ -24,15 +24,6 @@ abstract class ComponentChild extends Model
         return strtolower(substr(class_basename(get_called_class()), 0, -strlen('Component')));
     }
 
-    public function compatibilityProvider(): CompatibilityProvider
-    {
-        if (!$this->compatibilityProvider || !class_exists($this->compatibilityProvider)) {
-            throw new Exception('Invalid or nonexistent compatibilityProvider class');
-        }
-
-        return app()->make($this->compatibilityProvider);
-    }
-
     public function parent()
     {
         return $this->morphOne(Component::class, 'child');

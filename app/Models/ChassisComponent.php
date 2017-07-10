@@ -2,9 +2,25 @@
 
 namespace PCForge\Models;
 
-use PCForge\Compatibility\Providers\ChassisComponentCompatibilityProvider;
+use Illuminate\Support\Collection;
 use PCForge\Presenters\ChassisComponentPresenter;
 
+/**
+ * @property int id
+ * @property int max_cooling_fan_height
+ * @property int max_graphics_length_blocked
+ * @property int max_graphics_length_full
+ * @property int fan_headers
+ * @property int usb2_headers
+ * @property int usb3_headers
+ * @property bool uses_sata_power
+ * @property int 2p5_bays
+ * @property int 3p5_bays
+ * @property int adaptable_bays
+ *
+ * @property Collection form_factors
+ * @property Collection radiators
+ */
 class ChassisComponent extends ComponentChild
 {
     protected $fillable = [
@@ -22,8 +38,6 @@ class ChassisComponent extends ComponentChild
     ];
 
     protected $presenter = ChassisComponentPresenter::class;
-
-    protected $compatibilityProvider = ChassisComponentCompatibilityProvider::class;
 
     public function form_factors()
     {

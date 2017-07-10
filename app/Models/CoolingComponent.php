@@ -2,9 +2,19 @@
 
 namespace PCForge\Models;
 
-use PCForge\Compatibility\Providers\CoolingComponentCompatibilityProvider;
+use Illuminate\Support\Collection;
 use PCForge\Presenters\CoolingComponentPresenter;
 
+/**
+ * @property int id
+ * @property bool is_air
+ * @property int fan_width
+ * @property int height
+ * @property int max_memory_height
+ * @property int radiator_length
+ *
+ * @property Collection sockets
+ */
 class CoolingComponent extends ComponentChild
 {
     protected $fillable = [
@@ -16,8 +26,6 @@ class CoolingComponent extends ComponentChild
     ];
 
     protected $presenter = CoolingComponentPresenter::class;
-
-    protected $compatibilityProvider = CoolingComponentCompatibilityProvider::class;
 
     public function sockets()
     {
