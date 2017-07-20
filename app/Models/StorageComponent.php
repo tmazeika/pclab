@@ -2,14 +2,13 @@
 
 namespace PCForge\Models;
 
-use PCForge\Compatibility\Providers\StorageComponentCompatibilityProvider;
 use PCForge\Presenters\StorageComponentPresenter;
 
 /**
  * @property int id
  * @property int capacity
  * @property bool is_ssd
- * @property int width
+ * @property string width
  */
 class StorageComponent extends ComponentChild
 {
@@ -20,6 +19,4 @@ class StorageComponent extends ComponentChild
     ];
 
     protected $presenter = StorageComponentPresenter::class;
-
-    protected $compatibilityProvider = StorageComponentCompatibilityProvider::class;
 }

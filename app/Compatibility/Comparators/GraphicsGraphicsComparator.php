@@ -3,12 +3,7 @@
 namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\IncompatibilityComparator;
-use PCForge\Models\ChassisComponent;
-use PCForge\Models\CoolingComponent;
 use PCForge\Models\GraphicsComponent;
-use PCForge\Models\MemoryComponent;
-use PCForge\Models\MotherboardComponent;
-use PCForge\Models\ProcessorComponent;
 
 class GraphicsGraphicsComparator implements IncompatibilityComparator
 {
@@ -30,7 +25,6 @@ class GraphicsGraphicsComparator implements IncompatibilityComparator
      */
     public function isIncompatible($graphics0, $graphics1): bool
     {
-        // TODO: dynamic incompatibilities (PCI-E slots)
-        return $graphics0->id === $graphics1->id;
+        return $graphics0->id !== $graphics1->id;
     }
 }

@@ -10,6 +10,7 @@ use PCForge\Presenters\ChassisComponentPresenter;
  * @property int max_cooling_fan_height
  * @property int max_graphics_length_blocked
  * @property int max_graphics_length_full
+ * @property int audio_headers
  * @property int fan_headers
  * @property int usb2_headers
  * @property int usb3_headers
@@ -17,6 +18,9 @@ use PCForge\Presenters\ChassisComponentPresenter;
  * @property int 2p5_bays
  * @property int 3p5_bays
  * @property int adaptable_bays
+ * @property int cage_2p5_bays
+ * @property int cage_3p5_bays
+ * @property int cage_adaptable_bays
  *
  * @property Collection form_factors
  * @property Collection radiators
@@ -35,6 +39,9 @@ class ChassisComponent extends ComponentChild
         '2p5_bays',
         '3p5_bays',
         'adaptable_bays',
+        'cage_2p5_bays',
+        'cage_3p5_bays',
+        'cage_adaptable_bays',
     ];
 
     protected $presenter = ChassisComponentPresenter::class;

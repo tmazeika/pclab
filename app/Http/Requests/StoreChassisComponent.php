@@ -33,9 +33,13 @@ class StoreChassisComponent extends FormRequest
             'usb2_headers'                => 'required|integer|min:0',
             'usb3_headers'                => 'required|integer|min:0',
             'uses_sata_power'             => 'required|boolean',
+            'max_power_length'            => 'required|integer|min:0',
             '2p5_bays'                    => 'required|integer|min:0',
             '3p5_bays'                    => 'required|integer|min:0',
             'adaptable_bays'              => 'required|integer|min:0',
+            'cage_2p5_bays'               => 'required|integer|min:0',
+            'cage_3p5_bays'               => 'required|integer|min:0',
+            'cage_adaptable_bays'         => 'required|integer|min:0',
         ];
     }
 }

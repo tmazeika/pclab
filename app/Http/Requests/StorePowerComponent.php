@@ -29,6 +29,7 @@ class StorePowerComponent extends FormRequest
             'sata_powers'  => 'required|integer|min:0',
             'is_modular'   => 'required|boolean',
             'watts_out'    => 'required|integer|min:0',
+            'length'       => 'required|integer|min:0',
         ];
     }
 }

@@ -3,10 +3,7 @@
 namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\IncompatibilityComparator;
-use PCForge\Models\ChassisComponent;
 use PCForge\Models\CoolingComponent;
-use PCForge\Models\MemoryComponent;
-use PCForge\Models\MotherboardComponent;
 use PCForge\Models\ProcessorComponent;
 
 class CoolingProcessorComparator implements IncompatibilityComparator

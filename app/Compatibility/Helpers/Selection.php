@@ -10,6 +10,11 @@ class Selection
     /** @var Collection $components */
     private $components;
 
+    public function __construct(Collection $components)
+    {
+        $this->components = $components;
+    }
+
     public function select(ComponentChild $component): void
     {
         // set to 1 if not already set
@@ -40,10 +45,5 @@ class Selection
     public function getAll(): Collection
     {
         return $this->components;
-    }
-
-    public function setAll(Collection $components): void
-    {
-        $this->components = $components;
     }
 }

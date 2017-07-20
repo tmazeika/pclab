@@ -3,9 +3,7 @@
 namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\IncompatibilityComparator;
-use PCForge\Models\MotherboardComponent;
 use PCForge\Models\PowerComponent;
-use PCForge\Models\ProcessorComponent;
 
 class PowerPowerComparator implements IncompatibilityComparator
 {
@@ -27,7 +25,6 @@ class PowerPowerComparator implements IncompatibilityComparator
      */
     public function isIncompatible($power0, $power1): bool
     {
-        // TODO: dynamic incompatibilities
         return $power0->id !== $power1->id;
     }
 }

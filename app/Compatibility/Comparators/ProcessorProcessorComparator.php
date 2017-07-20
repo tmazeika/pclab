@@ -3,8 +3,6 @@
 namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\IncompatibilityComparator;
-use PCForge\Models\MotherboardComponent;
-use PCForge\Models\PowerComponent;
 use PCForge\Models\ProcessorComponent;
 
 class ProcessorProcessorComparator implements IncompatibilityComparator

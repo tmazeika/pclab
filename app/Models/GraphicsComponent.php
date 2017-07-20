@@ -2,7 +2,6 @@
 
 namespace PCForge\Models;
 
-use PCForge\Compatibility\Providers\GraphicsComponentCompatibilityProvider;
 use PCForge\Presenters\GraphicsComponentPresenter;
 
 /**
@@ -26,6 +25,4 @@ class GraphicsComponent extends ComponentChild
     ];
 
     protected $presenter = GraphicsComponentPresenter::class;
-
-    protected $compatibilityProvider = GraphicsComponentCompatibilityProvider::class;
 }

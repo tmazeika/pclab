@@ -24,6 +24,9 @@ class CreatePowerComponentsTable extends Migration
             $table->boolean('is_modular');
             $table->smallInteger('watts_out')->unsigned();
 
+            // physical
+            $table->smallInteger('length')->unsigned();
+
             $table->timestamps();
         });
     }

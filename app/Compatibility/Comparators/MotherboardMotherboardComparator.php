@@ -4,7 +4,6 @@ namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\IncompatibilityComparator;
 use PCForge\Models\MotherboardComponent;
-use PCForge\Models\ProcessorComponent;
 
 class MotherboardMotherboardComparator implements IncompatibilityComparator
 {
@@ -26,7 +25,6 @@ class MotherboardMotherboardComparator implements IncompatibilityComparator
      */
     public function isIncompatible($motherboard0, $motherboard1): bool
     {
-        // TODO: dynamic incompatibilities (storage counts)
         return $motherboard0->id !== $motherboard1->id;
     }
 }

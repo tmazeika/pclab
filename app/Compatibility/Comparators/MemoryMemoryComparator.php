@@ -3,12 +3,7 @@
 namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\IncompatibilityComparator;
-use PCForge\Models\ChassisComponent;
-use PCForge\Models\CoolingComponent;
-use PCForge\Models\GraphicsComponent;
 use PCForge\Models\MemoryComponent;
-use PCForge\Models\MotherboardComponent;
-use PCForge\Models\ProcessorComponent;
 
 class MemoryMemoryComparator implements IncompatibilityComparator
 {
@@ -30,7 +25,6 @@ class MemoryMemoryComparator implements IncompatibilityComparator
      */
     public function isIncompatible($memory0, $memory1): bool
     {
-        // TODO: dynamic incompatibilities
-        return $memory0->id === $memory1->id;
+        return $memory0->id !== $memory1->id;
     }
 }

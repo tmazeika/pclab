@@ -4,24 +4,18 @@ namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\Helpers\System;
 use PCForge\Compatibility\IncompatibilityComparator;
-use PCForge\Models\MotherboardComponent;
+use PCForge\Models\GraphicsComponent;
 use PCForge\Models\PowerComponent;
 
-class MotherboardPowerComparator implements IncompatibilityComparator
+class GraphicsPowerComparator implements IncompatibilityComparator
 {
-    // motherboard
-    public $select0 = [
-        'socket_id',
-    ];
-
-    // motherboard
+    // graphics
     public $with0 = [
         'parent',
     ];
 
     // power
     public $select1 = [
-        'socket_id',
         'watts_out',
     ];
 
@@ -30,17 +24,17 @@ class MotherboardPowerComparator implements IncompatibilityComparator
 
     public function __construct(System $system)
     {
-        $this->system;
+        $this->system = $system;
     }
 
     /**
-     * @param MotherboardComponent $motherboard
+     * @param GraphicsComponent $graphics
      * @param PowerComponent $power
      *
      * @return bool
      */
-    public function isIncompatible($motherboard, $power): bool
+    public function isIncompatible($graphics, $power): bool
     {
-        return $power->atx12v_pins < $motherboard->atx12v_pins || $this->system->hasEnoughPower($motherboard, $power);
+        return !$this->system->hasEnoughPower($graphics, $power);
     }
 }

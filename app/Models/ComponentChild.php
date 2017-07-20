@@ -2,10 +2,11 @@
 
 namespace PCForge\Models;
 
-use Exception;
 use Illuminate\Database\Eloquent\Model;
-use PCForge\Compatibility\Providers\CompatibilityProvider;
 
+/**
+ * @property Component parent
+ */
 abstract class ComponentChild extends Model
 {
     use HasPresenterTrait;

@@ -2,7 +2,6 @@
 
 namespace PCForge\Models;
 
-use PCForge\Compatibility\Providers\PowerComponentCompatibilityProvider;
 use PCForge\Presenters\PowerComponentPresenter;
 
 /**
@@ -22,6 +21,4 @@ class PowerComponent extends ComponentChild
     ];
 
     protected $presenter = PowerComponentPresenter::class;
-
-    protected $compatibilityProvider = PowerComponentCompatibilityProvider::class;
 }

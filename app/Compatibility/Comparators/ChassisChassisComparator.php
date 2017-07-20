@@ -4,7 +4,6 @@ namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\IncompatibilityComparator;
 use PCForge\Models\ChassisComponent;
-use PCForge\Models\MotherboardComponent;
 
 class ChassisChassisComparator implements IncompatibilityComparator
 {

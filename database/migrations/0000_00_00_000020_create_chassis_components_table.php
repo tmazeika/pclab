@@ -31,11 +31,16 @@ class CreateChassisComponentsTable extends Migration
 
             // power
             $table->boolean('uses_sata_power');
+            $table->smallInteger('max_power_length');
 
             // storage
             $table->tinyInteger('2p5_bays')->unsigned();
             $table->tinyInteger('3p5_bays')->unsigned();
             $table->tinyInteger('adaptable_bays')->unsigned();
+
+            $table->tinyInteger('cage_2p5_bays')->unsigned();
+            $table->tinyInteger('cage_3p5_bays')->unsigned();
+            $table->tinyInteger('cage_adaptable_bays')->unsigned();
 
             $table->timestamps();
         });

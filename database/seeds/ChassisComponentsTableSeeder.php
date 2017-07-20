@@ -22,9 +22,13 @@ class ChassisComponentsTableSeeder extends Seeder
                 'usb2_headers'                => 0,
                 'usb3_headers'                => 1,
                 'uses_sata_power'             => true,
+                'max_power_length'            => 298,
                 '2p5_bays'                    => 2,
                 '3p5_bays'                    => 0,
                 'adaptable_bays'              => 5,
+                'cage_2p5_bays'               => 0,
+                'cage_3p5_bays'               => 0,
+                'cage_adaptable_bays'         => 1,
             ],
             [
                 'max_cooling_fan_height'      => 180,
@@ -35,9 +39,13 @@ class ChassisComponentsTableSeeder extends Seeder
                 'usb2_headers'                => 1,
                 'usb3_headers'                => 1,
                 'uses_sata_power'             => false,
+                'max_power_length'            => 280,
                 '2p5_bays'                    => 2,
                 '3p5_bays'                    => 0,
                 'adaptable_bays'              => 8,
+                'cage_2p5_bays'               => 0,
+                'cage_3p5_bays'               => 0,
+                'cage_adaptable_bays'         => 5,
             ],
         ]);
     }

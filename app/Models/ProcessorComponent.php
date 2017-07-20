@@ -2,7 +2,6 @@
 
 namespace PCForge\Models;
 
-use PCForge\Compatibility\Providers\ProcessorComponentCompatibilityProvider;
 use PCForge\Presenters\ProcessorComponentPresenter;
 
 /**
@@ -26,8 +25,6 @@ class ProcessorComponent extends ComponentChild
     ];
 
     protected $presenter = ProcessorComponentPresenter::class;
-
-    protected $compatibilityProvider = ProcessorComponentCompatibilityProvider::class;
 
     public function socket()
     {
