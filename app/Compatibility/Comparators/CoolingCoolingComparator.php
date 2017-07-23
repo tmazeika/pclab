@@ -27,4 +27,9 @@ class CoolingCoolingComparator implements IncompatibilityComparator
     {
         return $cooling1->id !== $cooling2->id;
     }
+
+    public function getComponents(): array
+    {
+        return ['cooling', 'cooling'];
+    }
 }

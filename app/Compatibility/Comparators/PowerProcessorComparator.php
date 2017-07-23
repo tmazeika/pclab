@@ -4,6 +4,7 @@ namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\Helpers\System;
 use PCForge\Compatibility\IncompatibilityComparator;
+use PCForge\Contracts\SystemContract;
 use PCForge\Models\PowerComponent;
 use PCForge\Models\ProcessorComponent;
 
@@ -21,10 +22,10 @@ class PowerProcessorComparator implements IncompatibilityComparator
         ],
     ];
 
-    /** @var System $system */
+    /** @var SystemContract $system */
     private $system;
 
-    public function __construct(System $system)
+    public function __construct(SystemContract $system)
     {
         $this->system = $system;
     }
@@ -38,5 +39,10 @@ class PowerProcessorComparator implements IncompatibilityComparator
     public function isIncompatible($power, $processor): bool
     {
         return !$this->system->hasEnoughPower($processor, $power);
+    }
+
+    public function getComponents(): array
+    {
+        return ['power', 'processor'];
     }
 }

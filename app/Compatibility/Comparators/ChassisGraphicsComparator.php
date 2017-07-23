@@ -4,6 +4,7 @@ namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\Helpers\System;
 use PCForge\Compatibility\IncompatibilityComparator;
+use PCForge\Contracts\SystemContract;
 use PCForge\Models\ChassisComponent;
 use PCForge\Models\GraphicsComponent;
 
@@ -26,10 +27,10 @@ class ChassisGraphicsComparator implements IncompatibilityComparator
         'length',
     ];
 
-    /** @var System $system */
+    /** @var SystemContract $system */
     private $system;
 
-    public function __construct(System $system)
+    public function __construct(SystemContract $system)
     {
         $this->system = $system;
     }
@@ -46,6 +47,11 @@ class ChassisGraphicsComparator implements IncompatibilityComparator
                 ? $chassis->max_graphics_length_blocked
                 : $chassis->max_graphics_length_full)
             > $graphics->length;
+    }
+
+    public function getComponents(): array
+    {
+        return ['chassis', 'graphics'];
     }
 
     private function isHddCageRequired(ChassisComponent $chassis): bool

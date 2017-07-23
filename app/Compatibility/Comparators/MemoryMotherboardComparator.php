@@ -31,4 +31,9 @@ class MemoryMotherboardComparator implements IncompatibilityComparator
         return $memory->ddr_gen !== $motherboard->dimm_gen
             || $memory->pins !== $motherboard->dimm_pins;
     }
+
+    public function getComponents(): array
+    {
+        return ['memory', 'motherboard'];
+    }
 }

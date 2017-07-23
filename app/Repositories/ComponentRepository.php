@@ -8,7 +8,7 @@ use PCForge\Contracts\ComponentRepositoryContract;
 
 class ComponentRepository implements ComponentRepositoryContract
 {
-    public function get(array $selects, array $withs): Collection
+    public function get(bool $available, array $selects, array $withs): Collection
     {
         $results = collect();
 
@@ -24,7 +24,15 @@ class ComponentRepository implements ComponentRepositoryContract
 
             $model = '\PCForge\Models\\' . ucfirst($type) . 'Component';
 
-            $results->put($type, $model::select($columns)->with($mappedWiths)->get());
+            $results->put($type, $model::select($columns)
+                ->with($mappedWiths)
+                ->whereHas('parent', function (Builder $query) use ($available) {
+                    if ($available) {
+                        $query->where('is_available', true);
+                    }
+                })
+                ->get()
+            );
         }
 
         return $results;

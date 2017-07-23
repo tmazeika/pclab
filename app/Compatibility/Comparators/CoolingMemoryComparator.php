@@ -28,4 +28,9 @@ class CoolingMemoryComparator implements IncompatibilityComparator
     {
         return $memory->height > $cooling->max_memory_height;
     }
+
+    public function getComponents(): array
+    {
+        return ['cooling', 'memory'];
+    }
 }

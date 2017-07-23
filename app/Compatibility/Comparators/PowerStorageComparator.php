@@ -4,6 +4,7 @@ namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\Helpers\Selection;
 use PCForge\Compatibility\IncompatibilityComparator;
+use PCForge\Contracts\SelectionContract;
 use PCForge\Models\PowerComponent;
 use PCForge\Models\StorageComponent;
 
@@ -14,10 +15,10 @@ class PowerStorageComparator implements IncompatibilityComparator
         'sata_powers',
     ];
 
-    /** @var Selection $selection */
+    /** @var SelectionContract $selection */
     private $selection;
 
-    public function __construct(Selection $selection)
+    public function __construct(SelectionContract $selection)
     {
         $this->selection = $selection;
     }
@@ -31,5 +32,10 @@ class PowerStorageComparator implements IncompatibilityComparator
     public function isIncompatible($power, $storage): bool
     {
         return $this->selection->getAllOfType(get_class($storage))->count() === $power->sata_powers;
+    }
+
+    public function getComponents(): array
+    {
+        return ['power', 'storage'];
     }
 }

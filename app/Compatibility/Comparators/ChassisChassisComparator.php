@@ -27,4 +27,10 @@ class ChassisChassisComparator implements IncompatibilityComparator
     {
         return $chassis1->id !== $chassis2->id;
     }
+
+    public function getComponents(): array
+    {
+        return ['chassis', 'chassis'];
+    }
+
 }

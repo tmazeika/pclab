@@ -2,25 +2,113 @@
 
 namespace PCForge\Compatibility\Services;
 
-use Exception;
-use Fhaculty\Graph\Edge\Base as Edge;
 use Fhaculty\Graph\Graph;
-use Fhaculty\Graph\Set\Vertices;
-use Fhaculty\Graph\Vertex;
-use Graphp\Algorithms\Search\DepthFirst;
-use Graphp\GraphViz\GraphViz;
 use Illuminate\Support\Collection;
-use PCForge\Compatibility\Providers\CompatibilityProvider;
+use PCForge\Compatibility\IncompatibilityComparator;
 use PCForge\Contracts\ComponentIncompatibilityServiceContract;
-use PCForge\Contracts\SelectionStorageServiceContract;
-use PCForge\Models\Component;
+use PCForge\Contracts\ComponentRepositoryContract;
 use PCForge\Models\ComponentChild;
 
 class ComponentIncompatibilityService implements ComponentIncompatibilityServiceContract
 {
+    /** @var ComponentRepositoryContract $componentRepo */
+    private $componentRepo;
+
+    /** @var array $comparators */
+    private $comparators;
+
+    public function __construct(ComponentRepositoryContract $componentRepo, array $comparators)
+    {
+        $this->componentRepo = $componentRepo;
+        $this->comparators = $comparators;
+    }
+
     public function getIncompatibilities(): Collection
     {
-        //
+        $g = $this->buildIncompatibilityGraph();
+    }
+
+    private function buildIncompatibilityGraph(): Graph
+    {
+        $g = new Graph();
+        $gComp = new Graph();
+        $components = $this->componentRepo->get(true, ...$this->getAllComparatorSelectsAndWiths());
+
+        // create initial incompatibility graph without true compatibilities, along with its compliment
+        $components->each(function (ComponentChild $component1, int $i) use ($g, $gComp, $components) {
+            $v1 = $g->createVertex($i, true);
+
+            $v1->setAttribute('component', $component1);
+            $vComp1 = @$gComp->createVertexClone($v1) ?? $gComp->getVertex($i);
+
+            $components->slice($i + 1)->each(function (ComponentChild $component2, int $j) use ($component1, $i, $g, $gComp, $v1, $vComp1) {
+                $v2 = $g->createVertex($j, true);
+
+                $v2->setAttribute('component', $component2);
+                $vComp2 = @$gComp->createVertexClone($v2) ?? $gComp->getVertex($j);
+
+                ksort($components = [
+                    $this->componentToType($component1) => $component1,
+                    $this->componentToType($component2) => $component2,
+                ]);
+
+                $comparator = $this->getComparatorFor(...array_keys($components));
+
+                if ($comparator !== null && $comparator->isIncompatible(...array_values($components))) {
+                    $v1->createEdge($v2);
+                } else {
+                    $vComp1->createEdge($vComp2);
+                }
+            });
+        });
+
+        // TODO: check true compatibility between adjacent vertices in $gComp
+        // no shot this all fucking works
+    }
+
+    private function getAllComparatorSelectsAndWiths(): array
+    {
+        $allSelects = [];
+        $allWiths = [];
+
+        foreach ($this->comparators as $comparator)
+        {
+            list($selects, $withs) = $this->getComparatorSelectAndWith($comparator);
+            $allSelects = array_merge_recursive($allSelects, $selects);
+            $allWiths = array_merge_recursive($allWiths, $withs);
+        }
+
+        return [$allSelects, $allWiths];
+    }
+
+    private function getComparatorSelectAndWith(IncompatibilityComparator $comparator): array
+    {
+        $components = $comparator->getComponents();
+
+        return [
+            [
+                $components[0] => $comparator->select1 ?? [],
+                $components[1] => $comparator->select2 ?? [],
+            ],
+            [
+                $components[0] => $comparator->with1 ?? [],
+                $components[1] => $comparator->with2 ?? [],
+            ],
+        ];
+    }
+
+    private function getComparatorFor(ComponentChild $component1, ComponentChild $component2): IncompatibilityComparator
+    {
+        sort($pair = [$this->componentToType($component1), $this->componentToType($component2)]);
+
+        $class = '\PCForge\Compatibility\Comparators\\' . $pair[0] . $pair[1] . 'Comparator';
+
+        return class_exists($class) ? resolve($class) : null;
+    }
+
+    private function componentToType(ComponentChild $component): string
+    {
+        return substr(class_basename(get_class($component)), -strlen('Component'));
     }
 
     //

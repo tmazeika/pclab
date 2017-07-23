@@ -4,6 +4,7 @@ namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\Helpers\Selection;
 use PCForge\Compatibility\IncompatibilityComparator;
+use PCForge\Contracts\SelectionContract;
 use PCForge\Models\GraphicsComponent;
 use PCForge\Models\MotherboardComponent;
 
@@ -14,10 +15,10 @@ class GraphicsMotherboardComparator implements IncompatibilityComparator
         'pcie3_slots',
     ];
 
-    /** @var Selection $selection */
+    /** @var SelectionContract $selection */
     private $selection;
 
-    public function __construct(Selection $selection)
+    public function __construct(SelectionContract $selection)
     {
         $this->selection = $selection;
     }
@@ -31,5 +32,10 @@ class GraphicsMotherboardComparator implements IncompatibilityComparator
     public function isIncompatible($graphics, $motherboard): bool
     {
         return $this->selection->getAllOfType(get_class($graphics))->count() === $motherboard->pcie3_slots;
+    }
+
+    public function getComponents(): array
+    {
+        return ['graphics', 'motherboard'];
     }
 }

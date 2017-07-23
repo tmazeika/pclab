@@ -4,6 +4,7 @@ namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\Helpers\System;
 use PCForge\Compatibility\IncompatibilityComparator;
+use PCForge\Contracts\SystemContract;
 use PCForge\Models\GraphicsComponent;
 use PCForge\Models\PowerComponent;
 
@@ -21,10 +22,10 @@ class GraphicsPowerComparator implements IncompatibilityComparator
         'watts_out',
     ];
 
-    /** @var System $system */
+    /** @var SystemContract $system */
     private $system;
 
-    public function __construct(System $system)
+    public function __construct(SystemContract $system)
     {
         $this->system = $system;
     }
@@ -38,5 +39,10 @@ class GraphicsPowerComparator implements IncompatibilityComparator
     public function isIncompatible($graphics, $power): bool
     {
         return !$this->system->hasEnoughPower($graphics, $power);
+    }
+
+    public function getComponents(): array
+    {
+        return ['graphics', 'power'];
     }
 }

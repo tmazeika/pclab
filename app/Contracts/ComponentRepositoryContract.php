@@ -12,10 +12,11 @@ interface ComponentRepositoryContract
      * should be component types, each mapped to a map of relations, which are optionally mapped to a list of columns to
      * be selected on those relations.
      *
+     * @param bool $available
      * @param array $selects
      * @param array $withs
      *
      * @return Collection
      */
-    public function get(array $selects, array $withs): Collection;
+    public function get(bool $available, array $selects, array $withs): Collection;
 }

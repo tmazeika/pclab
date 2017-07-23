@@ -30,4 +30,9 @@ class CoolingProcessorComparator implements IncompatibilityComparator
     {
         return $cooling->sockets->pluck('id')->contains($processor->socket_id);
     }
+
+    public function getComponents(): array
+    {
+        return ['cooling', 'processor'];
+    }
 }

@@ -32,4 +32,9 @@ class CoolingMotherboardComparator implements IncompatibilityComparator
             ->pluck('id')
             ->contains($motherboard->socket_id);
     }
+
+    public function getComponents(): array
+    {
+        return ['cooling', 'motherboard'];
+    }
 }
