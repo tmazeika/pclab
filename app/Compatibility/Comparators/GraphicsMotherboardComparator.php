@@ -10,7 +10,7 @@ use PCForge\Models\MotherboardComponent;
 class GraphicsMotherboardComparator implements IncompatibilityComparator
 {
     // motherboard
-    public $select1 = [
+    public $select2 = [
         'pcie3_slots',
     ];
 

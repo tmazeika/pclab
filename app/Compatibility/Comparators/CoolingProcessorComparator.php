@@ -9,12 +9,14 @@ use PCForge\Models\ProcessorComponent;
 class CoolingProcessorComparator implements IncompatibilityComparator
 {
     // cooling
-    public $with0 = [
-        'sockets',
+    public $with1 = [
+        'sockets' => [
+            'id',
+        ],
     ];
 
     // processor
-    public $select1 = [
+    public $select2 = [
         'socket_id',
     ];
 

@@ -7,24 +7,24 @@ use PCForge\Models\MemoryComponent;
 
 class MemoryMemoryComparator implements IncompatibilityComparator
 {
-    // memory0
-    public $select0 = [
-        'id',
-    ];
-
-    // memory1
+    // memory 1
     public $select1 = [
         'id',
     ];
 
+    // memory 2
+    public $select2 = [
+        'id',
+    ];
+
     /**
-     * @param MemoryComponent $memory0
      * @param MemoryComponent $memory1
+     * @param MemoryComponent $memory2
      *
      * @return bool
      */
-    public function isIncompatible($memory0, $memory1): bool
+    public function isIncompatible($memory1, $memory2): bool
     {
-        return $memory0->id !== $memory1->id;
+        return $memory1->id !== $memory2->id;
     }
 }

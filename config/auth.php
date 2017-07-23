@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => PCForge\User::class,
+            //'model' => PCForge\User::class,
         ],
 
         // 'users' => [

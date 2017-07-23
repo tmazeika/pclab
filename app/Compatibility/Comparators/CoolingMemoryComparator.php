@@ -9,12 +9,12 @@ use PCForge\Models\MemoryComponent;
 class CoolingMemoryComparator implements IncompatibilityComparator
 {
     // cooling
-    public $select0 = [
+    public $select1 = [
         'max_memory_height',
     ];
 
     // memory
-    public $select1 = [
+    public $select2 = [
         'height',
     ];
 

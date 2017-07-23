@@ -10,14 +10,14 @@ use PCForge\Models\StorageComponent;
 class ChassisStorageComparator implements IncompatibilityComparator
 {
     // chassis
-    public $select0 = [
+    public $select1 = [
         '2p5_bays',
         '3p5_bays',
         'adaptable_bays',
     ];
 
     // storage
-    public $select1 = [
+    public $select2 = [
         'width',
     ];
 

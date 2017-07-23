@@ -7,24 +7,24 @@ use PCForge\Models\MotherboardComponent;
 
 class MotherboardMotherboardComparator implements IncompatibilityComparator
 {
-    // motherboard
-    public $select0 = [
-        'id',
-    ];
-
-    // motherboard
+    // motherboard 1
     public $select1 = [
         'id',
     ];
 
+    // motherboard 2
+    public $select2 = [
+        'id',
+    ];
+
     /**
-     * @param MotherboardComponent $motherboard0
      * @param MotherboardComponent $motherboard1
+     * @param MotherboardComponent $motherboard2
      *
      * @return bool
      */
-    public function isIncompatible($motherboard0, $motherboard1): bool
+    public function isIncompatible($motherboard1, $motherboard2): bool
     {
-        return $motherboard0->id !== $motherboard1->id;
+        return $motherboard1->id !== $motherboard2->id;
     }
 }

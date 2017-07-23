@@ -2,9 +2,11 @@
 
 namespace PCForge\Contracts;
 
+use PCForge\Compatibility\Helpers\Selection;
+
 interface SelectionStorageServiceContract
 {
-    public function store(): void;
+    public function store(Selection $selection): void;
 
-    public function retrieve(array $selects = ['*'], array $withs = []): void;
+    public function retrieve(): Selection;
 }

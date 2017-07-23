@@ -7,24 +7,24 @@ use PCForge\Models\PowerComponent;
 
 class PowerPowerComparator implements IncompatibilityComparator
 {
-    // power0
-    public $select0 = [
-        'id',
-    ];
-
-    // power1
+    // power 1
     public $select1 = [
         'id',
     ];
 
+    // power 2
+    public $select2 = [
+        'id',
+    ];
+
     /**
-     * @param PowerComponent $power0
      * @param PowerComponent $power1
+     * @param PowerComponent $power2
      *
      * @return bool
      */
-    public function isIncompatible($power0, $power1): bool
+    public function isIncompatible($power1, $power2): bool
     {
-        return $power0->id !== $power1->id;
+        return $power1->id !== $power2->id;
     }
 }

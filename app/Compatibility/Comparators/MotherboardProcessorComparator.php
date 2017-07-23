@@ -9,12 +9,12 @@ use PCForge\Models\ProcessorComponent;
 class MotherboardProcessorComparator implements IncompatibilityComparator
 {
     // motherboard
-    public $select0 = [
+    public $select1 = [
         'socket_id',
     ];
 
     // processor
-    public $select1 = [
+    public $select2 = [
         'socket_id',
     ];
 

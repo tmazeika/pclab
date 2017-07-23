@@ -2,10 +2,14 @@
 
 namespace PCForge\Providers;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
-use PCForge\Compatibility\Helpers\Selection;
+use PCForge\Compatibility\Helpers\System;
 use PCForge\Compatibility\Services\ComponentIncompatibilityService;
 use PCForge\Contracts\ComponentIncompatibilityServiceContract;
+use PCForge\Contracts\SelectionContract;
+use PCForge\Contracts\SelectionStorageServiceContract;
+use PCForge\Contracts\SystemContract;
 
 class CompatibilityServiceProvider extends ServiceProvider
 {
@@ -26,7 +30,13 @@ class CompatibilityServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(Selection::class); // TODO: not a singleton by default?
+        $this->app->singleton(SelectionContract::class, function (Application $app) {
+            return $app->make(SelectionStorageServiceContract::class)->retrieve();
+        });
+
+        $this->app->singleton(
+            SystemContract::class,
+            System::class);
 
         $this->app->bind(
             ComponentIncompatibilityServiceContract::class,

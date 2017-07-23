@@ -10,17 +10,18 @@ use PCForge\Models\PowerComponent;
 class MotherboardPowerComparator implements IncompatibilityComparator
 {
     // motherboard
-    public $select0 = [
+    public $select1 = [
         'socket_id',
     ];
 
-    // motherboard
-    public $with0 = [
-        'parent',
+    public $with1 = [
+        'parent' => [
+            'watts_usage',
+        ],
     ];
 
     // power
-    public $select1 = [
+    public $select2 = [
         'socket_id',
         'watts_out',
     ];

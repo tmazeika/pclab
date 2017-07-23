@@ -3,34 +3,30 @@
 namespace PCForge\Services;
 
 use PCForge\Compatibility\Helpers\Selection;
-use PCForge\Contracts\ComponentRepositoryContract;
 use PCForge\Contracts\SelectionStorageServiceContract;
+use PCForge\Models\ComponentChild;
 
 class SelectionStorageService implements SelectionStorageServiceContract
 {
-    /** @var ComponentRepositoryContract $componentRepo */
-    private $componentRepo;
-
-    /** @var Selection $selection */
-    private $selection;
-
-    public function __construct(ComponentRepositoryContract $componentRepo, Selection $selection)
+    public function store(Selection $selection): void
     {
-        $this->componentRepo = $componentRepo;
-        $this->selection = $selection;
+        session([
+            'selection' => serialize($selection),
+        ]);
     }
 
-    public function store(): void
+    public function retrieve(): Selection
     {
-        session(['selection' => $this->selection->getAll()->pluck('parent.id')]);
-    }
+        $default = serialize(collect());
 
-    public function retrieve(array $selects = ['*'], array $withs = []): void
-    {
-        $all = $this->componentRepo->all($selects, $withs);
+        /** @var Selection $selection */
+        $selection = unserialize(session('selection', $default));
 
-        $this->selection->setAll(session('selection', collect())->map(function (int $id) use ($all) {
-            return $all->where('parent.id', $id)->first();
-        }));
+        // refresh all stored components
+        $selection->getAll()->each(function (ComponentChild $component) {
+            $component->refresh();
+        });
+
+        return $selection;
     }
 }

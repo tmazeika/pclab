@@ -10,12 +10,14 @@ use PCForge\Models\PowerComponent;
 class GraphicsPowerComparator implements IncompatibilityComparator
 {
     // graphics
-    public $with0 = [
-        'parent',
+    public $with1 = [
+        'parent' => [
+            'watts_usage',
+        ],
     ];
 
     // power
-    public $select1 = [
+    public $select2 = [
         'watts_out',
     ];
 

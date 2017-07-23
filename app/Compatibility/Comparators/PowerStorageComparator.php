@@ -10,7 +10,7 @@ use PCForge\Models\StorageComponent;
 class PowerStorageComparator implements IncompatibilityComparator
 {
     // power
-    public $select0 = [
+    public $select1 = [
         'sata_powers',
     ];
 

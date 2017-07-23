@@ -9,18 +9,19 @@ use PCForge\Models\CoolingComponent;
 
 class ChassisCoolingComparator implements IncompatibilityComparator
 {
-    // chassis
-    public $select0 = [
+    public $select1 = [
         'max_cooling_fan_height',
     ];
 
-    // chassis
-    public $with0 = [
-        'radiators',
+    public $with1 = [
+        'radiators' => [
+            'max_fan_width',
+            'max_length',
+        ],
     ];
 
     // cooling
-    public $select1 = [
+    public $select2 = [
         'fan_width',
         'height',
         'is_air',

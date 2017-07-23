@@ -7,24 +7,24 @@ use PCForge\Models\ChassisComponent;
 
 class ChassisChassisComparator implements IncompatibilityComparator
 {
-    // chassis0
-    public $select0 = [
-        'id',
-    ];
-
-    // chassis1
+    // chassis 1
     public $select1 = [
         'id',
     ];
 
+    // chassis 2
+    public $select2 = [
+        'id',
+    ];
+
     /**
-     * @param ChassisComponent $chassis0
      * @param ChassisComponent $chassis1
+     * @param ChassisComponent $chassis2
      *
      * @return bool
      */
-    public function isIncompatible($chassis0, $chassis1): bool
+    public function isIncompatible($chassis1, $chassis2): bool
     {
-        return $chassis0->id !== $chassis1->id;
+        return $chassis1->id !== $chassis2->id;
     }
 }

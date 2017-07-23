@@ -7,24 +7,24 @@ use PCForge\Models\GraphicsComponent;
 
 class GraphicsGraphicsComparator implements IncompatibilityComparator
 {
-    // graphics0
-    public $select0 = [
-        'id',
-    ];
-
-    // graphics1
+    // graphics 1
     public $select1 = [
         'id',
     ];
 
+    // graphics 2
+    public $select2 = [
+        'id',
+    ];
+
     /**
-     * @param GraphicsComponent $graphics0
      * @param GraphicsComponent $graphics1
+     * @param GraphicsComponent $graphics2
      *
      * @return bool
      */
-    public function isIncompatible($graphics0, $graphics1): bool
+    public function isIncompatible($graphics1, $graphics2): bool
     {
-        return $graphics0->id !== $graphics1->id;
+        return $graphics1->id !== $graphics2->id;
     }
 }

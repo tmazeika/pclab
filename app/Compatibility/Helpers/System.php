@@ -2,12 +2,13 @@
 
 namespace PCForge\Compatibility\Helpers;
 
+use PCForge\Contracts\SystemContract;
 use PCForge\Models\ChassisComponent;
 use PCForge\Models\ComponentChild;
 use PCForge\Models\PowerComponent;
 use PCForge\Models\StorageComponent;
 
-class System
+class System implements SystemContract
 {
     public const WIDTH_2P5 = '2p5';
 
@@ -22,21 +23,6 @@ class System
     public function __construct(Selection $selection)
     {
         $this->selection = $selection;
-    }
-
-    public function getActualWattsUsage(): int
-    {
-        static $cached;
-
-        return $cached ?? $cached = $this->selection->getAll()
-                ->reduce(function ($carry, ComponentChild $component) {
-                    return ($carry ?? 0) + $component->parent->watts_usage * $component->selectCount;
-                });
-    }
-
-    public function getSafeTotalWattsUsage(): int
-    {
-        return $this->roundToIncrement($this->getActualWattsUsage() + self::WATTS_BUFFER, self::WATTS_INCREMENT);
     }
 
     public function hasEnoughPower(ComponentChild $component, PowerComponent $power): bool
@@ -71,6 +57,16 @@ class System
         }
 
         return [$avail2p5, $avail3p5, $availAdapt];
+    }
+
+    private function getActualWattsUsage(): int
+    {
+        static $cached;
+
+        return $cached ?? $cached = $this->selection->getAll()
+                ->reduce(function ($carry, ComponentChild $component) {
+                    return ($carry ?? 0) + $component->parent->watts_usage * $component->selectCount;
+                });
     }
 
     private function roundToIncrement(float $x, int $increment): int

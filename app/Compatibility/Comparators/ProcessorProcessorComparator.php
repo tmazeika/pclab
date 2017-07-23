@@ -7,24 +7,24 @@ use PCForge\Models\ProcessorComponent;
 
 class ProcessorProcessorComparator implements IncompatibilityComparator
 {
-    // processor0
-    public $select0 = [
-        'id',
-    ];
-
-    // processor1
+    // processor 1
     public $select1 = [
         'id',
     ];
 
+    // processor 2
+    public $select2 = [
+        'id',
+    ];
+
     /**
-     * @param ProcessorComponent $processor0
      * @param ProcessorComponent $processor1
+     * @param ProcessorComponent $processor2
      *
      * @return bool
      */
-    public function isIncompatible($processor0, $processor1): bool
+    public function isIncompatible($processor1, $processor2): bool
     {
-        return $processor0->id !== $processor1->id;
+        return $processor1->id !== $processor2->id;
     }
 }

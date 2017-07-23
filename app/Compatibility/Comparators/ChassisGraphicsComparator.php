@@ -10,7 +10,7 @@ use PCForge\Models\GraphicsComponent;
 class ChassisGraphicsComparator implements IncompatibilityComparator
 {
     // chassis
-    public $select0 = [
+    public $select1 = [
         '2p5_bays',
         '3p5_bays',
         'adaptable_bays',
@@ -22,7 +22,7 @@ class ChassisGraphicsComparator implements IncompatibilityComparator
     ];
 
     // graphics
-    public $select1 = [
+    public $select2 = [
         'length',
     ];
 

@@ -10,7 +10,7 @@ use PCForge\Models\StorageComponent;
 class MotherboardStorageComparator implements IncompatibilityComparator
 {
     // motherboard
-    public $select0 = [
+    public $select1 = [
         'sata_slots',
     ];
 

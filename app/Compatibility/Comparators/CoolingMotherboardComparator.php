@@ -9,12 +9,14 @@ use PCForge\Models\MotherboardComponent;
 class CoolingMotherboardComparator implements IncompatibilityComparator
 {
     // cooling
-    public $with0 = [
-        'sockets',
+    public $with1 = [
+        'sockets' => [
+            'id',
+        ],
     ];
 
     // motherboard
-    public $select1 = [
+    public $select2 = [
         'socket_id',
     ];
 
@@ -26,6 +28,8 @@ class CoolingMotherboardComparator implements IncompatibilityComparator
      */
     public function isIncompatible($cooling, $motherboard): bool
     {
-        return $cooling->sockets->pluck('id')->contains($motherboard->socket_id);
+        return $cooling->sockets
+            ->pluck('id')
+            ->contains($motherboard->socket_id);
     }
 }

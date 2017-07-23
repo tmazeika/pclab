@@ -9,13 +9,13 @@ use PCForge\Models\MotherboardComponent;
 class MemoryMotherboardComparator implements IncompatibilityComparator
 {
     // memory
-    public $select0 = [
+    public $select1 = [
         'ddr_gen',
         'pins',
     ];
 
     // motherboard
-    public $select1 = [
+    public $select2 = [
         'dimm_gen',
         'dimm_pins',
     ];

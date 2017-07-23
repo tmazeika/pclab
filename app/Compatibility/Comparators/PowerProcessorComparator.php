@@ -10,13 +10,15 @@ use PCForge\Models\ProcessorComponent;
 class PowerProcessorComparator implements IncompatibilityComparator
 {
     // power
-    public $select0 = [
+    public $select1 = [
         'watts_out',
     ];
 
     // processor
-    public $with1 = [
-        'parent',
+    public $with2 = [
+        'parent' => [
+            'watts_usage',
+        ],
     ];
 
     /** @var System $system */
