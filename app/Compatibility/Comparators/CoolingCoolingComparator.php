@@ -2,21 +2,11 @@
 
 namespace PCForge\Compatibility\Comparators;
 
-use PCForge\Compatibility\IncompatibilityComparator;
+
 use PCForge\Models\CoolingComponent;
 
 class CoolingCoolingComparator implements IncompatibilityComparator
 {
-    // cooling 1
-    public $select1 = [
-        'id',
-    ];
-
-    // cooling 2
-    public $select2 = [
-        'id',
-    ];
-
     /**
      * @param CoolingComponent $cooling1
      * @param CoolingComponent $cooling2

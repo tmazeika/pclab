@@ -3,18 +3,13 @@
 namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\Helpers\Selection;
-use PCForge\Compatibility\IncompatibilityComparator;
+
 use PCForge\Contracts\SelectionContract;
 use PCForge\Models\GraphicsComponent;
 use PCForge\Models\MotherboardComponent;
 
 class GraphicsMotherboardComparator implements IncompatibilityComparator
 {
-    // motherboard
-    public $select2 = [
-        'pcie3_slots',
-    ];
-
     /** @var SelectionContract $selection */
     private $selection;
 

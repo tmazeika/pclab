@@ -12,7 +12,7 @@ trait ComponentPresenterTrait
 
     public function __construct(SelectionStorageServiceContract $componentSelectionService, Model $entity)
     {
-        /** @noinspection PhpUndefinedClassInspection */
+        /** @noinspection PhpParamsInspection, PhpUndefinedClassInspection */
         parent::__construct($entity);
 
         $this->componentSelectionService = $componentSelectionService;
@@ -20,12 +20,12 @@ trait ComponentPresenterTrait
 
     public function count(): int
     {
-        return $this->componentSelectionService->getCount($this->entity->parent->id);
+        return $this->entity->selectCount;
     }
 
     public function selectedClass(): string
     {
-        return $this->componentSelectionService->isSelected($this->entity->parent->id) ? 'selected' : '';
+        return ($this->entity->selectCount > 0) ? 'selected' : '';
     }
 
     public function disabledClass(): string

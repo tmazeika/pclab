@@ -3,36 +3,19 @@
 namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\Helpers\System;
-use PCForge\Compatibility\IncompatibilityComparator;
+
 use PCForge\Contracts\SystemContract;
 use PCForge\Models\MotherboardComponent;
 use PCForge\Models\PowerComponent;
 
 class MotherboardPowerComparator implements IncompatibilityComparator
 {
-    // motherboard
-    public $select1 = [
-        'socket_id',
-    ];
-
-    public $with1 = [
-        'parent' => [
-            'watts_usage',
-        ],
-    ];
-
-    // power
-    public $select2 = [
-        'socket_id',
-        'watts_out',
-    ];
-
     /** @var SystemContract $system */
     private $system;
 
     public function __construct(SystemContract $system)
     {
-        $this->system;
+        $this->system = $system;
     }
 
     /**

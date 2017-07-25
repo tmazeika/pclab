@@ -3,25 +3,13 @@
 namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\Helpers\System;
-use PCForge\Compatibility\IncompatibilityComparator;
+
 use PCForge\Contracts\SystemContract;
 use PCForge\Models\CoolingComponent;
 use PCForge\Models\PowerComponent;
 
 class CoolingPowerComparator implements IncompatibilityComparator
 {
-    // cooling
-    public $with1 = [
-        'parent' => [
-            'watts_usage',
-        ],
-    ];
-
-    // power
-    public $select2 = [
-        'watts_out',
-    ];
-
     /** @var SystemContract $system */
     private $system;
 

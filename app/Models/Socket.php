@@ -2,6 +2,7 @@
 
 namespace PCForge\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -17,7 +18,7 @@ class Socket extends Model
 {
     public function cooling_components()
     {
-        return $this->hasMany(CoolingComponent::class);
+        return $this->belongsToMany(CoolingComponent::class);
     }
 
     public function motherboard_components()

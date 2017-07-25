@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Compatibility;
+namespace PCForge\Compatibility\Comparators;
 
 interface IncompatibilityComparator
 {

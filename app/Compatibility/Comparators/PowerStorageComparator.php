@@ -3,18 +3,13 @@
 namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\Helpers\Selection;
-use PCForge\Compatibility\IncompatibilityComparator;
+
 use PCForge\Contracts\SelectionContract;
 use PCForge\Models\PowerComponent;
 use PCForge\Models\StorageComponent;
 
 class PowerStorageComparator implements IncompatibilityComparator
 {
-    // power
-    public $select1 = [
-        'sata_powers',
-    ];
-
     /** @var SelectionContract $selection */
     private $selection;
 

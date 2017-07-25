@@ -2,21 +2,10 @@
 
 namespace PCForge\Compatibility\Comparators;
 
-use PCForge\Compatibility\IncompatibilityComparator;
 use PCForge\Models\ChassisComponent;
 
 class ChassisChassisComparator implements IncompatibilityComparator
 {
-    // chassis 1
-    public $select1 = [
-        'id',
-    ];
-
-    // chassis 2
-    public $select2 = [
-        'id',
-    ];
-
     /**
      * @param ChassisComponent $chassis1
      * @param ChassisComponent $chassis2

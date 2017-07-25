@@ -2,9 +2,11 @@
 
 namespace PCForge\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * @property bool disabled
  * @property Component parent
  */
 abstract class ComponentChild extends Model
@@ -28,5 +30,10 @@ abstract class ComponentChild extends Model
     public function parent()
     {
         return $this->morphOne(Component::class, 'child');
+    }
+
+    public function scopeWithAll(Builder $query): void
+    {
+        $query->with('parent');
     }
 }

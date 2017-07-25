@@ -3,12 +3,18 @@
 namespace PCForge\Compatibility\Helpers;
 
 use Illuminate\Support\Collection;
+use PCForge\Contracts\SelectionContract;
 use PCForge\Models\ComponentChild;
 
-class Selection
+class Selection implements SelectionContract
 {
     /** @var Collection $components */
     private $components;
+
+    public function __construct()
+    {
+        $this->components = collect();
+    }
 
     public function select(ComponentChild $component): void
     {

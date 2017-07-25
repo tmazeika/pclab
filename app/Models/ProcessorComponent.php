@@ -2,6 +2,7 @@
 
 namespace PCForge\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use PCForge\Presenters\ProcessorComponentPresenter;
 
 /**
@@ -29,5 +30,12 @@ class ProcessorComponent extends ComponentChild
     public function socket()
     {
         return $this->belongsTo(Socket::class);
+    }
+
+    public function scopeWithAll(Builder $query): void
+    {
+        parent::scopeWithAll($query);
+
+        $query->with('socket');
     }
 }

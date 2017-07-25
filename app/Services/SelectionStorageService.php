@@ -17,7 +17,7 @@ class SelectionStorageService implements SelectionStorageServiceContract
 
     public function retrieve(): Selection
     {
-        $default = serialize(collect());
+        $default = serialize(new Selection());
 
         /** @var Selection $selection */
         $selection = unserialize(session('selection', $default));

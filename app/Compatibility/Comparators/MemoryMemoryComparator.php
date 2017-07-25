@@ -2,21 +2,11 @@
 
 namespace PCForge\Compatibility\Comparators;
 
-use PCForge\Compatibility\IncompatibilityComparator;
+
 use PCForge\Models\MemoryComponent;
 
 class MemoryMemoryComparator implements IncompatibilityComparator
 {
-    // memory 1
-    public $select1 = [
-        'id',
-    ];
-
-    // memory 2
-    public $select2 = [
-        'id',
-    ];
-
     /**
      * @param MemoryComponent $memory1
      * @param MemoryComponent $memory2

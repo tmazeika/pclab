@@ -2,6 +2,7 @@
 
 namespace PCForge\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use PCForge\Presenters\MotherboardComponentPresenter;
 
 /**
@@ -55,11 +56,18 @@ class MotherboardComponent extends ComponentChild
 
     public function form_factor()
     {
-        return $this->belongsTo(FormFactor::class);
+        return $this->belongsTo(FormFactor::class, 'id');
     }
 
     public function socket()
     {
         return $this->belongsTo(Socket::class);
+    }
+
+    public function scopeWithAll(Builder $query): void
+    {
+        parent::scopeWithAll($query);
+
+        $query->with('form_factor', 'socket');
     }
 }

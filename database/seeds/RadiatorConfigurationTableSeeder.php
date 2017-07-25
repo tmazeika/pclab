@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ChassisComponentsRadiatorsTableSeeder extends Seeder
+class RadiatorConfigurationTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,7 +12,7 @@ class ChassisComponentsRadiatorsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('chassis_components_radiators')->insert([
+        DB::table('radiator_configurations')->insert([
             [
                 'chassis_component_id' => 1,
                 'max_fan_width'        => 120,

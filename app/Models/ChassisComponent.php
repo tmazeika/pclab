@@ -2,6 +2,7 @@
 
 namespace PCForge\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use PCForge\Presenters\ChassisComponentPresenter;
 
@@ -53,6 +54,13 @@ class ChassisComponent extends ComponentChild
 
     public function radiators()
     {
-        return $this->belongsToMany(ChassisComponentsRadiator::class);
+        return $this->hasMany(RadiatorConfiguration::class);
+    }
+
+    public function scopeWithAll(Builder $query): void
+    {
+        parent::scopeWithAll($query);
+
+        $query->with('form_factors', 'radiators');
     }
 }

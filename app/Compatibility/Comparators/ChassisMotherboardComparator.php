@@ -2,44 +2,12 @@
 
 namespace PCForge\Compatibility\Comparators;
 
-use PCForge\Compatibility\IncompatibilityComparator;
+
 use PCForge\Models\ChassisComponent;
 use PCForge\Models\MotherboardComponent;
 
 class ChassisMotherboardComparator implements IncompatibilityComparator
 {
-    // chassis
-    public $select1 = [
-        'audio_headers',
-        'fan_headers',
-        'usb2_headers',
-        'usb3_headers',
-    ];
-
-    public $with1 = [
-        'form_factors' => [
-            'id',
-        ],
-    ];
-
-    // motherboard
-    public $select2 = [
-        'audio_headers',
-        'fan_headers',
-        'usb2_headers',
-        'usb3_headers',
-    ];
-
-    public $with2 = [
-        'form_factor',
-    ];
-
-    public $withSelect2 = [
-        'form_factor' => [
-            'id',
-        ],
-    ];
-
     /**
      * @param ChassisComponent $chassis
      * @param MotherboardComponent $motherboard

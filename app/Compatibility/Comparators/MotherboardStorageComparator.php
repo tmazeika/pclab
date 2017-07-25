@@ -3,18 +3,13 @@
 namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\Helpers\Selection;
-use PCForge\Compatibility\IncompatibilityComparator;
+
 use PCForge\Contracts\SelectionContract;
 use PCForge\Models\MotherboardComponent;
 use PCForge\Models\StorageComponent;
 
 class MotherboardStorageComparator implements IncompatibilityComparator
 {
-    // motherboard
-    public $select1 = [
-        'sata_slots',
-    ];
-
     /** @var SelectionContract $selection */
     private $selection;
 

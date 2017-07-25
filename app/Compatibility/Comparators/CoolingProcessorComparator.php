@@ -2,24 +2,12 @@
 
 namespace PCForge\Compatibility\Comparators;
 
-use PCForge\Compatibility\IncompatibilityComparator;
+
 use PCForge\Models\CoolingComponent;
 use PCForge\Models\ProcessorComponent;
 
 class CoolingProcessorComparator implements IncompatibilityComparator
 {
-    // cooling
-    public $with1 = [
-        'sockets' => [
-            'id',
-        ],
-    ];
-
-    // processor
-    public $select2 = [
-        'socket_id',
-    ];
-
     /**
      * @param CoolingComponent $cooling
      * @param ProcessorComponent $processor

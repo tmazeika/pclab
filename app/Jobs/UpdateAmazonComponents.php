@@ -59,9 +59,6 @@ class UpdateAmazonComponents implements ShouldQueue
         foreach ($xml->Items->Item as $item) {
             $this->updateComponent($item);
         }
-
-        // TODO: hopefully this happens before any other requests try to access the updated (and now unlocked) DB...
-        cache()->tags('sel_incompat')->flush();
     }
 
     private function getAwsRequestUrl(array $params): string
@@ -116,6 +113,6 @@ class UpdateAmazonComponents implements ShouldQueue
 
         $price = $listing ? intval($listing->Price->Amount) : 0;
 
-        return $price === 0 ? 1 : $price; // TODO: don't make everything available
+        return $price === 0 ? 1 : $price;
     }
 }

@@ -38,7 +38,7 @@ class DBServiceProvider extends ServiceProvider
         //
         //DB::listen(function($sql) use (&$i) {
         //    echo $i++ . ':';
-        //    var_dump($i++.': '.$sql->sql);
+        //    var_dump($i.': '.$sql->sql);
         //    var_dump($sql->bindings);
         //});
     }

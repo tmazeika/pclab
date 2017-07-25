@@ -2,32 +2,12 @@
 
 namespace PCForge\Compatibility\Comparators;
 
-use PCForge\Compatibility\IncompatibilityComparator;
 use PCForge\Models\ChassisComponent;
-use PCForge\Models\ChassisComponentsRadiator;
+use PCForge\Models\RadiatorConfiguration;
 use PCForge\Models\CoolingComponent;
 
 class ChassisCoolingComparator implements IncompatibilityComparator
 {
-    public $select1 = [
-        'max_cooling_fan_height',
-    ];
-
-    public $with1 = [
-        'radiators' => [
-            'max_fan_width',
-            'max_length',
-        ],
-    ];
-
-    // cooling
-    public $select2 = [
-        'fan_width',
-        'height',
-        'is_air',
-        'radiator_length',
-    ];
-
     /**
      * @param ChassisComponent $chassis
      * @param CoolingComponent $cooling
@@ -40,7 +20,7 @@ class ChassisCoolingComparator implements IncompatibilityComparator
             return $cooling->height > $chassis->max_cooling_fan_height;
         }
 
-        return $chassis->radiators->every(function (ChassisComponentsRadiator $radiator) use ($cooling) {
+        return $chassis->radiators->every(function (RadiatorConfiguration $radiator) use ($cooling) {
             return $cooling->fan_width > $radiator->max_fan_width || $cooling->radiator_length > $radiator->max_length;
         });
     }

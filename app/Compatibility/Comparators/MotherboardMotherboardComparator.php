@@ -2,21 +2,11 @@
 
 namespace PCForge\Compatibility\Comparators;
 
-use PCForge\Compatibility\IncompatibilityComparator;
+
 use PCForge\Models\MotherboardComponent;
 
 class MotherboardMotherboardComparator implements IncompatibilityComparator
 {
-    // motherboard 1
-    public $select1 = [
-        'id',
-    ];
-
-    // motherboard 2
-    public $select2 = [
-        'id',
-    ];
-
     /**
      * @param MotherboardComponent $motherboard1
      * @param MotherboardComponent $motherboard2

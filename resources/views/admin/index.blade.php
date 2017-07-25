@@ -7,7 +7,7 @@
         @each('partials.admin.table', [
             \PCForge\Models\ChassisComponent::class,
             \PCForge\Models\ChassisComponentFormFactor::class,
-            \PCForge\Models\ChassisComponentsRadiator::class,
+            \PCForge\Models\RadiatorConfiguration::class,
             \PCForge\Models\Component::class,
             \PCForge\Models\ComponentType::class,
             \PCForge\Models\CoolingComponent::class,

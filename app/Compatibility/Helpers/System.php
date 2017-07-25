@@ -64,9 +64,9 @@ class System implements SystemContract
         static $cached;
 
         return $cached ?? $cached = $this->selection->getAll()
-                ->reduce(function ($carry, ComponentChild $component) {
-                    return ($carry ?? 0) + $component->parent->watts_usage * $component->selectCount;
-                });
+                ->reduce(function (int $carry, ComponentChild $component) {
+                    return $carry + $component->parent->watts_usage * $component->selectCount;
+                }, 0);
     }
 
     private function roundToIncrement(float $x, int $increment): int

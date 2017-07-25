@@ -3,25 +3,13 @@
 namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\Helpers\System;
-use PCForge\Compatibility\IncompatibilityComparator;
+
 use PCForge\Contracts\SystemContract;
 use PCForge\Models\MemoryComponent;
 use PCForge\Models\PowerComponent;
 
 class MemoryPowerComparator implements IncompatibilityComparator
 {
-    // memory
-    public $with1 = [
-        'parent' => [
-            'watts_usage',
-        ],
-    ];
-
-    // power
-    public $select2 = [
-        'watts_out',
-    ];
-
     /** @var SystemContract $system */
     private $system;
 

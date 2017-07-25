@@ -22,14 +22,4 @@ class ChassisComponentFormFactor extends Model
         'chassis_component_id',
         'form_factor_id',
     ];
-
-    public function chassis_component()
-    {
-        return $this->belongsTo(ChassisComponent::class);
-    }
-
-    public function form_factors()
-    {
-        return $this->belongsTo(FormFactor::class);
-    }
 }

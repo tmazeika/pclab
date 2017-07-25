@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChassisComponentsRadiatorsTable extends Migration
+class CreateRadiatorConfigurationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateChassisComponentsRadiatorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('chassis_components_radiators', function (Blueprint $table) {
+        Schema::create('radiator_configurations', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('chassis_component_id')->unsigned();
             $table->foreign('chassis_component_id')->references('id')->on('chassis_components')->onDelete('cascade');
@@ -32,6 +32,6 @@ class CreateChassisComponentsRadiatorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chassis_components_radiators');
+        Schema::dropIfExists('radiator_configurations');
     }
 }

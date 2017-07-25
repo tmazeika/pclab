@@ -4,40 +4,45 @@ namespace PCForge\Http\Controllers;
 
 use Illuminate\Support\Collection;
 use PCForge\Contracts\ComponentIncompatibilityServiceContract;
-use PCForge\Contracts\SelectionStorageServiceContract;
+use PCForge\Contracts\SelectionContract;
 use PCForge\Http\Requests\SelectComponent;
 use PCForge\Models\Component;
+use PCForge\Models\ComponentChild;
 
 class BuildController extends Controller
 {
     /** @var ComponentIncompatibilityServiceContract $componentIncompatibilityService */
     private $componentIncompatibilityService;
 
-    /** @var SelectionStorageServiceContract $componentSelectionService */
-    private $componentSelectionService;
+    /** @var SelectionContract $selection */
+    private $selection;
 
     public function __construct(ComponentIncompatibilityServiceContract $componentIncompatibilityService,
-                                SelectionStorageServiceContract $componentSelectionService)
+                                SelectionContract $selection)
     {
         $this->componentIncompatibilityService = $componentIncompatibilityService;
-        $this->componentSelectionService = $componentSelectionService;
+        $this->selection = $selection;
     }
 
     public function index()
     {
         $incompatibilities = $this->componentIncompatibilityService->getIncompatibilities();
 
+        // TODO: extract elsewhere
         $components = Component
             ::select('id', 'component_type_id', 'child_id', 'child_type')
             ->with('child')
             ->get()
             ->each(function (Component $component) use ($incompatibilities) {
-                $component->child->disabled = $incompatibilities->contains($component->id);
+                /** @var ComponentChild $child */
+                $child = $component->child;
+
+                //@$child->disabled = $incompatibilities->contains($child);
             })
-            ->groupBy('component_type_id')
-            ->sortBy(function ($value, int $key) {
-                return $key;
-            })
+            ->groupBy('child_type')
+            //->sortBy(function ($value, int $key) {
+            //    return $key;
+            //})
             ->map(function (Collection $components) {
                 return $components->map(function (Component $component) {
                     return $component->child;
@@ -49,10 +54,22 @@ class BuildController extends Controller
 
     public function select(SelectComponent $request)
     {
-        $this->componentSelectionService->select($request->input('id'), $request->input('count'));
+        // TODO: extract elsewhere
+        $component = Component::find($request->get('id'))->child;
+
+        $component->selectCount = $request->get('count');
+
+        if ($component->selectCount > 0) {
+            $this->selection->select($component);
+        }
+        else {
+            $this->selection->deselect($component);
+        }
 
         return response()->json([
-            'disable' => $this->componentIncompatibilityService->getIncompatibilities(),
+            'disable' => $this->componentIncompatibilityService->getIncompatibilities()->map(function (ComponentChild $component) {
+                return $component->parent->id;
+            }),
         ]);
     }
 }

@@ -22,14 +22,4 @@ class CoolingComponentSocket extends Model
         'cooling_component_id',
         'socket_id',
     ];
-
-    public function cooling_component()
-    {
-        return $this->belongsTo(CoolingComponent::class);
-    }
-
-    public function socket()
-    {
-        return $this->belongsTo(Socket::class);
-    }
 }

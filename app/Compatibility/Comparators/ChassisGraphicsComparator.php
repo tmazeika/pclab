@@ -2,39 +2,13 @@
 
 namespace PCForge\Compatibility\Comparators;
 
-use PCForge\Compatibility\Helpers\System;
-use PCForge\Compatibility\IncompatibilityComparator;
+
 use PCForge\Contracts\SystemContract;
 use PCForge\Models\ChassisComponent;
 use PCForge\Models\GraphicsComponent;
 
 class ChassisGraphicsComparator implements IncompatibilityComparator
 {
-    // chassis
-    public $select1 = [
-        '2p5_bays',
-        '3p5_bays',
-        'adaptable_bays',
-        'cage_2p5_bays',
-        'cage_3p5_bays',
-        'cage_adaptable_bays',
-        'max_graphics_length_blocked',
-        'max_graphics_length_full',
-    ];
-
-    // graphics
-    public $select2 = [
-        'length',
-    ];
-
-    /** @var SystemContract $system */
-    private $system;
-
-    public function __construct(SystemContract $system)
-    {
-        $this->system = $system;
-    }
-
     /**
      * @param ChassisComponent $chassis
      * @param GraphicsComponent $graphics

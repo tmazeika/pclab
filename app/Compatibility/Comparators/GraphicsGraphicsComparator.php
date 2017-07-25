@@ -2,21 +2,11 @@
 
 namespace PCForge\Compatibility\Comparators;
 
-use PCForge\Compatibility\IncompatibilityComparator;
+
 use PCForge\Models\GraphicsComponent;
 
 class GraphicsGraphicsComparator implements IncompatibilityComparator
 {
-    // graphics 1
-    public $select1 = [
-        'id',
-    ];
-
-    // graphics 2
-    public $select2 = [
-        'id',
-    ];
-
     /**
      * @param GraphicsComponent $graphics1
      * @param GraphicsComponent $graphics2

@@ -2,6 +2,7 @@
 
 namespace PCForge\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use PCForge\Presenters\CoolingComponentPresenter;
 
@@ -30,5 +31,12 @@ class CoolingComponent extends ComponentChild
     public function sockets()
     {
         return $this->belongsToMany(Socket::class);
+    }
+
+    public function scopeWithAll(Builder $query): void
+    {
+        parent::scopeWithAll($query);
+
+        $query->with('sockets');
     }
 }

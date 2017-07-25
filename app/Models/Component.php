@@ -2,10 +2,12 @@
 
 namespace PCForge\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use PCForge\Presenters\ComponentPresenter;
 
 /**
+ * @property int id
  * @property int component_type_id
  * @property int child_id
  * @property string child_type
@@ -39,11 +41,16 @@ class Component extends Model
 
     public function type()
     {
-        return $this->belongsTo(ComponentType::class, 'component_type_id', 'id');
+        return $this->belongsTo(ComponentType::class, 'id', 'component_type_id');
     }
 
     public function child()
     {
         return $this->morphTo();
+    }
+
+    public function scopeWithAll(Builder $query): void
+    {
+        $query->with('type', 'child');
     }
 }

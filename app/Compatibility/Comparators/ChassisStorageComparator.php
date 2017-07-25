@@ -3,25 +3,13 @@
 namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\Helpers\System;
-use PCForge\Compatibility\IncompatibilityComparator;
+
 use PCForge\Contracts\SystemContract;
 use PCForge\Models\ChassisComponent;
 use PCForge\Models\StorageComponent;
 
 class ChassisStorageComparator implements IncompatibilityComparator
 {
-    // chassis
-    public $select1 = [
-        '2p5_bays',
-        '3p5_bays',
-        'adaptable_bays',
-    ];
-
-    // storage
-    public $select2 = [
-        'width',
-    ];
-
     /** @var SystemContract $system */
     private $system;
 

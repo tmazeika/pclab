@@ -2,6 +2,7 @@
 
 namespace PCForge\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -20,6 +21,6 @@ class FormFactor extends Model
 
     public function motherboard_components()
     {
-        return $this->belongsToMany(MotherboardComponent::class);
+        return $this->hasMany(MotherboardComponent::class);
     }
 }

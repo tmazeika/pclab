@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property ChassisComponent chassis_component
  */
-class ChassisComponentsRadiator extends Model
+class RadiatorConfiguration extends Model
 {
     protected $fillable = [
         'chassis_component_id',
