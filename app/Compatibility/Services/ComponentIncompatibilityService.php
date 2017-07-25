@@ -71,6 +71,7 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
      */
     private function buildIncompatibilityGraph(): void
     {
+        // TODO: fix this too
         $this->g = new Graph();
         $gComp = new Graph();
         $components = $this->componentRepo->get(true);
@@ -81,7 +82,6 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
             $v1 = $this->g->createVertex($i, true);
 
             $v1->setAttribute(self::COMPONENT_ATTR, $component1);
-            $this->componentToVertexMap[$component1->parent->id] = $v1;
 
             // create or get vertex for $component1 in $gComp
             try {
@@ -97,7 +97,6 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
                 $v2 = $this->g->createVertex($j, true);
 
                 $v2->setAttribute(self::COMPONENT_ATTR, $component2);
-                $this->componentToVertexMap[$component2->parent->id] = $v2;
 
                 // create or get vertex for $component2 in $gComp
                 try {
@@ -108,7 +107,10 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
                 }
 
                 // put components in correct natural order; the attribute for vertex $v2 should already be set
-                list($component1, $component2) = $this->sortComponents($component1, $component2);
+                list($component1, $component2) = array_sort([$component1, $component2], function (ComponentChild $component) {
+                    return get_class($component);
+                });
+
                 $comparator = $this->getComparator($component1, $component2);
 
                 // create incompatibility edges in $g where components are directly incompatible, else create the edge
@@ -302,30 +304,6 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
             $key = get_class($v->getAttribute(self::COMPONENT_ATTR));
             $arr[$key] = ($arr[$key] ?? 0) + 1;
         }
-    }
-
-    /**
-     * Returns the given components in an array, sorted by the natural order of their class names.
-     *
-     * @param ComponentChild $component1
-     * @param ComponentChild $component2
-     *
-     * @return array
-     */
-    private function sortComponents(ComponentChild $component1, ComponentChild $component2): array
-    {
-        if (get_class($component1) === get_class($component2)) {
-            return [$component1, $component2];
-        }
-
-        $components = [
-            get_class($component1) => $component1,
-            get_class($component2) => $component2,
-        ];
-
-        ksort($components);
-
-        return array_values($components);
     }
 
     /**
