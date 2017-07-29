@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Contracts;
+namespace PCForge\Compatibility\Contracts;
 
 use Illuminate\Support\Collection;
 
@@ -9,9 +9,9 @@ interface ComponentRepositoryContract
     /**
      * Gets a collection of all or only available components, specified by $available.
      *
-     * @param bool $onlyAvailable
+     * @param bool $filterAvailable
      *
      * @return Collection
      */
-    public function get(bool $onlyAvailable): Collection;
+    public function get(bool $filterAvailable = true): Collection;
 }

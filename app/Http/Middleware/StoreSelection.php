@@ -3,8 +3,8 @@
 namespace PCForge\Http\Middleware;
 
 use Closure;
+use PCForge\Compatibility\Contracts\SelectionStorageServiceContract;
 use PCForge\Compatibility\Helpers\Selection;
-use PCForge\Contracts\SelectionStorageServiceContract;
 
 class StoreSelection
 {

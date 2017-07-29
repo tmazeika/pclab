@@ -2,9 +2,7 @@
 
 namespace PCForge\Compatibility\Comparators;
 
-use PCForge\Compatibility\Helpers\System;
-
-use PCForge\Contracts\SystemContract;
+use PCForge\Compatibility\Contracts\SystemContract;
 use PCForge\Models\MotherboardComponent;
 use PCForge\Models\PowerComponent;
 
@@ -26,7 +24,7 @@ class MotherboardPowerComparator implements IncompatibilityComparator
      */
     public function isIncompatible($motherboard, $power): bool
     {
-        return $power->atx12v_pins < $motherboard->atx12v_pins || $this->system->hasEnoughPower($motherboard, $power);
+        return $power->atx12v_pins < $motherboard->atx12v_pins || !$this->system->hasEnoughPower($motherboard, $power);
     }
 
     public function getComponents(): array

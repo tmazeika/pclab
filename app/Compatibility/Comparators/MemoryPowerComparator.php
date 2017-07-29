@@ -2,9 +2,7 @@
 
 namespace PCForge\Compatibility\Comparators;
 
-use PCForge\Compatibility\Helpers\System;
-
-use PCForge\Contracts\SystemContract;
+use PCForge\Compatibility\Contracts\SystemContract;
 use PCForge\Models\MemoryComponent;
 use PCForge\Models\PowerComponent;
 

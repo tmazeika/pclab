@@ -2,7 +2,7 @@
 
 namespace PCForge\Compatibility\Helpers;
 
-use PCForge\Contracts\SystemContract;
+use PCForge\Compatibility\Contracts\SystemContract;
 use PCForge\Models\ChassisComponent;
 use PCForge\Models\ComponentChild;
 use PCForge\Models\PowerComponent;

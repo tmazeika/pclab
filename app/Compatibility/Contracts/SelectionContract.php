@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Contracts;
+namespace PCForge\Compatibility\Contracts;
 
 use Illuminate\Support\Collection;
 use PCForge\Models\ComponentChild;

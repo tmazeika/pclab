@@ -2,9 +2,8 @@
 
 namespace PCForge\Compatibility\Comparators;
 
+use PCForge\Compatibility\Contracts\SystemContract;
 use PCForge\Compatibility\Helpers\System;
-
-use PCForge\Contracts\SystemContract;
 use PCForge\Models\ChassisComponent;
 use PCForge\Models\StorageComponent;
 

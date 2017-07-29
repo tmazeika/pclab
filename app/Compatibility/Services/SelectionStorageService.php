@@ -1,9 +1,9 @@
 <?php
 
-namespace PCForge\Services;
+namespace PCForge\Compatibility\Services;
 
+use PCForge\Compatibility\Contracts\SelectionStorageServiceContract;
 use PCForge\Compatibility\Helpers\Selection;
-use PCForge\Contracts\SelectionStorageServiceContract;
 use PCForge\Models\ComponentChild;
 
 class SelectionStorageService implements SelectionStorageServiceContract

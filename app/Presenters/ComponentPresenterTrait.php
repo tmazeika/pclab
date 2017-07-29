@@ -3,19 +3,13 @@
 namespace PCForge\Presenters;
 
 use Illuminate\Database\Eloquent\Model;
-use PCForge\Contracts\SelectionStorageServiceContract;
 
 trait ComponentPresenterTrait
 {
-    /** @var SelectionStorageServiceContract $componentSelectionService */
-    private $componentSelectionService;
-
-    public function __construct(SelectionStorageServiceContract $componentSelectionService, Model $entity)
+    public function __construct($componentSelectionService, Model $entity)
     {
         /** @noinspection PhpParamsInspection, PhpUndefinedClassInspection */
         parent::__construct($entity);
-
-        $this->componentSelectionService = $componentSelectionService;
     }
 
     public function count(): int

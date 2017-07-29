@@ -2,9 +2,7 @@
 
 namespace PCForge\Compatibility\Comparators;
 
-use PCForge\Compatibility\Helpers\Selection;
-
-use PCForge\Contracts\SelectionContract;
+use PCForge\Compatibility\Contracts\SelectionContract;
 use PCForge\Models\GraphicsComponent;
 use PCForge\Models\MotherboardComponent;
 

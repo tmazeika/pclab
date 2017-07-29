@@ -2,7 +2,6 @@
 
 namespace PCForge\Compatibility\Comparators;
 
-
 use PCForge\Models\PowerComponent;
 
 class PowerPowerComparator implements IncompatibilityComparator

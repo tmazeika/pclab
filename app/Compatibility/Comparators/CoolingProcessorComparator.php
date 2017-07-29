@@ -16,7 +16,7 @@ class CoolingProcessorComparator implements IncompatibilityComparator
      */
     public function isIncompatible($cooling, $processor): bool
     {
-        return $cooling->sockets->pluck('id')->contains($processor->socket_id);
+        return !$cooling->sockets->pluck('id')->contains($processor->socket_id);
     }
 
     public function getComponents(): array

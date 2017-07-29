@@ -3,8 +3,8 @@
 namespace PCForge\Http\Controllers;
 
 use Illuminate\Support\Collection;
-use PCForge\Contracts\ComponentIncompatibilityServiceContract;
-use PCForge\Contracts\SelectionContract;
+use PCForge\Compatibility\Contracts\ComponentIncompatibilityServiceContract;
+use PCForge\Compatibility\Contracts\SelectionContract;
 use PCForge\Http\Requests\SelectComponent;
 use PCForge\Models\Component;
 use PCForge\Models\ComponentChild;
@@ -35,7 +35,7 @@ class BuildController extends Controller
             ->get()
             ->each(function (Component $component) use ($incompatibilities) {
                 /** @var ComponentChild $child */
-                $child = $component->child;
+                //$child = $component->child;
 
                 //@$child->disabled = $incompatibilities->contains($child);
             })

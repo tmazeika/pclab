@@ -3,7 +3,7 @@
 namespace PCForge\Compatibility\Helpers;
 
 use Illuminate\Support\Collection;
-use PCForge\Contracts\SelectionContract;
+use PCForge\Compatibility\Contracts\SelectionContract;
 use PCForge\Models\ComponentChild;
 
 class Selection implements SelectionContract
@@ -45,6 +45,6 @@ class Selection implements SelectionContract
 
     public function getAll(): Collection
     {
-        return $this->components;
+        return clone $this->components;
     }
 }

@@ -16,9 +16,7 @@ class CoolingMotherboardComparator implements IncompatibilityComparator
      */
     public function isIncompatible($cooling, $motherboard): bool
     {
-        return $cooling->sockets
-            ->pluck('id')
-            ->contains($motherboard->socket_id);
+        return !$cooling->sockets->pluck('id')->contains($motherboard->socket_id);
     }
 
     public function getComponents(): array

@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Contracts;
+namespace PCForge\Compatibility\Contracts;
 
 use PCForge\Compatibility\Helpers\Selection;
 

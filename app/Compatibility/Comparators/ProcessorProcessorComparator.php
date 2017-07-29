@@ -2,7 +2,6 @@
 
 namespace PCForge\Compatibility\Comparators;
 
-
 use PCForge\Models\ProcessorComponent;
 
 class ProcessorProcessorComparator implements IncompatibilityComparator
