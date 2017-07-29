@@ -8,23 +8,54 @@ use PCForge\Models\ComponentChild;
 interface SelectionContract
 {
     /**
-     * Selects the given component by setting its $selectCount property to 1 and adding it to the list of selected
-     * components.
+     * Sets the $selectCount and $disabled properties on each component in the given collection.
      *
-     * @param ComponentChild $component
+     * @param Collection $components
      */
-    public function select(ComponentChild $component): void;
+    public function setProperties(Collection $components): void;
 
     /**
-     * Deselects the given component by setting its $selectCount property to 0 and removing it from the list of selected
-     * components.
+     * Selects the given component $n number of times. An $n of 0 deselects it.
      *
      * @param ComponentChild $component
+     * @param int $n
      */
-    public function deselect(ComponentChild $component): void;
+    public function select(ComponentChild $component, int $n): void;
 
     /**
-     * Gets the collection of selected components of the given class.
+     * Disables only the given components, enabling all else.
+     *
+     * @param array $components
+     */
+    public function disableOnly(array $components): void;
+
+    /**
+     * Gets the selection count of the given component.
+     *
+     * @param ComponentChild $component
+     *
+     * @return int
+     */
+    public function getSelectCount(ComponentChild $component): int;
+
+    /**
+     * Gets if the given component is disabled.
+     *
+     * @param ComponentChild $component
+     *
+     * @return bool
+     */
+    public function isDisabled(ComponentChild $component): bool;
+
+    /**
+     * Gets all selected components.
+     *
+     * @return Collection
+     */
+    public function getAll(): Collection;
+
+    /**
+     * Gets all selected components of the given class.
      *
      * @param string $class
      *
@@ -33,9 +64,9 @@ interface SelectionContract
     public function getAllOfType(string $class): Collection;
 
     /**
-     * Gets the collection of all selected components.
+     * Gets the map of component ID's to their selected counts.
      *
-     * @return Collection
+     * @return array
      */
-    public function getAll(): Collection;
+    public function getCounts(): array;
 }

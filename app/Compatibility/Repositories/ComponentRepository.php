@@ -9,18 +9,19 @@ use PCForge\Models\ComponentChild;
 
 class ComponentRepository implements ComponentRepositoryContract
 {
-    public function get(bool $filterAvailable = true): Collection
+    public function get(): Collection
     {
-        /** @var Collection $repo */
-        $repo = cache()->rememberForever('component_repository', function () {
-            return $this->getAllComponents();
-        });
+        static $cached;
 
-        return $repo->when($filterAvailable, function (Collection $collection) {
-            return $collection->filter(function (ComponentChild $component) {
-                return $component->parent->is_available;
-            });
-        });
+        /** @var Collection $repo */
+        return $cached ?? ($cached = cache()->rememberForever('component_repository', function () {
+            return $this->getAllComponents();
+        }));
+    }
+
+    public function find(int $id): ComponentChild
+    {
+        return $this->get()->where('parent.id', $id)->first();
     }
 
     private function getAllComponents(): Collection

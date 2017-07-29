@@ -41,7 +41,7 @@ class Component extends Model
 
     public function type()
     {
-        return $this->belongsTo(ComponentType::class, 'id', 'component_type_id');
+        return $this->belongsTo(ComponentType::class, 'component_type_id');
     }
 
     public function child()

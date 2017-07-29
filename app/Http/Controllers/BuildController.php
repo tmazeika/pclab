@@ -2,74 +2,50 @@
 
 namespace PCForge\Http\Controllers;
 
-use Illuminate\Support\Collection;
 use PCForge\Compatibility\Contracts\ComponentIncompatibilityServiceContract;
+use PCForge\Compatibility\Contracts\ComponentRepositoryContract;
 use PCForge\Compatibility\Contracts\SelectionContract;
 use PCForge\Http\Requests\SelectComponent;
-use PCForge\Models\Component;
-use PCForge\Models\ComponentChild;
 
 class BuildController extends Controller
 {
-    /** @var ComponentIncompatibilityServiceContract $componentIncompatibilityService */
-    private $componentIncompatibilityService;
+    /** @var ComponentRepositoryContract $componentRepo */
+    private $componentRepo;
 
-    /** @var SelectionContract $selection */
-    private $selection;
-
-    public function __construct(ComponentIncompatibilityServiceContract $componentIncompatibilityService,
-                                SelectionContract $selection)
+    public function __construct(ComponentRepositoryContract $componentRepo)
     {
-        $this->componentIncompatibilityService = $componentIncompatibilityService;
-        $this->selection = $selection;
+        $this->componentRepo = $componentRepo;
     }
 
-    public function index()
+    public function index(SelectionContract $selection)
     {
-        $incompatibilities = $this->componentIncompatibilityService->getIncompatibilities();
+        $components = $this->componentRepo->get();
 
-        // TODO: extract elsewhere
-        $components = Component
-            ::select('id', 'component_type_id', 'child_id', 'child_type')
-            ->with('child')
-            ->get()
-            ->each(function (Component $component) use ($incompatibilities) {
-                /** @var ComponentChild $child */
-                //$child = $component->child;
+        $selection->setProperties($components);
 
-                //@$child->disabled = $incompatibilities->contains($child);
-            })
-            ->groupBy('child_type')
-            //->sortBy(function ($value, int $key) {
-            //    return $key;
-            //})
-            ->map(function (Collection $components) {
-                return $components->map(function (Component $component) {
-                    return $component->child;
-                });
-            });
+        $components = $components->groupBy('parent.child_type');
 
         return view('build.index', compact('components'));
     }
 
-    public function select(SelectComponent $request)
+    public function select(SelectComponent $request,
+                           ComponentIncompatibilityServiceContract $componentIncompatibilityService,
+                           SelectionContract $selection)
     {
-        // TODO: extract elsewhere
-        $component = Component::find($request->get('id'))->child;
+        $component = $this->componentRepo->find($request->id);
 
-        $component->selectCount = $request->get('count');
+        if ($selection->isDisabled($component)) {
+            abort(400, 'Component is disabled');
+        }
 
-        if ($component->selectCount > 0) {
-            $this->selection->select($component);
-        }
-        else {
-            $this->selection->deselect($component);
-        }
+        $selection->select($component, $request->count);
+
+        $incompatibilities = $componentIncompatibilityService->getIncompatibilities();
+
+        $selection->disableOnly($incompatibilities->all());
 
         return response()->json([
-            'disable' => $this->componentIncompatibilityService->getIncompatibilities()->map(function (ComponentChild $component) {
-                return $component->parent->id;
-            }),
+            'disable' => $incompatibilities->pluck('parent.id'),
         ]);
     }
 }

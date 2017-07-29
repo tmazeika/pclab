@@ -2,6 +2,8 @@
 
 namespace PCForge\Compatibility\Helpers;
 
+use PCForge\Compatibility\Contracts\SelectionContract;
+use PCForge\Compatibility\Contracts\SelectionStorageServiceContract;
 use PCForge\Compatibility\Contracts\SystemContract;
 use PCForge\Models\ChassisComponent;
 use PCForge\Models\ComponentChild;
@@ -18,9 +20,10 @@ class System implements SystemContract
     /** The computed system wattage should be reported in increments of this number. */
     private const WATTS_INCREMENT = 50;
 
+    /** @var SelectionContract $selection */
     private $selection;
 
-    public function __construct(Selection $selection)
+    public function __construct(SelectionContract $selection)
     {
         $this->selection = $selection;
     }

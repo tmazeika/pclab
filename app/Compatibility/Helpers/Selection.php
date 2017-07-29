@@ -3,48 +3,103 @@
 namespace PCForge\Compatibility\Helpers;
 
 use Illuminate\Support\Collection;
+use PCForge\Compatibility\Contracts\ComponentRepositoryContract;
 use PCForge\Compatibility\Contracts\SelectionContract;
 use PCForge\Models\ComponentChild;
 
 class Selection implements SelectionContract
 {
-    /** @var Collection $components */
-    private $components;
+    /** @var array $counts */
+    private $counts;
 
-    public function __construct()
+    /** @var ComponentRepositoryContract $componentRepo */
+    private $componentRepo;
+
+    public function __construct(ComponentRepositoryContract $componentRepo, array $counts)
     {
-        $this->components = collect();
+        $this->componentRepo = $componentRepo;
+        $this->counts = $counts;
     }
 
-    public function select(ComponentChild $component): void
+    public function setProperties(Collection $components): void
     {
-        // set to 1 if not already set
-        $component->selectCount = $component->selectCount ?: 1;
-
-        $this->components->push($component);
+        /** @var ComponentChild $component */
+        foreach ($components as $component)
+        {
+            $component->selectCount = $this->getSelectCount($component);
+            $component->disabled = $this->isDisabled($component);
+        }
     }
 
-    public function deselect(ComponentChild $component): void
+    public function select(ComponentChild $component, int $n): void
     {
-        $component->selectCount = 0;
+        $id = $component->parent->id;
+        $component->selectCount = $n;
 
-        // remove components that aren't selected
-        $this->components = $this->components
+        if ($n === 0) {
+            unset($this->counts[$id]);
+        } else {
+            $this->counts[$id] = $n;
+        }
+    }
+
+    public function disableOnly(array $components): void
+    {
+        // enable all
+        /**
+         * @var int $id
+         * @var int $count
+         */
+        foreach ($this->counts as $id => $count)
+        {
+            if ($count === 0) {
+                $this->componentRepo->get()->where('parent.id', $id)->first()->disabled = false;
+                unset($this->counts[$id]);
+            }
+        }
+
+        // disable given
+        /** @var ComponentChild $component */
+        foreach ($components as $component)
+        {
+            $component->disabled = true;
+            $this->counts[$component->parent->id] = 0;
+        }
+    }
+
+    public function getSelectCount(ComponentChild $component): int
+    {
+        return $this->counts[$component->parent->id] ?? 0;
+    }
+
+    public function isDisabled(ComponentChild $component): bool
+    {
+        return ($this->counts[$component->parent->id] ?? -1) === 0;
+    }
+
+    public function getAll(): Collection
+    {
+        return $this->componentRepo->get()
+            ->filter(function (ComponentChild $component) {
+                return in_array($component->parent->id, array_keys($this->counts));
+            })
             ->reject(function (ComponentChild $component) {
-                return $component->selectCount === 0;
+                return $this->isDisabled($component);
+            })
+            ->each(function (ComponentChild $component) {
+                $component->selectCount = $this->getSelectCount($component);
             });
     }
 
     public function getAllOfType(string $class): Collection
     {
-        return $this->components
-            ->filter(function (ComponentChild $component) use ($class) {
-                return get_class($component) === $class;
-            });
+        return $this->getAll()->filter(function (ComponentChild $component) use ($class) {
+            return get_class($component) === $class;
+        });
     }
 
-    public function getAll(): Collection
+    public function getCounts(): array
     {
-        return clone $this->components;
+        return $this->counts;
     }
 }

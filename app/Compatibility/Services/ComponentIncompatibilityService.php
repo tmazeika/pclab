@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use PCForge\Compatibility\Contracts\ComponentIncompatibilityServiceContract;
 use PCForge\Compatibility\Contracts\IncompatibilityGraphContract;
 use PCForge\Compatibility\Contracts\SelectionContract;
+use PCForge\Compatibility\Contracts\SelectionStorageServiceContract;
 use PCForge\Compatibility\Helpers\GraphUtils;
 use PCForge\Compatibility\Helpers\IncompatibilityGraph;
 use PCForge\Models\ComponentChild;
@@ -26,18 +27,14 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
         $this->selection = $selection;
     }
 
-    public function getIncompatibilities(ComponentChild $additional = null): Collection
+    public function getIncompatibilities(): Collection
     {
         $g = new Graph();
 
         $this->incompatibilityGraph->build($g);
 
-        // TODO: remove
-        GraphUtils::dd($g);
-
-        $selection = $this->selection->getAll()->when($additional !== null, function (Collection $selection) use ($additional) {
-            $selection->push($additional);
-        });
+        /** @var Collection $selection */
+        $selection = $this->selection->getAll();
 
         if ($selection->count() === 0) {
             return collect();
@@ -56,6 +53,7 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
             ->uniqueStrict()
             ->map(function (Vertex $v) {
                 return $v->getAttribute(IncompatibilityGraph::COMPONENT_ATTR);
-            });
+            })
+            ->values();
     }
 }

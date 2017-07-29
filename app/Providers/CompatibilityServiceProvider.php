@@ -2,7 +2,7 @@
 
 namespace PCForge\Providers;
 
-use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 use PCForge\Compatibility\Contracts\ComparatorServiceContract;
@@ -14,6 +14,7 @@ use PCForge\Compatibility\Contracts\SelectionStorageServiceContract;
 use PCForge\Compatibility\Contracts\ShortestPathsContract;
 use PCForge\Compatibility\Contracts\SystemContract;
 use PCForge\Compatibility\Helpers\IncompatibilityGraph;
+use PCForge\Compatibility\Helpers\Selection;
 use PCForge\Compatibility\Helpers\ShortestPaths;
 use PCForge\Compatibility\Helpers\System;
 use PCForge\Compatibility\Repositories\ComponentRepository;
@@ -23,6 +24,8 @@ use PCForge\Compatibility\Services\SelectionStorageService;
 
 class CompatibilityServiceProvider extends ServiceProvider
 {
+    protected $defer = true;
+
     /**
      * Bootstrap the application services.
      *
@@ -47,7 +50,7 @@ class CompatibilityServiceProvider extends ServiceProvider
         $this->app->bind(ComponentIncompatibilityServiceContract::class, ComponentIncompatibilityService::class);
 
         // ComponentRepositoryContract
-        $this->app->bind(ComponentRepositoryContract::class, ComponentRepository::class);
+        $this->app->singleton(ComponentRepositoryContract::class, ComponentRepository::class);
 
         // IncompatibilityGraphContract
         $this->app->bind(IncompatibilityGraphContract::class, IncompatibilityGraph::class);
@@ -58,7 +61,7 @@ class CompatibilityServiceProvider extends ServiceProvider
         });
 
         // SelectionStorageServiceContract
-        $this->app->bind(SelectionStorageServiceContract::class, SelectionStorageService::class);
+        $this->app->singleton(SelectionStorageServiceContract::class, SelectionStorageService::class);
 
         // ShortestPathsContract
         $this->app->bind(ShortestPathsContract::class, ShortestPaths::class);
@@ -66,4 +69,19 @@ class CompatibilityServiceProvider extends ServiceProvider
         // SystemContract
         $this->app->bind(SystemContract::class, System::class);
     }
+
+    public function provides()
+    {
+        return [
+            ComparatorServiceContract::class,
+            ComponentIncompatibilityServiceContract::class,
+            ComponentRepositoryContract::class,
+            IncompatibilityGraphContract::class,
+            SelectionContract::class,
+            SelectionStorageServiceContract::class,
+            ShortestPathsContract::class,
+            SystemContract::class,
+        ];
+    }
+
 }

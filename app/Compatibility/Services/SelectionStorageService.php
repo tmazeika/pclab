@@ -2,31 +2,45 @@
 
 namespace PCForge\Compatibility\Services;
 
+use PCForge\Compatibility\Contracts\ComponentRepositoryContract;
+use PCForge\Compatibility\Contracts\SelectionContract;
 use PCForge\Compatibility\Contracts\SelectionStorageServiceContract;
 use PCForge\Compatibility\Helpers\Selection;
 use PCForge\Models\ComponentChild;
 
 class SelectionStorageService implements SelectionStorageServiceContract
 {
-    public function store(Selection $selection): void
+    private const KEY = 'selection';
+
+    public function store(): void
     {
+        $this->checkSession();
+
         session([
-            'selection' => serialize($selection),
+            self::KEY => resolve(SelectionContract::class)->getCounts(),
         ]);
     }
 
-    public function retrieve(): Selection
+    public function retrieve(): SelectionContract
     {
-        $default = serialize(new Selection());
+        $this->checkSession();
 
-        /** @var Selection $selection */
-        $selection = unserialize(session('selection', $default));
+        /** @var array $counts */
+        $counts = session(self::KEY, []);
+        $selection = new Selection(resolve(ComponentRepositoryContract::class), $counts);
 
         // refresh all stored components
-        $selection->getAll()->each(function (ComponentChild $component) {
+        $selection->getAll()->each(function (ComponentChild $component) use ($selection) {
             $component->refresh();
         });
 
         return $selection;
+    }
+
+    private function checkSession(): void
+    {
+        if (!session()->isStarted()) {
+            abort(500, 'Session not started');
+        }
     }
 }

@@ -4,20 +4,15 @@ namespace PCForge\Http\Middleware;
 
 use Closure;
 use PCForge\Compatibility\Contracts\SelectionStorageServiceContract;
-use PCForge\Compatibility\Helpers\Selection;
 
 class StoreSelection
 {
-    /** @var SelectionStorageServiceContract */
+    /** @var SelectionStorageServiceContract $selectionStorageService */
     private $selectionStorageService;
 
-    /** @var Selection $selection */
-    private $selection;
-
-    public function __construct(SelectionStorageServiceContract $selectionStorageService, Selection $selection)
+    public function __construct(SelectionStorageServiceContract $selectionStorageService)
     {
         $this->selectionStorageService = $selectionStorageService;
-        $this->selection = $selection;
     }
 
     /**
@@ -34,6 +29,6 @@ class StoreSelection
 
     public function terminate($request, $response)
     {
-        $this->selectionStorageService->store($this->selection);
+        $this->selectionStorageService->store();
     }
 }

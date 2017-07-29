@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property bool disabled
  * @property Component parent
  */
 abstract class ComponentChild extends Model
@@ -15,6 +14,9 @@ abstract class ComponentChild extends Model
 
     /** @var int $selectCount */
     public $selectCount = 0;
+
+    /** @var bool $disabled */
+    public $disabled = false;
 
     public static function featuresView()
     {

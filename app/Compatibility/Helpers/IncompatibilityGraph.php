@@ -121,6 +121,10 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
     {
         $verticesInPaths = $this->shortestPaths->getAll($v1, $v2);
 
+        if ($verticesInPaths->count() === 0) {
+            return true;
+        }
+
         $pathsTypeSums = $this->getTypeSums($verticesInPaths);
 
         // get type sums of the shortest paths vertex set
@@ -148,7 +152,7 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
 
         /** @var Vertex $v */
         foreach ($vertices as $v) {
-            $key = spl_object_hash($v->getAttribute(self::COMPONENT_ATTR));
+            $key = get_class($v->getAttribute(self::COMPONENT_ATTR));
             $arr[$key] = ($arr[$key] ?? 0) + 1;
         }
 

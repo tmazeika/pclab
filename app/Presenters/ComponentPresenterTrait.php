@@ -3,13 +3,19 @@
 namespace PCForge\Presenters;
 
 use Illuminate\Database\Eloquent\Model;
+use PCForge\Compatibility\Contracts\SelectionContract;
 
 trait ComponentPresenterTrait
 {
-    public function __construct($componentSelectionService, Model $entity)
+    /** @var SelectionContract $selection */
+    protected $selection;
+
+    public function __construct(Model $entity, SelectionContract $selection)
     {
         /** @noinspection PhpParamsInspection, PhpUndefinedClassInspection */
         parent::__construct($entity);
+
+        $this->selection = $selection;
     }
 
     public function count(): int
@@ -19,7 +25,7 @@ trait ComponentPresenterTrait
 
     public function selectedClass(): string
     {
-        return ($this->entity->selectCount > 0) ? 'selected' : '';
+        return ($this->count() > 0) ? 'selected' : '';
     }
 
     public function disabledClass(): string

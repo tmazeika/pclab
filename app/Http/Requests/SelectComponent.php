@@ -4,6 +4,10 @@ namespace PCForge\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @property int id
+ * @property int count
+ */
 class SelectComponent extends FormRequest
 {
     /**
