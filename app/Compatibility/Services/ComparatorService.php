@@ -8,16 +8,28 @@ use PCForge\Models\ComponentChild;
 
 class ComparatorService implements ComparatorServiceContract
 {
+    public function isIncompatible(ComponentChild $component1, ComponentChild $component2): bool
+    {
+        // sort components by class name in alphabetical order
+        $components = array_sort([$component1, $component1], function ($component) {
+            return get_class($component);
+        });
+
+        $comparator = $this->getComparator(...$components);
+
+        return $comparator === null || $comparator->isIncompatible(...$components);
+    }
+
     /**
-     * Gets the comparator that can compare the two given components. If none exists, then null is returned. The two
-     * components should be provided in the natural order of their class names.
+     * Gets the comparator that can compare the given components. If none exists, null is returned. The components
+     * should be passed in alphabetical order by their class names.
      *
      * @param ComponentChild $component1
      * @param ComponentChild $component2
      *
      * @return IncompatibilityComparator|null
      */
-    public function get(ComponentChild $component1, ComponentChild $component2): ?IncompatibilityComparator
+    private function getComparator(ComponentChild $component1, ComponentChild $component2): ?IncompatibilityComparator
     {
         $class = '\PCForge\Compatibility\Comparators\\'
             . $this->componentToType($component1)
@@ -28,7 +40,7 @@ class ComparatorService implements ComparatorServiceContract
     }
 
     /**
-     * Converts a component to its type. E.g. 'ChassisComponent' becomes 'Chassis'.
+     * Converts a component to its type name. E.g. 'ChassisComponent' becomes 'Chassis'.
      *
      * @param ComponentChild $component
      *
@@ -36,7 +48,6 @@ class ComparatorService implements ComparatorServiceContract
      */
     private function componentToType(ComponentChild $component): string
     {
-
         return substr(class_basename($component), 0, -strlen('Component'));
     }
 }

@@ -3,19 +3,21 @@
 namespace PCForge\Compatibility\Helpers;
 
 use Exception;
+use Fhaculty\Graph\Edge\Base as Edge;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Graphp\GraphViz\GraphViz;
 use PCForge\Models\Component;
+use PCForge\Models\ComponentChild;
 
-class GraphUtils
+final class GraphUtils
 {
     /**
      * Echos an image representation of the given graph. May only be used when 'app.debug' is true.
      *
      * @param Graph $g
      *
-     * @throws Exception
+     * @throws Exception when debugging is disabled
      */
     public static function dump(Graph $g): void
     {
@@ -25,24 +27,58 @@ class GraphUtils
 
         /** @var Vertex $v */
         foreach ($g->getVertices() as $v) {
+            /** @var ComponentChild $attr */
             $attr = $v->getAttribute(IncompatibilityGraph::COMPONENT_ATTR);
-            $name = $v->getId() . '. ';
+            $label = $v->getId() . '. ' . ($attr === null)
+                ? Component::findOrFail($v->getId())->name
+                : $attr->parent->name;
 
-            if ($attr === null) {
-                $name .= Component::findOrFail($v->getId())->name;
-            }
-            else {
-                $name .= $attr->parent->name;
-            }
-
-            // print 'level' if applicable
-            if (($level = $v->getAttribute('level', -1)) !== -1) {
-                $name .= ' [' . $level . ']';
-            }
-
-            $v->setAttribute('graphviz.label', $name);
+            $v->setAttribute('graphviz.label', $label);
         }
 
         echo (new GraphViz())->createImageHtml($g);
+    }
+
+    /**
+     * Builds the complement of the given graph.
+     *
+     * @param Graph $g
+     *
+     * @return Graph
+     */
+    public static function complement(Graph $g): Graph
+    {
+        $gC = new Graph();
+        $vertices = collect($g->getVertices()->getVector());
+
+        $vertices
+            ->each(function (Vertex $v) use ($gC) {
+                $gC->createVertexClone($v);
+            })
+            ->each(function (Vertex $v1) use ($gC, $vertices) {
+                $vertices
+                    ->reject(function (Vertex $v2) use ($v1) {
+                        return $v1->hasEdgeTo($v2);
+                    })
+                    ->each(function (Vertex $v2) use ($gC, $v1) {
+                        self::createEdgeIn($gC, $v1, $v2);
+                    });
+            });
+
+        return $gC;
+    }
+
+    /**
+     * Creates an edge between the given vertices in $g.
+     *
+     * @param Graph $g
+     * @param Vertex $v1
+     * @param Vertex $v2
+     *
+     * @return Edge
+     */
+    private static function createEdgeIn(Graph $g, Vertex $v1, Vertex $v2): Edge
+    {
+        return $g->getVertex($v1->getId())->createEdge($g->getVertex($v2->getId()));
     }
 }

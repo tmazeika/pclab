@@ -3,6 +3,7 @@
 namespace PCForge\Compatibility\Comparators;
 
 use PCForge\Compatibility\Contracts\SelectionContract;
+use PCForge\Models\ComponentChild;
 use PCForge\Models\MotherboardComponent;
 use PCForge\Models\StorageComponent;
 
@@ -24,7 +25,11 @@ class MotherboardStorageComparator implements IncompatibilityComparator
      */
     public function isIncompatible($motherboard, $storage): bool
     {
-        return $motherboard->sata_slots < $this->selection->getAllOfType(get_class($storage))->count();
+        $storageCount = $this->selection->getAllOfType(get_class($storage))->sum(function (ComponentChild $child) {
+            return $child->selectCount;
+        });
+
+        return $storageCount > $motherboard->sata_slots;
     }
 
     public function getComponents(): array

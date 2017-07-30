@@ -6,8 +6,8 @@ use Fhaculty\Graph\Edge\Base as Edge;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Set\Vertices;
 use Fhaculty\Graph\Vertex;
+use Illuminate\Support\Collection;
 use PCForge\Compatibility\Contracts\ComparatorServiceContract;
-use PCForge\Compatibility\Contracts\ComponentRepositoryContract;
 use PCForge\Compatibility\Contracts\IncompatibilityGraphContract;
 use PCForge\Compatibility\Contracts\ShortestPathsContract;
 use PCForge\Models\ComponentChild;
@@ -16,80 +16,79 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
 {
     public const COMPONENT_ATTR = 'component';
 
-    /** @var ComponentRepositoryContract $componentRepo */
-    private $componentRepo;
-
     /** @var ComparatorServiceContract $comparatorService */
     private $comparatorService;
 
     /** @var ShortestPathsContract $shortestPaths */
     private $shortestPaths;
 
-    public function __construct(ComponentRepositoryContract $componentRepo,
-                                ComparatorServiceContract $comparatorService,
-                                ShortestPathsContract $shortestPaths)
+    public function __construct(ComparatorServiceContract $comparatorService, ShortestPathsContract $shortestPaths)
     {
-        $this->componentRepo = $componentRepo;
         $this->comparatorService = $comparatorService;
         $this->shortestPaths = $shortestPaths;
     }
 
-    public function build(Graph $g): void
+    public function build(Collection $components): Graph
     {
-        $this->buildBase($g);
+        return $this->buildTrue($this->buildBase($components));
     }
 
     /**
-     * Builds the initial and incomplete incompatibility graph.
+     * Builds a base incompatibility graph from the given components. The returned graph does not contain indirect
+     * incompatibilities, only direct ones.
      *
-     * @param Graph $g
+     * @param Collection $components
+     *
+     * @return Graph
      */
-    private function buildBase(Graph $g): void
+    public function buildBase(Collection $components): Graph
     {
-        // soon to be the complement of $g
-        $gC = new Graph();
-        $components = $this->componentRepo->get();
+        $g = new Graph();
 
-        $components->each(function (ComponentChild $c1, int $i) use ($g, $gC, $components) {
-            $c1Id = $c1->parent->id;
-            $v1 = $this->createVertex($g, $c1Id, $c1);
-            $v1C = $this->createVertex($gC, $c1Id, $c1);
+        // create component vertices in $g
+        $vertices = $components
+            ->map(function (ComponentChild $component) use ($g) {
+                $v = $g->createVertex($component->parent->id);
 
-            $components->slice($i + 1)->each(function (ComponentChild $c2) use ($c1, $v1, $v1C, $g, $gC) {
-                $c2Id = $c2->parent->id;
-                $v2 = $this->createVertex($g, $c2Id, $c2);
-                $v2C = $this->createVertex($gC, $c2Id, $c2);
+                $v->setAttribute(self::COMPONENT_ATTR, $component);
 
-                // sort $c1 and $c2 by class name
-                list($c1, $c2) = array_sort([$c1, $c2], function ($component) {
-                    return get_class($component);
-                });
+                return $v;
+            })
+            ->all();
 
-                $comparator = $this->comparatorService->get($c1, $c2);
+        // create edges between directly incompatible component vertices
+        for ($i = 0; $i < count($vertices) - 1; $i++) {
+            /** @var Vertex $v1 */
+            $v1 = $vertices[$i];
+            $c1 = $v1->getAttribute(self::COMPONENT_ATTR);
 
-                // create incompatibility edges in $g where components are directly incompatible, else create the edge
-                // in $gC to be tested for true compatibility later; this is nice because we're simultaneously building
-                // a graph and its complement
-                if ($comparator !== null && $comparator->isIncompatible($c1, $c2)) {
+            for ($j = $i + 1; $j < count($vertices); $j++) {
+                /** @var Vertex $v2 */
+                $v2 = $vertices[$j];
+                $c2 = $v2->getAttribute(self::COMPONENT_ATTR);
+
+                if ($this->comparatorService->isIncompatible($c1, $c2)) {
                     $v1->createEdge($v2);
                 }
-                else {
-                    $v1C->createEdge($v2C);
-                }
-            });
-        });
+            }
+        }
 
-        $this->buildTrue($g, $gC);
+        return $g;
     }
 
     /**
-     * Builds the true and final incompatibility graph.
+     * Builds a true incompatibility graph on top of the given base graph. The returned graph contains both direct and
+     * indirect incompatibilities.
      *
-     * @param Graph $g
-     * @param Graph $gC a complement graph
+     * @param Graph $g a base incompatibility graph
+     *
+     * @return Graph
      */
-    private function buildTrue(Graph $g, Graph $gC): void
+    public function buildTrue(Graph $g): Graph
     {
+        // TODO: new algo...
+        $gC = GraphUtils::complement($g);
+        $newEdges = [];
         $typeSums = $this->getTypeSums($g->getVertices());
 
         // deal with non-edges in $g and test for true compatibility
@@ -103,9 +102,16 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
 
             if (!$this->isTrulyCompatible($typeSums, $v1, $v2)) {
                 // create incompatibility edge in $g
-                $v1->createEdge($v2);
+                $newEdges[] = [$v1, $v2];
             }
         }
+
+        // add new edges to $g
+        foreach ($newEdges as list($v1, $v2)) {
+            $v1->createEdge($v2);
+        }
+
+        return $g;
     }
 
     /**
@@ -117,8 +123,13 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
      *
      * @return bool
      */
-    private function isTrulyCompatible(array $typeSums, Vertex $v1, Vertex $v2): bool
+    public function isTrulyCompatible(array $typeSums, Vertex $v1, Vertex $v2): bool
     {
+        $v2Class = get_class($v2->getAttribute(self::COMPONENT_ATTR));
+        $typeSums = array_merge([], $typeSums, [
+            $v2Class => $typeSums[$v2Class] - 1,
+        ]);
+
         $verticesInPaths = $this->shortestPaths->getAll($v1, $v2);
 
         if ($verticesInPaths->count() === 0) {
@@ -127,9 +138,14 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
 
         $pathsTypeSums = $this->getTypeSums($verticesInPaths);
 
+        if ($v1->getId() === 'a' && $v2->getId() === 'f') {
+            echo '[' . $v1->getId() . ', ' . $v2->getId() . ']' . PHP_EOL;
+            echo json_encode($typeSums, JSON_PRETTY_PRINT) . PHP_EOL;
+            echo json_encode($pathsTypeSums, JSON_PRETTY_PRINT) . PHP_EOL;
+        }
+
         // get type sums of the shortest paths vertex set
         foreach ($pathsTypeSums as $key => $sum) {
-            // if $key doesn't exist in $typeSums, we're in trouble
             if ($sum < $typeSums[$key]) {
                 return true;
             }

@@ -2,8 +2,10 @@
 
 namespace PCForge\Http\Controllers;
 
+use Fhaculty\Graph\Graph;
 use PCForge\Compatibility\Contracts\ComponentIncompatibilityServiceContract;
 use PCForge\Compatibility\Contracts\ComponentRepositoryContract;
+use PCForge\Compatibility\Contracts\IncompatibilityGraphContract;
 use PCForge\Compatibility\Contracts\SelectionContract;
 use PCForge\Http\Requests\SelectComponent;
 
@@ -19,6 +21,9 @@ class BuildController extends Controller
 
     public function index(SelectionContract $selection)
     {
+        // TODO: remove debug
+        resolve(IncompatibilityGraphContract::class)->build(new Graph());
+
         $components = $this->componentRepo->get();
 
         $selection->setProperties($components);

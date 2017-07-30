@@ -2,7 +2,6 @@
 
 namespace PCForge\Compatibility\Comparators;
 
-
 use PCForge\Compatibility\Contracts\SystemContract;
 use PCForge\Models\ChassisComponent;
 use PCForge\Models\GraphicsComponent;

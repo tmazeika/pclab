@@ -2,15 +2,16 @@
 
 namespace PCForge\Compatibility\Comparators;
 
+use PCForge\Models\ComponentChild;
+
 interface IncompatibilityComparator
 {
     /**
-     * Gets whether or not both given components are incompatible with each
-     * other. A return value of false does not mean that the components are
-     * necessarily "compatible".
+     * Gets whether or not the given components are directly incompatible. The components should be passed in the order
+     * that they appear in the implementation's class name (alphabetically).
      *
-     * @param $component1
-     * @param $component2
+     * @param ComponentChild $component1
+     * @param ComponentChild $component2
      *
      * @return bool
      */
