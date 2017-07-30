@@ -9,11 +9,11 @@ use PCForge\Models\ComponentChild;
 
 class Selection implements SelectionContract
 {
-    /** @var array $counts */
-    private $counts;
-
     /** @var ComponentRepositoryContract $componentRepo */
     private $componentRepo;
+
+    /** @var array $counts */
+    private $counts;
 
     public function __construct(ComponentRepositoryContract $componentRepo, array $counts)
     {

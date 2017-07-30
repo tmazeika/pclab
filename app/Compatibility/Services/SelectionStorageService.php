@@ -10,14 +10,14 @@ use PCForge\Models\ComponentChild;
 
 class SelectionStorageService implements SelectionStorageServiceContract
 {
-    private const KEY = 'selection';
+    private const SESSION_KEY = 'selection';
 
     public function store(): void
     {
         $this->checkSession();
 
         session([
-            self::KEY => resolve(SelectionContract::class)->getCounts(),
+            self::SESSION_KEY => resolve(SelectionContract::class)->getCounts(),
         ]);
     }
 
@@ -26,7 +26,7 @@ class SelectionStorageService implements SelectionStorageServiceContract
         $this->checkSession();
 
         /** @var array $counts */
-        $counts = session(self::KEY, []);
+        $counts = session(self::SESSION_KEY, []);
         $selection = new Selection(resolve(ComponentRepositoryContract::class), $counts);
 
         // refresh all stored components

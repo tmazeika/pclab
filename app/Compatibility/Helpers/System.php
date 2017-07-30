@@ -28,15 +28,32 @@ class System implements SystemContract
         $this->selection = $selection;
     }
 
+    /**
+     * Gets whether the given power component can supply the given component, taking into account the rest of the
+     * selection.
+     *
+     * @param ComponentChild $component
+     * @param PowerComponent $power
+     *
+     * @return bool
+     */
     public function hasEnoughPower(ComponentChild $component, PowerComponent $power): bool
     {
         $safeTotal = $this->roundToIncrement(
-            $this->getActualWattsUsage() + $component->parent->watts_usage + self::WATTS_BUFFER,
+            $this->getWattsUsage() + $component->parent->watts_usage + self::WATTS_BUFFER,
             self::WATTS_INCREMENT);
 
         return $safeTotal <= $power->watts_out;
     }
 
+    /**
+     * Gets an array of the available drive bays left in the given chassis component, taking into account the rest of
+     * the selection.
+     *
+     * @param ChassisComponent $chassis
+     *
+     * @return array [2p5, 3p5, adaptable]
+     */
     public function getAvailableBayCounts(ChassisComponent $chassis): array
     {
         $this->selection->getAllOfType(StorageComponent::class)
@@ -62,14 +79,11 @@ class System implements SystemContract
         return [$avail2p5, $avail3p5, $availAdapt];
     }
 
-    private function getActualWattsUsage(): int
+    private function getWattsUsage(): int
     {
-        static $cached;
-
-        return $cached ?? $cached = $this->selection->getAll()
-                ->reduce(function (int $carry, ComponentChild $component) {
-                    return $carry + $component->parent->watts_usage * $component->selectCount;
-                }, 0);
+        return $this->selection->getAll()->reduce(function (int $carry, ComponentChild $component) {
+            return $carry + $component->parent->watts_usage * $component->selectCount;
+        }, 0);
     }
 
     private function roundToIncrement(float $x, int $increment): int

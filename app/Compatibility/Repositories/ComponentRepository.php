@@ -24,6 +24,11 @@ class ComponentRepository implements ComponentRepositoryContract
         return $this->get()->where('parent.id', $id)->first();
     }
 
+    /**
+     * Gets a collection of all components from the database, selecting all columns and relations.
+     *
+     * @return Collection
+     */
     private function getAllComponents(): Collection
     {
         $result = collect();

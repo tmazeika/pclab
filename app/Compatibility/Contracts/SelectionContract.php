@@ -64,7 +64,8 @@ interface SelectionContract
     public function getAllOfType(string $class): Collection;
 
     /**
-     * Gets the map of component ID's to their selected counts.
+     * Gets the map of component ID's to their selected counts. If a value is 0, then the component represented by that
+     * key-value pair is disabled.
      *
      * @return array
      */
