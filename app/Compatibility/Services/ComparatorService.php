@@ -11,13 +11,13 @@ class ComparatorService implements ComparatorServiceContract
     public function isIncompatible(ComponentChild $component1, ComponentChild $component2): bool
     {
         // sort components by class name in alphabetical order
-        $components = array_sort([$component1, $component1], function ($component) {
+        $components = array_sort([$component1, $component2], function ($component) {
             return get_class($component);
         });
 
         $comparator = $this->getComparator(...$components);
 
-        return $comparator === null || $comparator->isIncompatible(...$components);
+        return $comparator !== null && $comparator->isIncompatible(...$components);
     }
 
     /**

@@ -40,7 +40,7 @@ final class GraphUtils
         echo (new GraphViz())->createImageHtml($g);
     }
 
-    public static function getVertexComponent(Vertex $v): ComponentChild
+    public static function getVertexComponent(Vertex $v): ?ComponentChild
     {
         return $v->getAttribute(self::COMPONENT_ATTR);
     }

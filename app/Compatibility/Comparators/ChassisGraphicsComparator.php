@@ -30,4 +30,13 @@ class ChassisGraphicsComparator implements IncompatibilityComparator
 
         return $graphics->length > $max;
     }
+
+    private function isHddCageRequired(ChassisComponent $chassis): bool
+    {
+        list($avail2p5, $avail3p5, $availAdapt) = $this->system->getAvailableBayCounts($chassis);
+
+        return $avail2p5 < $chassis->cage_2p5_bays
+            || $avail3p5 < $chassis->cage_3p5_bays
+            || $availAdapt < $chassis->cage_adaptable_bays;
+    }
 }

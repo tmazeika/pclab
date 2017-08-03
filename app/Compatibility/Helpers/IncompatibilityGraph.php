@@ -51,18 +51,17 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
                 GraphUtils::setVertexComponent($v, $component);
 
                 return $v;
-            })
-            ->all();
+            });
 
         // create edges between directly incompatible component vertices
-        for ($i = 0; $i < count($vertices) - 1; $i++) {
+        for ($i = 0; $i < $vertices->count() - 1; $i++) {
             /** @var Vertex $v1 */
-            $v1 = $vertices[$i];
+            $v1 = $vertices->get($i);
             $c1 = GraphUtils::getVertexComponent($v1);
 
-            for ($j = $i + 1; $j < count($vertices); $j++) {
+            for ($j = $i + 1; $j < $vertices->count(); $j++) {
                 /** @var Vertex $v2 */
-                $v2 = $vertices[$j];
+                $v2 = $vertices->get($j);
                 $c2 = GraphUtils::getVertexComponent($v2);
 
                 if ($this->comparatorService->isIncompatible($c1, $c2)) {
@@ -85,6 +84,7 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
     public function buildTrue(Graph $g): Graph
     {
         // TODO: new algo...
+        return $g;
         $gC = GraphUtils::complement($g);
         $newEdges = [];
         $typeSums = $this->getTypeSums($g->getVertices());
@@ -135,12 +135,6 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
         }
 
         $pathsTypeSums = $this->getTypeSums($verticesInPaths);
-
-        if ($v1->getId() === 'a' && $v2->getId() === 'f') {
-            echo '[' . $v1->getId() . ', ' . $v2->getId() . ']' . PHP_EOL;
-            echo json_encode($typeSums, JSON_PRETTY_PRINT) . PHP_EOL;
-            echo json_encode($pathsTypeSums, JSON_PRETTY_PRINT) . PHP_EOL;
-        }
 
         // get type sums of the shortest paths vertex set
         foreach ($pathsTypeSums as $key => $sum) {

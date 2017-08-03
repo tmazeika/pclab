@@ -55,7 +55,7 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
             })
             ->uniqueStrict()
             ->map(function (Vertex $v) {
-                return $v->getAttribute(IncompatibilityGraph::COMPONENT_ATTR);
+                return GraphUtils::getVertexComponent($v);
             });
     }
 }
