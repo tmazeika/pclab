@@ -24,9 +24,4 @@ class ChassisCoolingComparator implements IncompatibilityComparator
             return $cooling->fan_width > $radiator->max_fan_width || $cooling->radiator_length > $radiator->max_length;
         });
     }
-
-    public function getComponents(): array
-    {
-        return ['chassis', 'cooling'];
-    }
 }

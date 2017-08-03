@@ -31,9 +31,4 @@ class MotherboardStorageComparator implements IncompatibilityComparator
 
         return $storageCount > $motherboard->sata_slots;
     }
-
-    public function getComponents(): array
-    {
-        return ['motherboard', 'storage'];
-    }
 }

@@ -26,9 +26,4 @@ class MemoryPowerComparator implements IncompatibilityComparator
     {
         return !$this->system->hasEnoughPower($memory, $power);
     }
-
-    public function getComponents(): array
-    {
-        return ['memory', 'power'];
-    }
 }

@@ -26,9 +26,4 @@ class PowerProcessorComparator implements IncompatibilityComparator
     {
         return !$this->system->hasEnoughPower($processor, $power);
     }
-
-    public function getComponents(): array
-    {
-        return ['power', 'processor'];
-    }
 }

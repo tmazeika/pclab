@@ -17,9 +17,4 @@ class GraphicsGraphicsComparator implements IncompatibilityComparator
     {
         return $graphics1->id !== $graphics2->id;
     }
-
-    public function getComponents(): array
-    {
-        return ['graphics', 'graphics'];
-    }
 }

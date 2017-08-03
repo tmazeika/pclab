@@ -18,9 +18,4 @@ class MotherboardProcessorComparator implements IncompatibilityComparator
     {
         return $motherboard->socket_id !== $processor->socket_id;
     }
-
-    public function getComponents(): array
-    {
-        return ['motherboard', 'processor'];
-    }
 }

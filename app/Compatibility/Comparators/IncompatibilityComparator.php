@@ -16,11 +16,4 @@ interface IncompatibilityComparator
      * @return bool
      */
     public function isIncompatible($component1, $component2): bool;
-
-    /**
-     * Gets the pair of components that are compared in this comparator.
-     *
-     * @return array
-     */
-    public function getComponents(): array;
 }

@@ -26,9 +26,4 @@ class CoolingPowerComparator implements IncompatibilityComparator
     {
         return !$this->system->hasEnoughPower($cooling, $power);
     }
-
-    public function getComponents(): array
-    {
-        return ['cooling', 'power'];
-    }
 }

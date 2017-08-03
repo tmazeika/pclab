@@ -26,9 +26,4 @@ class GraphicsMotherboardComparator implements IncompatibilityComparator
     {
         return $this->selection->getAllOfType(get_class($graphics))->count() === $motherboard->pcie3_slots;
     }
-
-    public function getComponents(): array
-    {
-        return ['graphics', 'motherboard'];
-    }
 }

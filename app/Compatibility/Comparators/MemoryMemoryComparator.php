@@ -17,9 +17,4 @@ class MemoryMemoryComparator implements IncompatibilityComparator
     {
         return $memory1->id !== $memory2->id;
     }
-
-    public function getComponents(): array
-    {
-        return ['memory', 'memory'];
-    }
 }

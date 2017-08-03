@@ -26,9 +26,4 @@ class ChassisPowerComparator implements IncompatibilityComparator
     {
         return !$this->system->hasEnoughPower($chassis, $power);
     }
-
-    public function getComponents(): array
-    {
-        return ['chassis', 'power'];
-    }
 }

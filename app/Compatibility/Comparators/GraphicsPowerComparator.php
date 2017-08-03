@@ -26,9 +26,4 @@ class GraphicsPowerComparator implements IncompatibilityComparator
     {
         return !$this->system->hasEnoughPower($graphics, $power);
     }
-
-    public function getComponents(): array
-    {
-        return ['graphics', 'power'];
-    }
 }

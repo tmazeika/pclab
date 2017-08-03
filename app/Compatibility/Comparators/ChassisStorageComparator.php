@@ -29,9 +29,4 @@ class ChassisStorageComparator implements IncompatibilityComparator
 
         return (($storage->width === System::WIDTH_2P5) ? $avail2p5 : $avail3p5) + $availAdapt === 0;
     }
-
-    public function getComponents(): array
-    {
-        return ['chassis', 'storage'];
-    }
 }

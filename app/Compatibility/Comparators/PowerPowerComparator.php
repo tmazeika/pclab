@@ -16,9 +16,4 @@ class PowerPowerComparator implements IncompatibilityComparator
     {
         return $power1->id !== $power2->id;
     }
-
-    public function getComponents(): array
-    {
-        return ['power', 'power'];
-    }
 }

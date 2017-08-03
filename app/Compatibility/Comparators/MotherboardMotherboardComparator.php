@@ -17,9 +17,4 @@ class MotherboardMotherboardComparator implements IncompatibilityComparator
     {
         return $motherboard1->id !== $motherboard2->id;
     }
-
-    public function getComponents(): array
-    {
-        return ['motherboard', 'motherboard'];
-    }
 }

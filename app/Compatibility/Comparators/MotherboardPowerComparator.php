@@ -26,9 +26,4 @@ class MotherboardPowerComparator implements IncompatibilityComparator
     {
         return $power->atx12v_pins < $motherboard->atx12v_pins || !$this->system->hasEnoughPower($motherboard, $power);
     }
-
-    public function getComponents(): array
-    {
-        return ['motherboard', 'power'];
-    }
 }

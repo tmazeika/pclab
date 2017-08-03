@@ -26,9 +26,4 @@ class PowerStorageComparator implements IncompatibilityComparator
     {
         return $this->selection->getAllOfType(get_class($storage))->count() === $power->sata_powers;
     }
-
-    public function getComponents(): array
-    {
-        return ['power', 'storage'];
-    }
 }

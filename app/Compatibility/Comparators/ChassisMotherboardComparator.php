@@ -24,9 +24,4 @@ class ChassisMotherboardComparator implements IncompatibilityComparator
                 ->pluck('id')
                 ->has($motherboard->form_factor->id);
     }
-
-    public function getComponents(): array
-    {
-        return ['chassis', 'motherboard'];
-    }
 }

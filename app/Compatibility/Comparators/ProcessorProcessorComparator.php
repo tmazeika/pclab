@@ -16,9 +16,4 @@ class ProcessorProcessorComparator implements IncompatibilityComparator
     {
         return $processor1->id !== $processor2->id;
     }
-
-    public function getComponents(): array
-    {
-        return ['processor', 'processor'];
-    }
 }
