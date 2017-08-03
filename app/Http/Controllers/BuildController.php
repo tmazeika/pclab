@@ -22,7 +22,7 @@ class BuildController extends Controller
     public function index(SelectionContract $selection)
     {
         // TODO: remove debug
-        resolve(IncompatibilityGraphContract::class)->build(new Graph());
+        resolve(IncompatibilityGraphContract::class)->build($this->componentRepo->get());
 
         $components = $this->componentRepo->get();
 

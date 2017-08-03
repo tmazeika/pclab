@@ -12,6 +12,8 @@ use PCForge\Models\ComponentChild;
 
 final class GraphUtils
 {
+    private const COMPONENT_ATTR = 'component';
+
     /**
      * Echos an image representation of the given graph. May only be used when 'app.debug' is true.
      *
@@ -27,8 +29,7 @@ final class GraphUtils
 
         /** @var Vertex $v */
         foreach ($g->getVertices() as $v) {
-            /** @var ComponentChild $attr */
-            $attr = $v->getAttribute(IncompatibilityGraph::COMPONENT_ATTR);
+            $attr = self::getVertexComponent($v);
             $label = $v->getId() . '. ' . ($attr === null)
                 ? Component::findOrFail($v->getId())->name
                 : $attr->parent->name;
@@ -37,6 +38,16 @@ final class GraphUtils
         }
 
         echo (new GraphViz())->createImageHtml($g);
+    }
+
+    public static function getVertexComponent(Vertex $v): ComponentChild
+    {
+        return $v->getAttribute(self::COMPONENT_ATTR);
+    }
+
+    public static function setVertexComponent(Vertex $v, ComponentChild $component): void
+    {
+        $v->setAttribute(self::COMPONENT_ATTR, $component);
     }
 
     /**

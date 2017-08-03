@@ -4,6 +4,8 @@ namespace PCForge\Presenters;
 
 class ComponentPresenter extends Presenter
 {
+    private const COMPONENT_IMG_DIR = 'img/components';
+
     use ComponentPresenterTrait;
 
     public function formattedPrice()
@@ -15,6 +17,6 @@ class ComponentPresenter extends Presenter
     {
         $id = $this->entity->id;
 
-        return asset("img/components/$id.jpg");
+        return asset(self::COMPONENT_IMG_DIR . "/$id.jpg");
     }
 }

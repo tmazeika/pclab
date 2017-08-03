@@ -14,8 +14,6 @@ use PCForge\Models\ComponentChild;
 
 class IncompatibilityGraph implements IncompatibilityGraphContract
 {
-    public const COMPONENT_ATTR = 'component';
-
     /** @var ComparatorServiceContract $comparatorService */
     private $comparatorService;
 
@@ -50,7 +48,7 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
             ->map(function (ComponentChild $component) use ($g) {
                 $v = $g->createVertex($component->parent->id);
 
-                $v->setAttribute(self::COMPONENT_ATTR, $component);
+                GraphUtils::setVertexComponent($v, $component);
 
                 return $v;
             })
@@ -60,12 +58,12 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
         for ($i = 0; $i < count($vertices) - 1; $i++) {
             /** @var Vertex $v1 */
             $v1 = $vertices[$i];
-            $c1 = $v1->getAttribute(self::COMPONENT_ATTR);
+            $c1 = GraphUtils::getVertexComponent($v1);
 
             for ($j = $i + 1; $j < count($vertices); $j++) {
                 /** @var Vertex $v2 */
                 $v2 = $vertices[$j];
-                $c2 = $v2->getAttribute(self::COMPONENT_ATTR);
+                $c2 = GraphUtils::getVertexComponent($v2);
 
                 if ($this->comparatorService->isIncompatible($c1, $c2)) {
                     $v1->createEdge($v2);
@@ -125,7 +123,7 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
      */
     public function isTrulyCompatible(array $typeSums, Vertex $v1, Vertex $v2): bool
     {
-        $v2Class = get_class($v2->getAttribute(self::COMPONENT_ATTR));
+        $v2Class = get_class(GraphUtils::getVertexComponent($v2));
         $typeSums = array_merge([], $typeSums, [
             $v2Class => $typeSums[$v2Class] - 1,
         ]);
@@ -168,7 +166,7 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
 
         /** @var Vertex $v */
         foreach ($vertices as $v) {
-            $key = get_class($v->getAttribute(self::COMPONENT_ATTR));
+            $key = get_class(GraphUtils::getVertexComponent($v));
             $arr[$key] = ($arr[$key] ?? 0) + 1;
         }
 
@@ -189,7 +187,7 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
     {
         $v = $g->createVertex($id, true);
 
-        $v->setAttribute(self::COMPONENT_ATTR, $component);
+        GraphUtils::setVertexComponent($v, $component);
 
         return $v;
     }
