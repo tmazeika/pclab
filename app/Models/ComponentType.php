@@ -6,13 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 /**
+ * @property string name
+ * @property bool is_allowed_multiple
+ * @property bool is_always_required
+ *
  * @property Collection components
  */
 class ComponentType extends Model
 {
     protected $fillable = [
         'name',
-        'allows_multiple',
+        'is_allowed_multiple',
+        'is_always_required',
     ];
 
     public function components()

@@ -16,7 +16,8 @@ class CreateComponentTypesTable extends Migration
         Schema::create('component_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->boolean('allows_multiple');
+            $table->boolean('is_always_required');
+            $table->boolean('is_allowed_multiple')->default(false);
             $table->timestamps();
         });
     }

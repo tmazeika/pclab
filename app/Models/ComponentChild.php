@@ -18,24 +18,41 @@ abstract class ComponentChild extends Model
     /** @var bool $disabled */
     public $disabled = false;
 
-    public static function featuresView()
+    public static function featuresView(): string
     {
         return 'partials.build.' . self::typeName() . '-component';
     }
 
-    public static function typeName()
+    /**
+     * Gets the type name of this component. E.g. "PCForge\Models\ProcessorComponent" becomes "processor".
+     *
+     * @return string
+     */
+    public static function typeName(): string
     {
-        // e.g. 'PCForge\Models\ProcessorComponent' -> 'processor'
         return strtolower(substr(class_basename(get_called_class()), 0, -strlen('Component')));
     }
 
-    public function parent()
+    public final function parent()
     {
         return $this->morphOne(Component::class, 'child');
     }
 
     public function scopeWithAll(Builder $query): void
     {
-        $query->with('parent');
+        $query->with('parent', 'parent.type');
+    }
+
+    // TODO: belongs elsewhere?
+    /**
+     * Gets an array of component types that are required when this component is in the system. For example, a
+     * processor that does not come with a stock cooler would require a cooling component. The component types are the
+     * fully qualified class names of the model.
+     *
+     * @return array
+     */
+    public function getRequiredComponentTypes(): array
+    {
+        return [];
     }
 }

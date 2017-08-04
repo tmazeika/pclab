@@ -31,7 +31,7 @@ class MotherboardComponentsTableSeeder extends Seeder
                 'dimm_max_capacity'   => 64,
                 'atx12v_pins'         => 8,
                 'socket_id'           => 3,
-                'sata_slots'          => 0, // TODO: 5
+                'sata_slots'          => 4,
             ],
             [
                 'audio_headers'       => 1,

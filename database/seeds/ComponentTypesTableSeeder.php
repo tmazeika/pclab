@@ -14,36 +14,44 @@ class ComponentTypesTableSeeder extends Seeder
     {
         DB::table('component_types')->insert([
             [
-                'name'                        => 'chassis',
-                'allows_multiple'             => false,
+                'name'                => 'chassis',
+                'is_allowed_multiple' => false,
+                'is_always_required'  => true,
             ],
             [
-                'name'                        => 'processor',
-                'allows_multiple'             => false,
+                'name'                => 'processor',
+                'is_allowed_multiple' => false,
+                'is_always_required'  => true,
             ],
             [
-                'name'                        => 'graphics',
-                'allows_multiple'             => true,
+                'name'                => 'graphics',
+                'is_allowed_multiple' => true,
+                'is_always_required'  => false,
             ],
             [
-                'name'                        => 'memory',
-                'allows_multiple'             => true,
+                'name'                => 'memory',
+                'is_allowed_multiple' => true,
+                'is_always_required'  => true,
             ],
             [
-                'name'                        => 'motherboard',
-                'allows_multiple'             => false,
+                'name'                => 'motherboard',
+                'is_allowed_multiple' => false,
+                'is_always_required'  => true,
             ],
             [
-                'name'                        => 'cooling',
-                'allows_multiple'             => false,
+                'name'                => 'cooling',
+                'is_allowed_multiple' => false,
+                'is_always_required'  => false,
             ],
             [
-                'name'                        => 'storage',
-                'allows_multiple'             => true,
+                'name'                => 'storage',
+                'is_allowed_multiple' => true,
+                'is_always_required'  => true,
             ],
             [
-                'name'                        => 'power',
-                'allows_multiple'             => false,
+                'name'                => 'power',
+                'is_allowed_multiple' => false,
+                'is_always_required'  => true,
             ],
         ]);
     }

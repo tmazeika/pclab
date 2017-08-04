@@ -25,9 +25,11 @@ class MotherboardStorageComparator implements IncompatibilityComparator
      */
     public function isIncompatible($motherboard, $storage): bool
     {
-        $storageCount = $this->selection->getAllOfType(get_class($storage))->sum(function (ComponentChild $child) {
-            return $child->selectCount;
+        $storageCount = $this->selection->getAllOfType(get_class($storage))->sum(function (ComponentChild $component) {
+            return $component->selectCount;
         });
+
+        \Log::info($storageCount);
 
         return $storageCount > $motherboard->sata_slots;
     }

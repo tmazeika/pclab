@@ -38,4 +38,20 @@ class ProcessorComponent extends ComponentChild
 
         $query->with('socket');
     }
+
+    public function getRequiredComponentTypes(): array
+    {
+        $arr = [];
+
+        if (!$this->has_apu) {
+            $arr[] = GraphicsComponent::class;
+        }
+
+        if (!$this->has_stock_cooler) {
+            $arr[] = CoolingComponent::class;
+        }
+
+        return $arr;
+    }
+
 }

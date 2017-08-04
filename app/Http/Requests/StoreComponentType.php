@@ -24,8 +24,9 @@ class StoreComponentType extends FormRequest
     public function rules()
     {
         return [
-            'name'            => 'required|string|unique:component_types',
-            'allows_multiple' => 'required|boolean',
+            'name'                => 'required|string|unique:component_types',
+            'is_allowed_multiple' => 'required|boolean',
+            'is_always_required'  => 'required|boolean',
         ];
     }
 }

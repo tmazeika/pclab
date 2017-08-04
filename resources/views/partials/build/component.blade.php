@@ -1,7 +1,7 @@
 <div class="product {{ $component->presenter()->selectedClass() }} {{ $component->presenter()->disabledClass() }}"
      data-component="{{ $component->parent->id }}"
      data-count="{{ $component->presenter()->count() }}"
-     data-allows-multiple="{{ $component->parent->type->allows_multiple }}">
+     data-allows-multiple="{{ $component->parent->type->is_allowed_multiple }}">
     <img src="{{ $component->parent->presenter()->img() }}"/>
 
     <header>
@@ -11,7 +11,7 @@
 
     @include($component->featuresView())
 
-    @if($component->parent->type->allows_multiple)
+    @if($component->parent->type->is_allowed_multiple)
         <div>
             <button>&minus;</button>
             <span>{{ $component->presenter()->count() }}</span>
