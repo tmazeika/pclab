@@ -85,33 +85,36 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
         $gC = GraphUtils::complement($g);
         $newEdges = [];
 
-        /**
-         * Deal with non-edges in $g and test for true compatibility.
-         *
-         * @var Edge $e
-         */
+        // deal with non-edges in $g and test for true compatibility
+        /** @var Edge $e */
         foreach ($gC->getEdges() as $e) {
             list($v1, $v2) = $this->getEdgeVertices($e);
 
             if (!$this->isTrulyCompatible($g, $v1, $v2)) {
-                // create incompatibility edge in $g
+                // queue incompatibility edge in $g
                 $newEdges[] = [$v1, $v2];
             }
         }
 
+        // add new edges to $g
         /**
-         * Add new edges to $g.
-         *
          * @var Vertex $v1
          * @var Vertex $v2
          */
         foreach ($newEdges as list($v1, $v2)) {
-            $v1->createEdge($v2);
+            // switch from $gC to $g vertices
+            list($v1, $v2) = $this->getVerticesFrom($g, $v1, $v2);
+
+            // prevent duplicates
+            if (!$v1->hasEdgeTo($v2)) {
+                $v1->createEdge($v2);
+            }
         }
 
         return $g;
     }
 
+    // TODO: optimize... a lot
     /**
      * Gets whether or not the given vertices are truly compatible.
      *
@@ -127,6 +130,7 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
         $c1 = GraphUtils::getVertexComponent($v1);
         $c2 = GraphUtils::getVertexComponent($v2);
 
+        // TODO: consider additional requirements
         $requiredTypes = $components
             ->where('parent.type.is_always_required', true)
             ->pluck('parent.type.name')
@@ -175,7 +179,7 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
     {
         $args = func_get_args();
 
-        if (count($args) == 0) {
+        if (count($args) === 0) {
             return [[]];
         }
 
@@ -192,6 +196,16 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
         return $r;
     }
 
+    /**
+     * Gets whether or not the given components are incompatible according to the given graph $g. That is, there is an
+     * edge between the component's vertices in the graph.
+     *
+     * @param Graph $g
+     * @param ComponentChild $c1
+     * @param ComponentChild $c2
+     *
+     * @return bool
+     */
     private function isIncompatible(Graph $g, ComponentChild $c1, ComponentChild $c2): bool
     {
         return $g->getVertex($c1->parent->id)->hasEdgeTo($g->getVertex($c2->parent->id));
@@ -224,54 +238,7 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
     }
 
     /**
-     * Gets the ancestors of the given node, including itself. Ancestors are those that are pointed to by the given
-     * node.
-     *
-     * @param Vertex $node
-     *
-     * @return array
-     */
-    private function getAncestors(Vertex $node): array
-    {
-        $queue = [$node];
-        $result = [$node];
-
-        while (!empty($queue)) {
-            /** @var Vertex $current */
-            $current = array_shift($queue);
-
-            /** @var Vertex $adjacent */
-            foreach ($current->getVerticesEdgeTo() as $adjacent) {
-                $result[] = $adjacent;
-                $queue[] = $adjacent;
-            }
-        }
-
-        return array_unique($result, SORT_REGULAR);
-    }
-
-    /**
-     * Creates a vertex clone in the given graph, returning the new or existing vertex in $g.
-     *
-     * @param Graph $g
-     * @param Vertex $v
-     *
-     * @return Vertex
-     *
-     */
-    private function createVertexClone(Graph $g, Vertex $v): Vertex
-    {
-        $id = $v->getId();
-
-        if (!$g->hasVertex($id)) {
-            return $g->createVertexClone($v);
-        }
-
-        return $g->getVertex($id);
-    }
-
-    /**
-     * Gets an array of the corresponding vertices in $g using $e's vertices.
+     * Gets an array of $e's vertices.
      *
      * @param Edge $e
      *
@@ -284,6 +251,23 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
         return [
             $eVertices->getVertexFirst(),
             $eVertices->getVertexLast(),
+        ];
+    }
+
+    /**
+     * Gets an array of the corresponding vertices in $g using $v1 and $v2's ID's.
+     *
+     * @param Graph $g
+     * @param Vertex $v1
+     * @param Vertex $v2
+     *
+     * @return array
+     */
+    private function getVerticesFrom(Graph $g, Vertex $v1, Vertex $v2): array
+    {
+        return [
+            $g->getVertex($v1->getId()),
+            $g->getVertex($v2->getId()),
         ];
     }
 }
