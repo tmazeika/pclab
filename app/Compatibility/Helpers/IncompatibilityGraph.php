@@ -4,12 +4,11 @@ namespace PCForge\Compatibility\Helpers;
 
 use Fhaculty\Graph\Edge\Base as Edge;
 use Fhaculty\Graph\Graph;
-use Fhaculty\Graph\Set\Vertices;
 use Fhaculty\Graph\Vertex;
 use Illuminate\Support\Collection;
 use PCForge\Compatibility\Contracts\ComparatorServiceContract;
+use PCForge\Compatibility\Contracts\ComponentRepositoryContract;
 use PCForge\Compatibility\Contracts\IncompatibilityGraphContract;
-use PCForge\Compatibility\Contracts\ShortestPathsContract;
 use PCForge\Models\ComponentChild;
 
 class IncompatibilityGraph implements IncompatibilityGraphContract
@@ -17,13 +16,13 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
     /** @var ComparatorServiceContract $comparatorService */
     private $comparatorService;
 
-    /** @var ShortestPathsContract $shortestPaths */
-    private $shortestPaths;
+    /** @var ComponentRepositoryContract $componentRepo */
+    private $componentRepo;
 
-    public function __construct(ComparatorServiceContract $comparatorService, ShortestPathsContract $shortestPaths)
+    public function __construct(ComparatorServiceContract $comparatorService, ComponentRepositoryContract $componentRepo)
     {
         $this->comparatorService = $comparatorService;
-        $this->shortestPaths = $shortestPaths;
+        $this->componentRepo = $componentRepo;
     }
 
     public function build(Collection $components): Graph
@@ -83,28 +82,29 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
      */
     public function buildTrue(Graph $g): Graph
     {
-        // TODO: new algo...
-        return $g;
         $gC = GraphUtils::complement($g);
         $newEdges = [];
-        $typeSums = $this->getTypeSums($g->getVertices());
 
-        // deal with non-edges in $g and test for true compatibility
-        /** @var Edge $e */
+        /**
+         * Deal with non-edges in $g and test for true compatibility.
+         *
+         * @var Edge $e
+         */
         foreach ($gC->getEdges() as $e) {
-            /**
-             * @var Vertex $v1 from $g
-             * @var Vertex $v2 from $g
-             */
-            list($v1, $v2) = $this->getCorrespondingEdgeVertices($g, $e);
+            list($v1, $v2) = $this->getEdgeVertices($e);
 
-            if (!$this->isTrulyCompatible($typeSums, $v1, $v2)) {
+            if (!$this->isTrulyCompatible($g, $v1, $v2)) {
                 // create incompatibility edge in $g
                 $newEdges[] = [$v1, $v2];
             }
         }
 
-        // add new edges to $g
+        /**
+         * Add new edges to $g.
+         *
+         * @var Vertex $v1
+         * @var Vertex $v2
+         */
         foreach ($newEdges as list($v1, $v2)) {
             $v1->createEdge($v2);
         }
@@ -115,92 +115,175 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
     /**
      * Gets whether or not the given vertices are truly compatible.
      *
-     * @param array $typeSums the result of {@see getTypeSums} given all vertices
-     * @param Vertex $v1
-     * @param Vertex $v2
+     * @param Graph $g
+     * @param Vertex $v1 the starting vertex from $g's complement
+     * @param Vertex $v2 the endpoint vertex from $g's complement
      *
      * @return bool
      */
-    public function isTrulyCompatible(array $typeSums, Vertex $v1, Vertex $v2): bool
+    public function isTrulyCompatible(Graph $g, Vertex $v1, Vertex $v2): bool
     {
-        $v2Class = get_class(GraphUtils::getVertexComponent($v2));
-        $typeSums = array_merge([], $typeSums, [
-            $v2Class => $typeSums[$v2Class] - 1,
-        ]);
+        $components = $this->componentRepo->get();
+        $c1 = GraphUtils::getVertexComponent($v1);
+        $c2 = GraphUtils::getVertexComponent($v2);
 
-        $verticesInPaths = $this->shortestPaths->getAll($v1, $v2);
+        $requiredTypes = $components
+            ->where('parent.type.is_always_required', true)
+            ->pluck('parent.type.name')
+            ->filter(function (string $typeName) use ($c1, $c2) {
+                return $typeName !== $c1::typeName() && $typeName !== $c2::typeName();
+            })
+            ->all();
 
-        if ($verticesInPaths->count() === 0) {
-            return true;
+        $pairs1 = $this->getCompatibleOfTypes($v1, $requiredTypes);
+        $pairs2 = $this->getCompatibleOfTypes($v2, $requiredTypes);
+        $pairsUnion = [];
+
+        /**
+         * @var string $type
+         * @var ComponentChild[] $compatible
+         */
+        foreach ($pairs1 as $type => $compatible) {
+            $pairsUnion[$type] = array_uintersect($compatible, $pairs2[$type] ?? [], function (ComponentChild $c1, ComponentChild $c2) {
+                return $c1->parent->id - $c2->parent->id;
+            });
         }
 
-        $pathsTypeSums = $this->getTypeSums($verticesInPaths);
+        $tuples = $this->getCartesianProduct(...array_values($pairsUnion));
 
-        // get type sums of the shortest paths vertex set
-        foreach ($pathsTypeSums as $key => $sum) {
-            if ($sum < $typeSums[$key]) {
-                return true;
+        /** @var ComponentChild[] $tuple */
+        foreach ($tuples as $tuple) {
+            for ($i = 0; $i < count($tuple) - 1; $i++) {
+                $c1 = $tuple[$i];
+
+                for ($j = $i + 1; $j < count($tuple); $j++) {
+                    $c2 = $tuple[$j];
+
+                    if ($this->isIncompatible($g, $c1, $c2)) {
+                        continue 3;
+                    }
+                }
             }
+
+            return true;
         }
 
         return false;
     }
 
+    private function getCartesianProduct()
+    {
+        $args = func_get_args();
+
+        if (count($args) == 0) {
+            return [[]];
+        }
+
+        $a = array_shift($args);
+        $c = call_user_func_array(__METHOD__, $args);
+        $r = [];
+
+        foreach ($a as $v) {
+            foreach ($c as $p) {
+                $r[] = array_merge([$v], $p);
+            }
+        }
+
+        return $r;
+    }
+
+    private function isIncompatible(Graph $g, ComponentChild $c1, ComponentChild $c2): bool
+    {
+        return $g->getVertex($c1->parent->id)->hasEdgeTo($g->getVertex($c2->parent->id));
+    }
+
     /**
-     * Gets a map of component class names to the number of occurrences of that component type in the given vertices
-     * set.
+     * Gets a map of components that are compatible with the given vertex component. The types of the components must be
+     * found within the given $types array, and the map is keyed by the type.
      *
-     * @param Vertices $vertices
+     * @param Vertex $v
+     * @param array $types
      *
      * @return array
      */
-    private function getTypeSums(Vertices $vertices): array
+    private function getCompatibleOfTypes(Vertex $v, array $types): array
     {
         $arr = [];
 
-        /** @var Vertex $v */
-        foreach ($vertices as $v) {
-            $key = get_class(GraphUtils::getVertexComponent($v));
-            $arr[$key] = ($arr[$key] ?? 0) + 1;
+        /** @var Vertex $adjacent */
+        foreach ($v->getVerticesEdge() as $adjacent) {
+            $adjacentComponent = GraphUtils::getVertexComponent($adjacent);
+            $adjacentComponentType = $adjacentComponent::typeName();
+
+            if (in_array($adjacentComponentType, $types)) {
+                $arr[$adjacentComponentType][] = $adjacentComponent;
+            }
         }
 
         return $arr;
     }
 
     /**
-     * Creates a vertex with the given $id in $g if it does not yet exist, and sets the component attribute to the given
-     * $component.
+     * Gets the ancestors of the given node, including itself. Ancestors are those that are pointed to by the given
+     * node.
+     *
+     * @param Vertex $node
+     *
+     * @return array
+     */
+    private function getAncestors(Vertex $node): array
+    {
+        $queue = [$node];
+        $result = [$node];
+
+        while (!empty($queue)) {
+            /** @var Vertex $current */
+            $current = array_shift($queue);
+
+            /** @var Vertex $adjacent */
+            foreach ($current->getVerticesEdgeTo() as $adjacent) {
+                $result[] = $adjacent;
+                $queue[] = $adjacent;
+            }
+        }
+
+        return array_unique($result, SORT_REGULAR);
+    }
+
+    /**
+     * Creates a vertex clone in the given graph, returning the new or existing vertex in $g.
      *
      * @param Graph $g
-     * @param int $id
-     * @param ComponentChild $component
+     * @param Vertex $v
      *
      * @return Vertex
+     *
      */
-    private function createVertex(Graph $g, int $id, ComponentChild $component): Vertex
+    private function createVertexClone(Graph $g, Vertex $v): Vertex
     {
-        $v = $g->createVertex($id, true);
+        $id = $v->getId();
 
-        GraphUtils::setVertexComponent($v, $component);
+        if (!$g->hasVertex($id)) {
+            return $g->createVertexClone($v);
+        }
 
-        return $v;
+        return $g->getVertex($id);
     }
 
     /**
      * Gets an array of the corresponding vertices in $g using $e's vertices.
      *
-     * @param Graph $g
      * @param Edge $e
      *
      * @return array
      */
-    private function getCorrespondingEdgeVertices(Graph $g, Edge $e): array
+    private function getEdgeVertices(Edge $e): array
     {
         $eVertices = $e->getVertices();
 
         return [
-            $g->getVertex($eVertices->getVertexFirst()->getId()),
-            $g->getVertex($eVertices->getVertexLast()->getId())
+            $eVertices->getVertexFirst(),
+            $eVertices->getVertexLast(),
         ];
     }
 }

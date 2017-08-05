@@ -29,8 +29,6 @@ class MotherboardStorageComparator implements IncompatibilityComparator
             return $component->selectCount;
         });
 
-        \Log::info($storageCount);
-
         return $storageCount > $motherboard->sata_slots;
     }
 }

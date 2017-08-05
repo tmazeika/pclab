@@ -17,7 +17,7 @@ class SelectionStorageService implements SelectionStorageServiceContract
         $this->checkSession();
 
         session([
-            self::SESSION_KEY => resolve(SelectionContract::class)->getCounts(),
+            self::SESSION_KEY => app()->make(SelectionContract::class)->getCounts(),
         ]);
     }
 
@@ -27,7 +27,7 @@ class SelectionStorageService implements SelectionStorageServiceContract
 
         /** @var array $counts */
         $counts = session(self::SESSION_KEY, []);
-        $selection = new Selection(resolve(ComponentRepositoryContract::class), $counts);
+        $selection = new Selection(app()->make(ComponentRepositoryContract::class), $counts);
 
         // refresh all stored components
         $selection->getAll()->each(function (ComponentChild $component) use ($selection) {
@@ -37,6 +37,10 @@ class SelectionStorageService implements SelectionStorageServiceContract
         return $selection;
     }
 
+    /**
+     * Checks that the session is ready to store and retrieve. Without this check, the session will silently fail to
+     * store to and retrieve from the current request's session.
+     */
     private function checkSession(): void
     {
         if (!session()->isStarted()) {

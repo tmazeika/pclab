@@ -11,11 +11,8 @@ use PCForge\Compatibility\Contracts\ComponentRepositoryContract;
 use PCForge\Compatibility\Contracts\IncompatibilityGraphContract;
 use PCForge\Compatibility\Contracts\SelectionContract;
 use PCForge\Compatibility\Contracts\SelectionStorageServiceContract;
-use PCForge\Compatibility\Contracts\ShortestPathsContract;
 use PCForge\Compatibility\Contracts\SystemContract;
 use PCForge\Compatibility\Helpers\IncompatibilityGraph;
-use PCForge\Compatibility\Helpers\Selection;
-use PCForge\Compatibility\Helpers\ShortestPaths;
 use PCForge\Compatibility\Helpers\System;
 use PCForge\Compatibility\Repositories\ComponentRepository;
 use PCForge\Compatibility\Services\ComparatorService;
@@ -63,9 +60,6 @@ class CompatibilityServiceProvider extends ServiceProvider
         // SelectionStorageServiceContract
         $this->app->singleton(SelectionStorageServiceContract::class, SelectionStorageService::class);
 
-        // ShortestPathsContract
-        $this->app->bind(ShortestPathsContract::class, ShortestPaths::class);
-
         // SystemContract
         $this->app->bind(SystemContract::class, System::class);
     }
@@ -79,7 +73,6 @@ class CompatibilityServiceProvider extends ServiceProvider
             IncompatibilityGraphContract::class,
             SelectionContract::class,
             SelectionStorageServiceContract::class,
-            ShortestPathsContract::class,
             SystemContract::class,
         ];
     }

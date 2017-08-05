@@ -5,6 +5,8 @@ namespace Tests\Unit;
 use Fhaculty\Graph\Graph;
 use PCForge\Compatibility\Helpers\IncompatibilityGraph;
 use PCForge\Models\ChassisComponent;
+use PCForge\Models\Component;
+use PCForge\Models\ComponentType;
 use PCForge\Models\CoolingComponent;
 use PCForge\Models\GraphicsComponent;
 use PCForge\Models\MotherboardComponent;
@@ -17,25 +19,94 @@ class IncompatibilityGraphTest extends TestCase
     {
         $g = new Graph();
 
-        $va = $g->createVertex('a');
-        $vb = $g->createVertex('b');
-        $vc = $g->createVertex('c');
-        $vd = $g->createVertex('d');
-        $ve = $g->createVertex('e');
-        $vf = $g->createVertex('f');
-        $vg = $g->createVertex('g');
-        $vh = $g->createVertex('h');
-        $vi = $g->createVertex('i');
+        $va = $g->createVertex(1);
+        $vb = $g->createVertex(2);
+        $vc = $g->createVertex(3);
+        $vd = $g->createVertex(4);
+        $ve = $g->createVertex(5);
+        $vf = $g->createVertex(6);
+        $vg = $g->createVertex(7);
+        $vh = $g->createVertex(8);
+        $vi = $g->createVertex(9);
 
-        $va->setAttribute('component', new ChassisComponent);
-        $vb->setAttribute('component', new MotherboardComponent);
-        $vc->setAttribute('component', new ProcessorComponent);
-        $vd->setAttribute('component', new ChassisComponent);
-        $ve->setAttribute('component', new MotherboardComponent);
-        $vf->setAttribute('component', new ProcessorComponent);
-        $vg->setAttribute('component', new CoolingComponent);
-        $vh->setAttribute('component', new GraphicsComponent);
-        $vi->setAttribute('component', new CoolingComponent);
+        $vaC = new ChassisComponent;
+        $vbC = new MotherboardComponent;
+        $vcC = new ProcessorComponent;
+        $vdC = new ChassisComponent;
+        $veC = new MotherboardComponent;
+        $vfC = new ProcessorComponent;
+        $vgC = new CoolingComponent;
+        $vhC = new GraphicsComponent;
+        $viC = new CoolingComponent;
+
+        $vcC->flagTest = true;
+
+        $vaCP = $vaC->parent = new Component;
+        $vbCP = $vbC->parent = new Component;
+        $vcCP = $vcC->parent = new Component;
+        $vdCP = $vdC->parent = new Component;
+        $veCP = $veC->parent = new Component;
+        $vfCP = $vfC->parent = new Component;
+        $vgCP = $vgC->parent = new Component;
+        $vhCP = $vhC->parent = new Component;
+        $viCP = $viC->parent = new Component;
+
+        $vaCP->id = 1;
+        $vbCP->id = 2;
+        $vcCP->id = 3;
+        $vdCP->id = 4;
+        $veCP->id = 5;
+        $vfCP->id = 6;
+        $vgCP->id = 7;
+        $vhCP->id = 8;
+        $viCP->id = 9;
+
+        $vaCPT = $vaCP->type = new ComponentType;
+        $vbCPT = $vbCP->type = new ComponentType;
+        $vcCPT = $vcCP->type = new ComponentType;
+        $vdCPT = $vdCP->type = new ComponentType;
+        $veCPT = $veCP->type = new ComponentType;
+        $vfCPT = $vfCP->type = new ComponentType;
+        $vgCPT = $vgCP->type = new ComponentType;
+        $vhCPT = $vhCP->type = new ComponentType;
+        $viCPT = $viCP->type = new ComponentType;
+
+        $vaCPT->name = 'chassis';
+        $vaCPT->is_always_required = true;
+
+        $vbCPT->name = 'motherboard';
+        $vbCPT->is_always_required = true;
+
+        $vcCPT->name = 'processor';
+        $vcCPT->is_always_required = true;
+
+        $vdCPT->name = 'chassis';
+        $vdCPT->is_always_required = true;
+
+        $veCPT->name = 'motherboard';
+        $veCPT->is_always_required = true;
+
+        $vfCPT->name = 'processor';
+        $vfCPT->is_always_required = true;
+
+        $vgCPT->name = 'cooling';
+        $vgCPT->is_always_required = false;
+
+        $vhCPT->name = 'graphics';
+        $vhCPT->is_always_required = false;
+
+        $viCPT->name = 'cooling';
+        $viCPT->is_always_required = false;
+
+        $va->setAttribute('component', $vaC);
+        $vb->setAttribute('component', $vbC);
+        $vc->setAttribute('component', $vcC);
+        $vd->setAttribute('component', $vdC);
+        $ve->setAttribute('component', $veC);
+        $vf->setAttribute('component', $vfC);
+        $vg->setAttribute('component', $vgC);
+        $vh->setAttribute('component', $vhC);
+        $vi->setAttribute('component', $viC);
 
         // a ->
         $va->createEdge($vd); // d
@@ -62,17 +133,17 @@ class IncompatibilityGraphTest extends TestCase
         // g ->
         $vg->createEdge($vi); // i
 
-        resolve(IncompatibilityGraph::class)->buildTrue($g);
+        app()->make(IncompatibilityGraph::class)->buildTrue($g);
 
-        $this->assertTrue($g->hasVertex('a'), 'a not in graph');
-        $this->assertTrue($g->hasVertex('b'), 'b not in graph');
-        $this->assertTrue($g->hasVertex('c'), 'c not in graph');
-        $this->assertTrue($g->hasVertex('d'), 'd not in graph');
-        $this->assertTrue($g->hasVertex('e'), 'e not in graph');
-        $this->assertTrue($g->hasVertex('f'), 'f not in graph');
-        $this->assertTrue($g->hasVertex('g'), 'g not in graph');
-        $this->assertTrue($g->hasVertex('h'), 'h not in graph');
-        $this->assertTrue($g->hasVertex('i'), 'i not in graph');
+        $this->assertTrue($g->hasVertex(1), 'a not in graph');
+        $this->assertTrue($g->hasVertex(2), 'b not in graph');
+        $this->assertTrue($g->hasVertex(3), 'c not in graph');
+        $this->assertTrue($g->hasVertex(4), 'd not in graph');
+        $this->assertTrue($g->hasVertex(5), 'e not in graph');
+        $this->assertTrue($g->hasVertex(6), 'f not in graph');
+        $this->assertTrue($g->hasVertex(7), 'g not in graph');
+        $this->assertTrue($g->hasVertex(8), 'h not in graph');
+        $this->assertTrue($g->hasVertex(9), 'i not in graph');
 
         // a
         $this->assertTrue($va->hasEdgeTo($vd), 'a not adjacent to d');
@@ -129,5 +200,17 @@ class IncompatibilityGraphTest extends TestCase
         $this->assertTrue($vg->hasEdgeTo($vi), 'g not adjacent to i');
 
         $this->assertFalse($vg->hasEdgeTo($vh), 'g is adjacent to h');
+    }
+}
+
+class ProcessorComponentTest extends ProcessorComponent
+{
+    public function getRequiredComponentTypes(): array
+    {
+        if ($this->flagTest) {
+            return ['cooling'];
+        }
+
+        return [];
     }
 }

@@ -21,6 +21,6 @@ trait HasPresenterTrait
                 return $this;
             });
 
-        return resolve($this->presenter);
+        return app()->make($this->presenter);
     }
 }

@@ -38,6 +38,11 @@ abstract class ComponentChild extends Model
         return $this->morphOne(Component::class, 'child');
     }
 
+    public final function type(): ComponentType
+    {
+        return $this->parent->type;
+    }
+
     public function scopeWithAll(Builder $query): void
     {
         $query->with('parent', 'parent.type');

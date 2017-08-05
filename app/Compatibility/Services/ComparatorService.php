@@ -36,7 +36,7 @@ class ComparatorService implements ComparatorServiceContract
             . $this->componentToType($component2)
             . 'Comparator';
 
-        return class_exists($class) ? resolve($class) : null;
+        return class_exists($class) ? app()->make($class) : null;
     }
 
     /**
