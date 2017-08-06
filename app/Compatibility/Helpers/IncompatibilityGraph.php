@@ -19,10 +19,18 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
     /** @var ComponentRepositoryContract $componentRepo */
     private $componentRepo;
 
+    /** @var Collection */
+    private $requiredTypes;
+
     public function __construct(ComparatorServiceContract $comparatorService, ComponentRepositoryContract $componentRepo)
     {
         $this->comparatorService = $comparatorService;
         $this->componentRepo = $componentRepo;
+
+        $this->requiredTypes = $componentRepo
+            ->get()
+            ->where('parent.type.is_always_required', true)
+            ->pluck('parent.type.name');
     }
 
     public function build(Collection $components): Graph
@@ -126,34 +134,36 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
      */
     public function isTrulyCompatible(Graph $g, Vertex $v1, Vertex $v2): bool
     {
-        $components = $this->componentRepo->get();
+        //$nowConst = microtime(true);
+        //$now = $nowConst;
+        //\Log::debug('');
+
         $c1 = GraphUtils::getVertexComponent($v1);
         $c2 = GraphUtils::getVertexComponent($v2);
 
+        //$now = $this->timeCheckpoint($now, 1);
+
         // TODO: consider additional requirements
-        $requiredTypes = $components
-            ->where('parent.type.is_always_required', true)
-            ->pluck('parent.type.name')
+        $requiredTypes = $this->requiredTypes
             ->filter(function (string $typeName) use ($c1, $c2) {
                 return $typeName !== $c1::typeName() && $typeName !== $c2::typeName();
             })
             ->all();
 
+        //$now = $this->timeCheckpoint($now, 2);
+
         $pairs1 = $this->getCompatibleOfTypes($v1, $requiredTypes);
         $pairs2 = $this->getCompatibleOfTypes($v2, $requiredTypes);
-        $pairsUnion = [];
 
-        /**
-         * @var string $type
-         * @var ComponentChild[] $compatible
-         */
-        foreach ($pairs1 as $type => $compatible) {
-            $pairsUnion[$type] = array_uintersect($compatible, $pairs2[$type] ?? [], function (ComponentChild $c1, ComponentChild $c2) {
-                return $c1->parent->id - $c2->parent->id;
-            });
-        }
+        //$now = $this->timeCheckpoint($now, 3);
 
-        $tuples = $this->getCartesianProduct(...array_values($pairsUnion));
+        $pairsIntersection = $this->getPairsIntersection($pairs1, $pairs2);
+
+        //$now = $this->timeCheckpoint($now, 4);
+
+        $tuples = $this->getCartesianProduct(...array_values($pairsIntersection));
+
+        //$now = $this->timeCheckpoint($now, 5);
 
         /** @var ComponentChild[] $tuple */
         foreach ($tuples as $tuple) {
@@ -169,10 +179,46 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
                 }
             }
 
+            //$now = $this->timeCheckpoint($now, 6);
+            //$this->timeCheckpoint($nowConst, -1);
+
             return true;
         }
 
+        //$now = $this->timeCheckpoint($now, 6);
+        //$this->timeCheckpoint($nowConst, -1);
+
         return false;
+    }
+
+    private function getPairsIntersection(array $pairs1, array $pairs2): array
+    {
+        array_walk_recursive($pairs2, function (&$component) {
+            $component = $component->parent->id;
+        });
+
+        $arr = [];
+
+        foreach ($pairs1 as $type => $compatible) {
+            $arr[$type] = [];
+
+            foreach ($compatible as $c1) {
+                if (in_array($c1->parent->id, $pairs2[$type] ?? [])) {
+                    $arr[$type][] = $c1;
+                }
+            }
+        }
+
+        return $arr;
+    }
+
+    private function timeCheckpoint(float $previous, int $checkpoint): float
+    {
+        $now = microtime(true);
+
+        \Log::debug('Checkpoint ' . $checkpoint . ': ' . number_format($now - $previous, 10) . ' s');
+
+        return $now;
     }
 
     private function getCartesianProduct()
@@ -225,7 +271,7 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
         $arr = [];
 
         /** @var Vertex $adjacent */
-        foreach ($v->getVerticesEdge() as $adjacent) {
+        foreach ($v->getVerticesEdge()->getVerticesDistinct() as $adjacent) {
             $adjacentComponent = GraphUtils::getVertexComponent($adjacent);
             $adjacentComponentType = $adjacentComponent::typeName();
 
