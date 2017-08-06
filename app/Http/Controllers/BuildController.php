@@ -8,6 +8,7 @@ use PCForge\Compatibility\Contracts\ComponentRepositoryContract;
 use PCForge\Compatibility\Contracts\IncompatibilityGraphContract;
 use PCForge\Compatibility\Contracts\SelectionContract;
 use PCForge\Http\Requests\SelectComponent;
+use PCForge\Models\ComponentChild;
 
 class BuildController extends Controller
 {
@@ -19,8 +20,15 @@ class BuildController extends Controller
         $this->componentRepo = $componentRepo;
     }
 
-    public function index(SelectionContract $selection)
+    public function index(ComponentIncompatibilityServiceContract $componentIncompatibilityService,
+                          SelectionContract $selection)
     {
+        if ($selection->isEmpty()) {
+            $incompatibilities = $componentIncompatibilityService->getIncompatibilities();
+
+            $selection->disable($incompatibilities->all());
+        }
+
         $components = $this->componentRepo->get();
 
         $selection->setProperties($components);

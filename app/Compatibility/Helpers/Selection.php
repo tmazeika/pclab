@@ -43,8 +43,18 @@ class Selection implements SelectionContract
         }
     }
 
+    public function disable(array $components): void
+    {
+        /** @var ComponentChild $component */
+        foreach ($components as $component) {
+            $component->disabled = true;
+            $this->counts[$component->parent->id] = 0;
+        }
+    }
+
     public function disableOnly(array $components): void
     {
+        // TODO: might be able to simplify
         // enable all
         /**
          * @var int $id
@@ -59,12 +69,7 @@ class Selection implements SelectionContract
         }
 
         // disable given
-        /** @var ComponentChild $component */
-        foreach ($components as $component)
-        {
-            $component->disabled = true;
-            $this->counts[$component->parent->id] = 0;
-        }
+        $this->disable($components);
     }
 
     public function getSelectCount(ComponentChild $component): int
@@ -75,6 +80,15 @@ class Selection implements SelectionContract
     public function isDisabled(ComponentChild $component): bool
     {
         return ($this->counts[$component->parent->id] ?? -1) === 0;
+    }
+
+    public function isEmpty(): bool
+    {
+        $arr = array_flip($this->counts);
+
+        unset($arr[0]);
+
+        return count($arr) === 0;
     }
 
     public function getAll(): Collection

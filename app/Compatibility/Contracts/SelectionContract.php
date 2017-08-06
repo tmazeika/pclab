@@ -23,6 +23,13 @@ interface SelectionContract
     public function select(ComponentChild $component, int $n): void;
 
     /**
+     * Disables the given components.
+     *
+     * @param ComponentChild[] $components
+     */
+    public function disable(array $components): void;
+
+    /**
      * Disables only the given components, enabling all else.
      *
      * @param array $components
@@ -46,6 +53,13 @@ interface SelectionContract
      * @return bool
      */
     public function isDisabled(ComponentChild $component): bool;
+
+    /**
+     * Gets if there are no selected components.
+     *
+     * @return bool
+     */
+    public function isEmpty(): bool;
 
     /**
      * Gets all selected components.

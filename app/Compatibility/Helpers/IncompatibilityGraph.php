@@ -140,13 +140,15 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
 
         $c1 = GraphUtils::getVertexComponent($v1);
         $c2 = GraphUtils::getVertexComponent($v2);
+        $c1TypeName = $c1::typeName();
+        $c2TypeName = $c2::typeName();
 
         //$now = $this->timeCheckpoint($now, 1);
 
-        // TODO: consider additional requirements
         $requiredTypes = $this->requiredTypes
-            ->filter(function (string $typeName) use ($c1, $c2) {
-                return $typeName !== $c1::typeName() && $typeName !== $c2::typeName();
+            //->whereNotIn('parent.type.name', [$c1::typeName(), $c2::typeName()])
+            ->filter(function (string $typeName) use ($c1TypeName, $c2TypeName) {
+                return $typeName !== $c1TypeName && $typeName !== $c2TypeName;
             })
             ->all();
 
@@ -164,6 +166,22 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
         $tuples = $this->getCartesianProduct(...array_values($pairsIntersection));
 
         //$now = $this->timeCheckpoint($now, 5);
+
+        //$tuples = array_flatten(array_map(function (array $tuple) {
+        //    $arr = [];
+        //
+        //    /** @var ComponentChild $component */
+        //    foreach ($tuple as $component) {
+        //        $types = $component->getRequiredComponentTypes();
+        //
+        //        if (!empty($types)) {
+        //            /** @var string $type */
+        //            foreach ($types as $type) {
+        //                $this->componentRepo->get()->where('parent.type.name')
+        //            }
+        //        }
+        //    }
+        //}, $tuples));
 
         /** @var ComponentChild[] $tuple */
         foreach ($tuples as $tuple) {
@@ -221,25 +239,23 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
         return $now;
     }
 
-    private function getCartesianProduct()
+    private function getCartesianProduct(array ...$arrays): array
     {
-        $args = func_get_args();
-
-        if (count($args) === 0) {
+        if (empty($arrays)) {
             return [[]];
         }
 
-        $a = array_shift($args);
-        $c = call_user_func_array(__METHOD__, $args);
-        $r = [];
+        $firstArray = array_shift($arrays);
+        $otherArrays = $this->getCartesianProduct(...$arrays);
+        $result = [];
 
-        foreach ($a as $v) {
-            foreach ($c as $p) {
-                $r[] = array_merge([$v], $p);
+        foreach ($firstArray as $value) {
+            foreach ($otherArrays as $anotherArray) {
+                $result[] = array_merge([$value], $anotherArray);
             }
         }
 
-        return $r;
+        return $result;
     }
 
     /**
