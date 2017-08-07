@@ -41,13 +41,6 @@ class ProcessorComponentsTableSeeder extends Seeder
                 'speed'            => 3600,
                 'socket_id'        => 15,
             ],
-            [
-                'cores'            => 8,
-                'has_apu'          => false,
-                'has_stock_cooler' => true,
-                'speed'            => 4000,
-                'socket_id'        => 14,
-            ],
         ]);
     }
 }

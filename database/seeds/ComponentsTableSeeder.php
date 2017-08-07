@@ -113,15 +113,6 @@ class ComponentsTableSeeder extends Seeder
                 'weight'            => 119,
             ],
             [
-                'component_type_id' => 2,
-                'child_id'          => 5,
-                'child_type'        => 'processor',
-                'asin'              => 'B009O7YUF6',
-                'name'              => 'AMD FX-8350',
-                'watts_usage'       => 125,
-                'weight'            => 200,
-            ],
-            [
                 'component_type_id' => 1,
                 'child_id'          => 2,
                 'child_type'        => 'chassis',
@@ -133,15 +124,6 @@ class ComponentsTableSeeder extends Seeder
             [
                 'component_type_id' => 5,
                 'child_id'          => 2,
-                'child_type'        => 'motherboard',
-                'asin'              => 'B00CX4MUCC',
-                'name'              => 'Gigabyte AMD 970',
-                'watts_usage'       => 0,
-                'weight'            => 898,
-            ],
-            [
-                'component_type_id' => 5,
-                'child_id'          => 3,
                 'child_type'        => 'motherboard',
                 'asin'              => 'B06WVFFXXL',
                 'name'              => 'MSI B350 TOMAHAWK',
