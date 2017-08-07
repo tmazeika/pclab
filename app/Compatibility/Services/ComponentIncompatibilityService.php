@@ -34,18 +34,12 @@ class ComponentIncompatibilityService implements ComponentIncompatibilityService
 
     public function getIncompatibilities(): Collection
     {
+        if ($this->selection->isEmpty()) {
+            return collect();
+        }
+
         $components = $this->componentRepo->get();
         $g = $this->incompatibilityGraph->build($components);
-
-        if ($this->selection->isEmpty()) {
-            return collect($g->getVertices()->getVector())
-                ->filter(function (Vertex $v) use ($components) {
-                    return $v->getVerticesEdge()->count() === $components->count() - 1;
-                })
-                ->map(function (Vertex $v) use ($components) {
-                    return GraphUtils::getVertexComponent($v);
-                });
-        }
 
         return $this->selection->getAll()
             ->map(function (ComponentChild $component) use ($g) {

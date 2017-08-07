@@ -20,15 +20,8 @@ class BuildController extends Controller
         $this->componentRepo = $componentRepo;
     }
 
-    public function index(ComponentIncompatibilityServiceContract $componentIncompatibilityService,
-                          SelectionContract $selection)
+    public function index(SelectionContract $selection)
     {
-        if ($selection->isEmpty()) {
-            $incompatibilities = $componentIncompatibilityService->getIncompatibilities();
-
-            $selection->disable($incompatibilities->all());
-        }
-
         $components = $this->componentRepo->get();
 
         $selection->setProperties($components);

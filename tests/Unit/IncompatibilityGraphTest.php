@@ -3,7 +3,9 @@
 namespace Tests\Unit;
 
 use Fhaculty\Graph\Graph;
+use Illuminate\Support\Collection;
 use PCForge\Compatibility\Helpers\IncompatibilityGraph;
+use PCForge\Compatibility\Repositories\ComponentRepository;
 use PCForge\Models\ChassisComponent;
 use PCForge\Models\Component;
 use PCForge\Models\ComponentType;
@@ -39,7 +41,11 @@ class IncompatibilityGraphTest extends TestCase
         $vhC = new GraphicsComponent;
         $viC = new CoolingComponent;
 
-        $vcC->flagTest = true;
+        $vcC->has_apu = true;
+        $vcC->has_stock_cooler = false;
+
+        $vfC->has_apu = false;
+        $vfC->has_stock_cooler = true;
 
         $vaCP = $vaC->parent = new Component;
         $vbCP = $vbC->parent = new Component;
@@ -133,7 +139,21 @@ class IncompatibilityGraphTest extends TestCase
         // g ->
         $vg->createEdge($vi); // i
 
-        app()->make(IncompatibilityGraph::class)->buildTrue($g);
+        $componentRepo = new ComponentRepositoryTest();
+
+        $componentRepo->components = collect([
+            $vaC,
+            $vbC,
+            $vcC,
+            $vdC,
+            $veC,
+            $vfC,
+            $vgC,
+            $vhC,
+            $viC,
+        ]);
+
+        app()->makeWith(IncompatibilityGraph::class, ['componentRepo' => $componentRepo])->buildTrue($g);
 
         $this->assertTrue($g->hasVertex(1), 'a not in graph');
         $this->assertTrue($g->hasVertex(2), 'b not in graph');
@@ -176,9 +196,9 @@ class IncompatibilityGraphTest extends TestCase
         $this->assertFalse($vc->hasEdgeTo($vi), 'c is adjacent to i');
 
         // d
+        $this->assertTrue($vd->hasEdgeTo($ve), 'd not adjacent to e');
         $this->assertTrue($vd->hasEdgeTo($vh), 'd not adjacent to h');
 
-        $this->assertFalse($vd->hasEdgeTo($ve), 'd is adjacent to e');
         $this->assertFalse($vd->hasEdgeTo($vf), 'd is adjacent to f');
         $this->assertFalse($vd->hasEdgeTo($vg), 'd is adjacent to g');
         $this->assertFalse($vd->hasEdgeTo($vi), 'd is adjacent to i');
@@ -186,9 +206,9 @@ class IncompatibilityGraphTest extends TestCase
         // e
         $this->assertTrue($ve->hasEdgeTo($vg), 'e not adjacent to g');
         $this->assertTrue($ve->hasEdgeTo($vh), 'e not adjacent to h');
+        $this->assertTrue($ve->hasEdgeTo($vi), 'e not adjacent to i');
 
         $this->assertFalse($ve->hasEdgeTo($vf), 'e is adjacent to f');
-        $this->assertFalse($ve->hasEdgeTo($vi), 'e is adjacent to i');
 
         // f
         $this->assertTrue($vf->hasEdgeTo($vg), 'f not adjacent to g');
@@ -203,14 +223,12 @@ class IncompatibilityGraphTest extends TestCase
     }
 }
 
-class ProcessorComponentTest extends ProcessorComponent
+class ComponentRepositoryTest extends ComponentRepository
 {
-    public function getRequiredComponentTypes(): array
-    {
-        if ($this->flagTest) {
-            return ['cooling'];
-        }
+    public $components;
 
-        return [];
+    public function get(): Collection
+    {
+        return $this->components;
     }
 }

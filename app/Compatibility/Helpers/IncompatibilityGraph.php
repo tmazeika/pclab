@@ -167,6 +167,27 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
 
         //$now = $this->timeCheckpoint($now, 5);
 
+        ///**
+        // * @var int $key
+        // * @var ComponentChild[] $tuple
+        // */
+        //foreach ($tuples as &$tuple) {
+        //    $additionalRequirements = $this->getAdditionalRequirements($tuple);
+        //
+        //    echo json_encode($additionalRequirements) . PHP_EOL;
+        //    $components
+        //        ->whereIn('parent.type.name', $additionalRequirements)
+        //        ->each(function (ComponentChild $component) use (&$tuples, $tuple, $c1, $c2) {
+        //            $tuples[] = array_merge($tuple, $component, [$c1, $c2]);
+        //        });
+        //
+        //    if (empty($additionalRequirements)) {
+        //        $tuple = array_merge($tuple, [$c1, $c2]);
+        //    } else {
+        //        unset($tuple);
+        //    }
+        //}
+
         //$tuples = array_flatten(array_map(function (array $tuple) {
         //    $arr = [];
         //
@@ -183,30 +204,86 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
         //    }
         //}, $tuples));
 
-        /** @var ComponentChild[] $tuple */
+        return $this->isAnyTupleCompatible($g, [$c1, $c2], $tuples);
+    }
+
+    /**
+     * @param Graph $g
+     * @param array $endpointsTuple
+     * @param array[] $tuples
+     * @param bool $expanded
+     *
+     * @return bool
+     */
+    private function isAnyTupleCompatible(Graph $g, array $endpointsTuple, array $tuples, bool $expanded = false): bool
+    {
         foreach ($tuples as $tuple) {
-            for ($i = 0; $i < count($tuple) - 1; $i++) {
-                $c1 = $tuple[$i];
+            if ($this->isTupleCompatible($g, $tuple)) {
+                $expandedTuple = $this->expandTuple($endpointsTuple, $tuple);
 
-                for ($j = $i + 1; $j < count($tuple); $j++) {
-                    $c2 = $tuple[$j];
-
-                    if ($this->isIncompatible($g, $c1, $c2)) {
-                        continue 3;
-                    }
-                }
+                return $expanded || empty($expandedTuple) || $this->isAnyTupleCompatible($g, $endpointsTuple, $expandedTuple, true);
             }
-
-            //$now = $this->timeCheckpoint($now, 6);
-            //$this->timeCheckpoint($nowConst, -1);
-
-            return true;
         }
 
-        //$now = $this->timeCheckpoint($now, 6);
-        //$this->timeCheckpoint($nowConst, -1);
-
         return false;
+    }
+
+    private function isTupleCompatible(Graph $g, array $tuple): bool
+    {
+        for ($i = 0; $i < count($tuple) - 1; $i++) {
+            $c1 = $tuple[$i];
+
+            for ($j = $i + 1; $j < count($tuple); $j++) {
+                $c2 = $tuple[$j];
+
+                if ($this->isIncompatible($g, $c1, $c2)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param ComponentChild[] $endpointsTuple
+     * @param ComponentChild[] $tuple
+     *
+     * @return array
+     */
+    private function expandTuple(array $endpointsTuple, array $tuple): array
+    {
+        $extraTypes = [];
+        $extraTuples = [];
+
+        /** @var ComponentChild $component */
+        foreach ($tuple as $component) {
+            foreach ($component->getRequiredComponentTypes() as $extraType) {
+                if (!in_array($extraType, $extraTypes)) {
+                    $extraTypes[] = $extraType;
+                }
+            }
+        }
+
+        /** @var string $type */
+        foreach ($extraTypes as $type) {
+            $extraComponents = $this->componentRepo->get()->where('parent.type.name', $type);
+
+            /** @var ComponentChild $extraComponent */
+            foreach ($extraComponents as $extraComponent) {
+                $extraTuples[] = array_values(array_unique(array_merge($tuple, [$extraComponent], $endpointsTuple), SORT_REGULAR));
+            }
+        }
+
+        return $extraTuples;
+    }
+
+    private function dumpComponentsArray(array $components) {
+        array_walk_recursive($components, function (&$component) {
+            $component = $component->parent->id;
+        });
+
+        echo json_encode($components) . PHP_EOL;
     }
 
     private function getPairsIntersection(array $pairs1, array $pairs2): array
@@ -270,7 +347,7 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
      */
     private function isIncompatible(Graph $g, ComponentChild $c1, ComponentChild $c2): bool
     {
-        return $g->getVertex($c1->parent->id)->hasEdgeTo($g->getVertex($c2->parent->id));
+        return $c1 !== $c2 && $g->getVertex($c1->parent->id)->hasEdgeTo($g->getVertex($c2->parent->id));
     }
 
     /**

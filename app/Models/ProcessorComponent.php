@@ -44,11 +44,11 @@ class ProcessorComponent extends ComponentChild
         $arr = [];
 
         if (!$this->has_apu) {
-            $arr[] = GraphicsComponent::class;
+            $arr[] = GraphicsComponent::typeName();
         }
 
         if (!$this->has_stock_cooler) {
-            $arr[] = CoolingComponent::class;
+            $arr[] = CoolingComponent::typeName();
         }
 
         return $arr;
