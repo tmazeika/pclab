@@ -134,75 +134,21 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
      */
     public function isTrulyCompatible(Graph $g, Vertex $v1, Vertex $v2): bool
     {
-        //$nowConst = microtime(true);
-        //$now = $nowConst;
-        //\Log::debug('');
-
         $c1 = GraphUtils::getVertexComponent($v1);
         $c2 = GraphUtils::getVertexComponent($v2);
         $c1TypeName = $c1::typeName();
         $c2TypeName = $c2::typeName();
 
-        //$now = $this->timeCheckpoint($now, 1);
-
         $requiredTypes = $this->requiredTypes
-            //->whereNotIn('parent.type.name', [$c1::typeName(), $c2::typeName()])
             ->filter(function (string $typeName) use ($c1TypeName, $c2TypeName) {
                 return $typeName !== $c1TypeName && $typeName !== $c2TypeName;
             })
             ->all();
 
-        //$now = $this->timeCheckpoint($now, 2);
-
         $pairs1 = $this->getCompatibleOfTypes($v1, $requiredTypes);
         $pairs2 = $this->getCompatibleOfTypes($v2, $requiredTypes);
-
-        //$now = $this->timeCheckpoint($now, 3);
-
         $pairsIntersection = $this->getPairsIntersection($pairs1, $pairs2);
-
-        //$now = $this->timeCheckpoint($now, 4);
-
         $tuples = $this->getCartesianProduct(...array_values($pairsIntersection));
-
-        //$now = $this->timeCheckpoint($now, 5);
-
-        ///**
-        // * @var int $key
-        // * @var ComponentChild[] $tuple
-        // */
-        //foreach ($tuples as &$tuple) {
-        //    $additionalRequirements = $this->getAdditionalRequirements($tuple);
-        //
-        //    echo json_encode($additionalRequirements) . PHP_EOL;
-        //    $components
-        //        ->whereIn('parent.type.name', $additionalRequirements)
-        //        ->each(function (ComponentChild $component) use (&$tuples, $tuple, $c1, $c2) {
-        //            $tuples[] = array_merge($tuple, $component, [$c1, $c2]);
-        //        });
-        //
-        //    if (empty($additionalRequirements)) {
-        //        $tuple = array_merge($tuple, [$c1, $c2]);
-        //    } else {
-        //        unset($tuple);
-        //    }
-        //}
-
-        //$tuples = array_flatten(array_map(function (array $tuple) {
-        //    $arr = [];
-        //
-        //    /** @var ComponentChild $component */
-        //    foreach ($tuple as $component) {
-        //        $types = $component->getRequiredComponentTypes();
-        //
-        //        if (!empty($types)) {
-        //            /** @var string $type */
-        //            foreach ($types as $type) {
-        //                $this->componentRepo->get()->where('parent.type.name')
-        //            }
-        //        }
-        //    }
-        //}, $tuples));
 
         return $this->isAnyTupleCompatible($g, [$c1, $c2], $tuples);
     }
@@ -278,14 +224,6 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
         return $extraTuples;
     }
 
-    private function dumpComponentsArray(array $components) {
-        array_walk_recursive($components, function (&$component) {
-            $component = $component->parent->id;
-        });
-
-        echo json_encode($components) . PHP_EOL;
-    }
-
     private function getPairsIntersection(array $pairs1, array $pairs2): array
     {
         array_walk_recursive($pairs2, function (&$component) {
@@ -305,15 +243,6 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
         }
 
         return $arr;
-    }
-
-    private function timeCheckpoint(float $previous, int $checkpoint): float
-    {
-        $now = microtime(true);
-
-        \Log::debug('Checkpoint ' . $checkpoint . ': ' . number_format($now - $previous, 10) . ' s');
-
-        return $now;
     }
 
     private function getCartesianProduct(array ...$arrays): array
