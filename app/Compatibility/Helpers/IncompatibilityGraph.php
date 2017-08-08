@@ -5,6 +5,7 @@ namespace PCForge\Compatibility\Helpers;
 use Fhaculty\Graph\Edge\Base as Edge;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
+use Generator;
 use Illuminate\Support\Collection;
 use PCForge\Compatibility\Contracts\ComparatorServiceContract;
 use PCForge\Compatibility\Contracts\ComponentRepositoryContract;
@@ -58,17 +59,18 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
                 GraphUtils::setVertexComponent($v, $component);
 
                 return $v;
-            });
+            })
+            ->all();
 
         // create edges between directly incompatible component vertices
-        for ($i = 0; $i < $vertices->count() - 1; $i++) {
+        for ($i = 0; $i < count($vertices) - 1; $i++) {
             /** @var Vertex $v1 */
-            $v1 = $vertices->get($i);
+            $v1 = $vertices[$i];
             $c1 = GraphUtils::getVertexComponent($v1);
 
-            for ($j = $i + 1; $j < $vertices->count(); $j++) {
+            for ($j = $i + 1; $j < count($vertices); $j++) {
                 /** @var Vertex $v2 */
-                $v2 = $vertices->get($j);
+                $v2 = $vertices[$j];
                 $c2 = GraphUtils::getVertexComponent($v2);
 
                 if ($this->comparatorService->isIncompatible($c1, $c2)) {
@@ -90,41 +92,27 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
      */
     public function buildTrue(Graph $g): Graph
     {
-        $gC = GraphUtils::complement($g);
-        $newEdges = [];
+        $gOriginal = $g->createGraphClone();
+        $gComplement = GraphUtils::complement($g);
 
         // deal with non-edges in $g and test for true compatibility
         /** @var Edge $e */
-        foreach ($gC->getEdges() as $e) {
-            list($v1, $v2) = $this->getEdgeVertices($e);
+        foreach ($gComplement->getEdges() as $e) {
+            $v1 = $e->getVertices()->getVertexFirst();
+            $v2 = $e->getVertices()->getVertexLast();
 
-            if (!$this->isTrulyCompatible($g, $v1, $v2)) {
-                // queue incompatibility edge in $g
-                $newEdges[] = [$v1, $v2];
-            }
-        }
-
-        // add new edges to $g
-        /**
-         * @var Vertex $v1
-         * @var Vertex $v2
-         */
-        foreach ($newEdges as list($v1, $v2)) {
-            // switch from $gC to $g vertices
-            list($v1, $v2) = $this->getVerticesFrom($g, $v1, $v2);
-
-            // prevent duplicates
-            if (!$v1->hasEdgeTo($v2)) {
-                $v1->createEdge($v2);
+            if (!$this->isTrulyCompatible($gOriginal, $v1, $v2)) {
+                // create incompatibility edge in $g
+                $g->getVertex($v1->getId())->createEdge($g->getVertex($v2->getId()));
             }
         }
 
         return $g;
     }
 
-    // TODO: optimize... a lot
     /**
-     * Gets whether or not the given vertices are truly compatible.
+     * Returns true if the given component vertices are truly compatible. This tests for indirect incompatibilities as
+     * well. The component vertex arguments should be vertices from the complement of $g.
      *
      * @param Graph $g
      * @param Vertex $v1 the starting vertex from $g's complement
@@ -145,44 +133,53 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
             })
             ->all();
 
-        $pairs1 = $this->getCompatibleOfTypes($v1, $requiredTypes);
-        $pairs2 = $this->getCompatibleOfTypes($v2, $requiredTypes);
+        $pairs1 = $this->getCompatibleComponents($v1, $requiredTypes);
+        $pairs2 = $this->getCompatibleComponents($v2, $requiredTypes);
         $pairsIntersection = $this->getPairsIntersection($pairs1, $pairs2);
-        $tuples = $this->getCartesianProduct(...array_values($pairsIntersection));
+        $tuples = $this->getCartesianProduct($pairsIntersection);
 
         return $this->isAnyTupleCompatible($g, [$c1, $c2], $tuples);
     }
 
     /**
+     * Returns true if all components in any given tuple are directly compatible with each other.
+     *
      * @param Graph $g
      * @param array $endpointsTuple
-     * @param array[] $tuples
+     * @param iterable $tuples
      * @param bool $expanded
      *
      * @return bool
+     * @see isTupleCompatible
      */
-    private function isAnyTupleCompatible(Graph $g, array $endpointsTuple, array $tuples, bool $expanded = false): bool
+    private function isAnyTupleCompatible(Graph $g, array $endpointsTuple, iterable $tuples, bool $expanded = false): bool
     {
         foreach ($tuples as $tuple) {
             if ($this->isTupleCompatible($g, $tuple)) {
-                $expandedTuple = $this->expandTuple($endpointsTuple, $tuple);
-
-                return $expanded || empty($expandedTuple) || $this->isAnyTupleCompatible($g, $endpointsTuple, $expandedTuple, true);
+                return $expanded
+                    || empty($expandedTuple = $this->expandTuple($endpointsTuple, $tuple))
+                    || $this->isAnyTupleCompatible($g, $endpointsTuple, $expandedTuple, true);
             }
         }
 
         return false;
     }
 
+    /**
+     * Returns true if all components in the given tuple are directly compatible with each other.
+     *
+     * @param Graph $g
+     * @param array $tuple
+     *
+     * @return bool
+     */
     private function isTupleCompatible(Graph $g, array $tuple): bool
     {
         for ($i = 0; $i < count($tuple) - 1; $i++) {
-            $c1 = $tuple[$i];
+            $c = $tuple[$i];
 
             for ($j = $i + 1; $j < count($tuple); $j++) {
-                $c2 = $tuple[$j];
-
-                if ($this->isIncompatible($g, $c1, $c2)) {
+                if ($this->isIncompatible($g, $c, $tuple[$j])) {
                     return false;
                 }
             }
@@ -192,6 +189,9 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
     }
 
     /**
+     * Gets an array of tuples that contain the given endpoint components, the original components, and any components
+     * that are additionally required by one or more of the original components.
+     *
      * @param ComponentChild[] $endpointsTuple
      * @param ComponentChild[] $tuple
      *
@@ -200,73 +200,94 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
     private function expandTuple(array $endpointsTuple, array $tuple): array
     {
         $extraTypes = [];
-        $extraTuples = [];
+        $extraTuples = collect();
 
         /** @var ComponentChild $component */
         foreach ($tuple as $component) {
             foreach ($component->getRequiredComponentTypes() as $extraType) {
-                if (!in_array($extraType, $extraTypes)) {
-                    $extraTypes[] = $extraType;
-                }
+                $extraTypes[] = $extraType;
             }
         }
 
-        /** @var string $type */
-        foreach ($extraTypes as $type) {
-            $extraComponents = $this->componentRepo->get()->where('parent.type.name', $type);
+        // remove duplicates
+        $extraTypes = array_merge(array_flip(array_flip($extraTypes)));
 
-            /** @var ComponentChild $extraComponent */
-            foreach ($extraComponents as $extraComponent) {
-                $extraTuples[] = array_values(array_unique(array_merge($tuple, [$extraComponent], $endpointsTuple), SORT_REGULAR));
-            }
+        foreach ($extraTypes as $extraType) {
+            $extraTuples = $this->componentRepo
+                ->get()
+                ->filter(function (ComponentChild $component) use ($extraType) {
+                    return $component->type()->name === $extraType;
+                })
+                ->map(function (ComponentChild $component) use ($tuple, $endpointsTuple) {
+                    return array_values(array_unique(array_merge($tuple, [$component], $endpointsTuple), SORT_REGULAR));
+                })
+                ->merge($extraTuples);
         }
 
-        return $extraTuples;
+        return $extraTuples->all();
     }
 
+    /**
+     * Gets the intersection of two maps with component types as keys and component arrays as values. The returned array
+     * contains arrays with intersecting components of the same type.
+     *
+     * @param array $pairs1
+     * @param array $pairs2
+     *
+     * @return array[]
+     */
     private function getPairsIntersection(array $pairs1, array $pairs2): array
     {
         array_walk_recursive($pairs2, function (&$component) {
             $component = $component->parent->id;
         });
 
-        $arr = [];
+        $intersections = [];
 
         foreach ($pairs1 as $type => $compatible) {
-            $arr[$type] = [];
+            $intersections[$type] = [];
 
             foreach ($compatible as $c1) {
                 if (in_array($c1->parent->id, $pairs2[$type] ?? [])) {
-                    $arr[$type][] = $c1;
+                    $intersections[$type][] = $c1;
                 }
             }
         }
 
-        return $arr;
-    }
-
-    private function getCartesianProduct(array ...$arrays): array
-    {
-        if (empty($arrays)) {
-            return [[]];
-        }
-
-        $firstArray = array_shift($arrays);
-        $otherArrays = $this->getCartesianProduct(...$arrays);
-        $result = [];
-
-        foreach ($firstArray as $value) {
-            foreach ($otherArrays as $anotherArray) {
-                $result[] = array_merge([$value], $anotherArray);
-            }
-        }
-
-        return $result;
+        return array_values($intersections);
     }
 
     /**
-     * Gets whether or not the given components are incompatible according to the given graph $g. That is, there is an
-     * edge between the component's vertices in the graph.
+     * Gets the Cartesian product of the given array of arrays.
+     *
+     * @param array[] $arrays
+     *
+     * @return Generator
+     */
+    private function getCartesianProduct(array $arrays): Generator
+    {
+        // multiply the sizes of the arrays; if any array is empty, no tuples will (or should) be generated
+        $max = array_reduce($arrays, function (int $product, array $array) {
+            return $product * count($array);
+        }, 1);
+
+        for ($i = 0; $i < $max; $i++) {
+            $tuple = [];
+            $product = 1;
+
+            /** @var array $array */
+            foreach ($arrays as $array) {
+                $tuple[] = $array[$i / $product % count($array)];
+                $product *= count($array);
+            }
+
+            yield $tuple;
+        }
+    }
+
+    /**
+     * Returns true if the given components are incompatible according to $g. That is, there is an edge between the
+     * components' vertices in the graph.
      *
      * @param Graph $g
      * @param ComponentChild $c1
@@ -280,17 +301,17 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
     }
 
     /**
-     * Gets a map of components that are compatible with the given vertex component. The types of the components must be
-     * found within the given $types array, and the map is keyed by the type.
+     * Gets compatible components of the given vertex, keyed by their types. Only components with a type found in $types
+     * will be returned.
      *
      * @param Vertex $v
      * @param array $types
      *
      * @return array
      */
-    private function getCompatibleOfTypes(Vertex $v, array $types): array
+    private function getCompatibleComponents(Vertex $v, array $types): array
     {
-        $arr = [];
+        $compatibleComponents = [];
 
         /** @var Vertex $adjacent */
         foreach ($v->getVerticesEdge()->getVerticesDistinct() as $adjacent) {
@@ -298,44 +319,10 @@ class IncompatibilityGraph implements IncompatibilityGraphContract
             $adjacentComponentType = $adjacentComponent::typeName();
 
             if (in_array($adjacentComponentType, $types)) {
-                $arr[$adjacentComponentType][] = $adjacentComponent;
+                $compatibleComponents[$adjacentComponentType][] = $adjacentComponent;
             }
         }
 
-        return $arr;
-    }
-
-    /**
-     * Gets an array of $e's vertices.
-     *
-     * @param Edge $e
-     *
-     * @return array
-     */
-    private function getEdgeVertices(Edge $e): array
-    {
-        $eVertices = $e->getVertices();
-
-        return [
-            $eVertices->getVertexFirst(),
-            $eVertices->getVertexLast(),
-        ];
-    }
-
-    /**
-     * Gets an array of the corresponding vertices in $g using $v1 and $v2's ID's.
-     *
-     * @param Graph $g
-     * @param Vertex $v1
-     * @param Vertex $v2
-     *
-     * @return array
-     */
-    private function getVerticesFrom(Graph $g, Vertex $v1, Vertex $v2): array
-    {
-        return [
-            $g->getVertex($v1->getId()),
-            $g->getVertex($v2->getId()),
-        ];
+        return $compatibleComponents;
     }
 }
