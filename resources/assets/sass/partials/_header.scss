@@ -2,11 +2,21 @@
 }
 
 .header-container {
-  max-width: $content-width;
-  margin: auto;
-  padding: 1em;
+  @include page-section-container;
+}
 
-  // flex
-  display: flex;
-  align-items: center;
+.header-child.btn {
+  border: 1px solid $light-color;
+  color: $light-color;
+  font-size: 1.75em;
+  text-decoration: none;
+
+  transition: border-color $anim-time, box-shadow $anim-time;
+
+  padding: 0.5em;
+
+  &:hover {
+    border-color: $accent-color;
+    box-shadow: 0 0 10px $accent-color;
+  }
 }

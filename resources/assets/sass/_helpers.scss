@@ -1,0 +1,13 @@
+@mixin page-section-container {
+  max-width: $content-width;
+  margin: auto;
+  padding: 1em;
+
+  // flex
+  display: flex;
+  align-items: center;
+}
+
+.flex-fill {
+  flex-grow: 1;
+}

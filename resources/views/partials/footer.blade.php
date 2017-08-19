@@ -1,6 +1,6 @@
-<footer class="bar">
-    <div class="content-container flex-container">
-        <div class="text dim">&copy; {{ strftime('%Y') }} PCLab</div>
-        <div class="text"><a href="{{ url('admin') }}">Admin</a></div>
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-child">&copy; {{ strftime('%Y') }} PCLab</div>
+        <div class="footer-child"><a href="{{ url('admin') }}">Admin</a></div>
     </div>
 </footer>
