@@ -2,15 +2,12 @@
 
 namespace PCLab\Http\Controllers;
 
-use Fhaculty\Graph\Graph;
 use PCLab\Compatibility\Contracts\ComponentIncompatibilityServiceContract;
 use PCLab\Compatibility\Contracts\ComponentRepositoryContract;
-use PCLab\Compatibility\Contracts\IncompatibilityGraphContract;
 use PCLab\Compatibility\Contracts\SelectionContract;
 use PCLab\Http\Requests\SelectComponent;
-use PCLab\Models\ComponentChild;
 
-class BuildController extends Controller
+class LabController extends Controller
 {
     /** @var ComponentRepositoryContract $componentRepo */
     private $componentRepo;
@@ -28,7 +25,7 @@ class BuildController extends Controller
 
         $components = $components->groupBy('parent.child_type');
 
-        return view('build.index', compact('components'));
+        return view('lab.index', compact('components'));
     }
 
     public function select(SelectComponent $request,

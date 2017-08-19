@@ -12,7 +12,7 @@ $('.product').on('click', function () {
     $(this).toggleClass('selected', selected = !selected);
     $(this).attr('data-count', count += selected ? 1 : -1);
 
-    $.ajax('/build/select', {
+    $.ajax('/lab/select', {
         data: {
             id: component,
             count: count

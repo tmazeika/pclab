@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
-@section('title', 'Build')
-@php($active = 'build')
+@section('title', 'Lab')
+@php($active = 'lab')
 
-@section('content')
+@section('main')
     <main>
-        @each('partials.build.section', $components, 'components')
+        @each('partials.lab.section', $components, 'components')
 
-        <a href="{{ url('build/checkout') }}">
+        <a href="{{ url('lab/checkout') }}">
             <button>Finished</button>
         </a>
     </main>

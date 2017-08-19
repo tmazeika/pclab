@@ -2,7 +2,7 @@
 
 @section('title', 'Admin')
 
-@section('content')
+@section('main')
     <main>
         @each('partials.admin.table', [
             \PCLab\Models\ChassisComponent::class,

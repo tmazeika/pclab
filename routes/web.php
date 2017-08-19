@@ -15,9 +15,9 @@ Route::get('/', function() {
     return view('home');
 });
 
-Route::group(['prefix' => 'build'], function() {
-    Route::get('/', 'BuildController@index');
-    Route::get('select', 'BuildController@select');
+Route::group(['prefix' => 'lab'], function() {
+    Route::get('/', 'LabController@index');
+    Route::get('select', 'LabController@select');
 });
 
 Route::group(['prefix' => 'admin'], function() {

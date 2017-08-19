@@ -1,11 +1,12 @@
-@mixin page-section-container {
+@mixin page-section-container($flex: true) {
   max-width: $content-width;
   margin: auto;
   padding: 1em;
 
-  // flex
-  display: flex;
-  align-items: center;
+  @if $flex {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .flex-fill {

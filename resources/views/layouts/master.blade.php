@@ -11,7 +11,7 @@
 </head>
 <body>
     @include('partials.header')
-    @yield('content')
+    @yield('main')
     @include('partials.footer')
     @stack('scripts')
 </body>

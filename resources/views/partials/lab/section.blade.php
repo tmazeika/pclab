@@ -6,6 +6,6 @@
     </header>
 
     <div class="content flex-container flex-grid">
-        @each('partials.build.component', $components, 'component')
+        @each('partials.lab.component', $components, 'component')
     </div>
 </section>

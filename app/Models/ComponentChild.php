@@ -20,7 +20,7 @@ abstract class ComponentChild extends Model
 
     public static function featuresView(): string
     {
-        return 'partials.build.' . self::typeName() . '-component';
+        return 'partials.lab.' . self::typeName() . '-component';
     }
 
     /**
