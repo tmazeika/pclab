@@ -1,9 +1,9 @@
 <?php
 
-namespace PCForge\Http\Controllers\Auth;
+namespace PCLab\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use PCForge\Http\Controllers\Controller;
+use PCLab\Http\Controllers\Controller;
 
 class LoginController extends Controller
 {

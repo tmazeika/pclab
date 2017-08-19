@@ -1,11 +1,11 @@
 <?php
 
-namespace PCForge\Console;
+namespace PCLab\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use PCForge\Console\Commands\ResetAll;
-use PCForge\Console\Commands\UpdateAmazonComponents;
+use PCLab\Console\Commands\ResetAll;
+use PCLab\Console\Commands\UpdateAmazonComponents;
 
 class Kernel extends ConsoleKernel
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
 
-use PCForge\Models\CoolingComponent;
-use PCForge\Models\ProcessorComponent;
+use PCLab\Models\CoolingComponent;
+use PCLab\Models\ProcessorComponent;
 
 class CoolingProcessorComparator implements IncompatibilityComparator
 {

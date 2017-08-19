@@ -1,9 +1,9 @@
 <?php
 
-namespace PCForge\Models;
+namespace PCLab\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use PCForge\Presenters\ProcessorComponentPresenter;
+use PCLab\Presenters\ProcessorComponentPresenter;
 
 /**
  * @property int id

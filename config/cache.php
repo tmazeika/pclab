@@ -86,6 +86,6 @@ return [
     |
     */
 
-    'prefix' => 'pcforge',
+    'prefix' => 'pclab',
 
 ];

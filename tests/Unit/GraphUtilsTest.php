@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use Fhaculty\Graph\Graph;
-use PCForge\Compatibility\Helpers\GraphUtils;
+use PCLab\Compatibility\Helpers\GraphUtils;
 use Tests\TestCase;
 
 class GraphUtilsTest extends TestCase

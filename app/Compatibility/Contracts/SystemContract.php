@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge\Compatibility\Contracts;
+namespace PCLab\Compatibility\Contracts;
 
-use PCForge\Models\ChassisComponent;
-use PCForge\Models\ComponentChild;
-use PCForge\Models\PowerComponent;
+use PCLab\Models\ChassisComponent;
+use PCLab\Models\ComponentChild;
+use PCLab\Models\PowerComponent;
 
 interface SystemContract
 {

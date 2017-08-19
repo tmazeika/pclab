@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
-use PCForge\Compatibility\Contracts\SelectionContract;
-use PCForge\Models\GraphicsComponent;
-use PCForge\Models\MotherboardComponent;
+use PCLab\Compatibility\Contracts\SelectionContract;
+use PCLab\Models\GraphicsComponent;
+use PCLab\Models\MotherboardComponent;
 
 class GraphicsMotherboardComparator implements IncompatibilityComparator
 {

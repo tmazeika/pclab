@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Models;
+namespace PCLab\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;

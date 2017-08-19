@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
 
-use PCForge\Models\MotherboardComponent;
-use PCForge\Models\ProcessorComponent;
+use PCLab\Models\MotherboardComponent;
+use PCLab\Models\ProcessorComponent;
 
 class MotherboardProcessorComparator implements IncompatibilityComparator
 {

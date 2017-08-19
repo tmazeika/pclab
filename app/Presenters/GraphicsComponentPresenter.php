@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Presenters;
+namespace PCLab\Presenters;
 
 class GraphicsComponentPresenter extends Presenter
 {

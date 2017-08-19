@@ -1,11 +1,11 @@
 <?php
 
-namespace PCForge\Console\Commands;
+namespace PCLab\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
-use PCForge\Jobs\UpdateAmazonComponents as UpdateAmazonComponentsJob;
-use PCForge\Models\Component;
+use PCLab\Jobs\UpdateAmazonComponents as UpdateAmazonComponentsJob;
+use PCLab\Models\Component;
 
 class UpdateAmazonComponents extends Command
 {

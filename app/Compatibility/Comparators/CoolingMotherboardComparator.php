@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
 
-use PCForge\Models\CoolingComponent;
-use PCForge\Models\MotherboardComponent;
+use PCLab\Models\CoolingComponent;
+use PCLab\Models\MotherboardComponent;
 
 class CoolingMotherboardComparator implements IncompatibilityComparator
 {

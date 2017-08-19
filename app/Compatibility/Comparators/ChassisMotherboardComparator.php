@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
 
-use PCForge\Models\ChassisComponent;
-use PCForge\Models\MotherboardComponent;
+use PCLab\Models\ChassisComponent;
+use PCLab\Models\MotherboardComponent;
 
 class ChassisMotherboardComparator implements IncompatibilityComparator
 {

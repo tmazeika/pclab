@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Providers;
+namespace PCLab\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -14,7 +14,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'PCForge\Http\Controllers';
+    protected $namespace = 'PCLab\Http\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -26,7 +26,7 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
 
         Route::bind('model', function ($value) {
-            return 'PCForge\Models\\' . studly_case(str_singular($value));
+            return 'PCLab\Models\\' . studly_case(str_singular($value));
         });
     }
 

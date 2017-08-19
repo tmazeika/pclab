@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Providers;
+namespace PCLab\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 

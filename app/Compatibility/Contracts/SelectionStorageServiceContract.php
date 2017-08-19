@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Compatibility\Contracts;
+namespace PCLab\Compatibility\Contracts;
 
 interface SelectionStorageServiceContract
 {

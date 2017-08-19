@@ -1,9 +1,9 @@
 <?php
 
-namespace PCForge\Services;
+namespace PCLab\Services;
 
 use Braintree;
-use PCForge\Contracts\BraintreeServiceContract;
+use PCLab\Contracts\BraintreeServiceContract;
 
 class BraintreeService implements BraintreeServiceContract
 {

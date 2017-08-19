@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Http\Controllers;
+namespace PCLab\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;

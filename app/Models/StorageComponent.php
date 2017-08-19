@@ -1,8 +1,8 @@
 <?php
 
-namespace PCForge\Models;
+namespace PCLab\Models;
 
-use PCForge\Presenters\StorageComponentPresenter;
+use PCLab\Presenters\StorageComponentPresenter;
 
 /**
  * @property int id

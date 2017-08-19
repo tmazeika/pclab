@@ -9,8 +9,7 @@ $product-padding: 1em;
 $product-selected-border-width: 2px;
 
 // fonts
-$heading-font: 'PT Sans Narrow', sans-serif;
-$normal-font: 'PT Sans', sans-serif;
+$font: 'Inconsolata', monospace;
 
 // colors
 $accent-color: #61d43a;
@@ -18,7 +17,7 @@ $dark-accent-color: darken($accent-color, 10%);
 $dark-color: #33333a;
 $dark-light-color: #e1e1e1;
 $dark-text: #333;
-$dim-color: #999;
+$dim-color: #97a9b1;
 $light-accent-color: lighten($accent-color, 5%);
 $light-color: #f4f4f4;
 $light-dark-color: lighten($dark-color, 5%);

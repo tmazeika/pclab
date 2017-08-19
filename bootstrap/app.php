@@ -28,17 +28,17 @@ $app = new Illuminate\Foundation\Application(
 
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
-    PCForge\Http\Kernel::class
+    PCLab\Http\Kernel::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
-    PCForge\Console\Kernel::class
+    PCLab\Console\Kernel::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
-    PCForge\Exceptions\Handler::class
+    PCLab\Exceptions\Handler::class
 );
 
 /*

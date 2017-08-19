@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge\Providers;
+namespace PCLab\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use PCForge\Contracts\BraintreeServiceContract;
-use PCForge\Services\BraintreeService;
+use PCLab\Contracts\BraintreeServiceContract;
+use PCLab\Services\BraintreeService;
 
 class AppServiceProvider extends ServiceProvider
 {

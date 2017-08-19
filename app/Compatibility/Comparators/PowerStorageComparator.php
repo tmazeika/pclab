@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
-use PCForge\Compatibility\Contracts\SelectionContract;
-use PCForge\Models\PowerComponent;
-use PCForge\Models\StorageComponent;
+use PCLab\Compatibility\Contracts\SelectionContract;
+use PCLab\Models\PowerComponent;
+use PCLab\Models\StorageComponent;
 
 class PowerStorageComparator implements IncompatibilityComparator
 {

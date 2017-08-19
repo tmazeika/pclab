@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
-use PCForge\Compatibility\Contracts\SystemContract;
-use PCForge\Models\GraphicsComponent;
-use PCForge\Models\PowerComponent;
+use PCLab\Compatibility\Contracts\SystemContract;
+use PCLab\Models\GraphicsComponent;
+use PCLab\Models\PowerComponent;
 
 class GraphicsPowerComparator implements IncompatibilityComparator
 {

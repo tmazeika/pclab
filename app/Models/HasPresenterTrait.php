@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge\Models;
+namespace PCLab\Models;
 
 use Exception;
 use Illuminate\Database\Eloquent\Model;
-use PCForge\Presenters\Presenter;
+use PCLab\Presenters\Presenter;
 
 trait HasPresenterTrait
 {

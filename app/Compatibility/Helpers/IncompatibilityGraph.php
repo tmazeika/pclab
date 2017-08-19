@@ -1,16 +1,16 @@
 <?php
 
-namespace PCForge\Compatibility\Helpers;
+namespace PCLab\Compatibility\Helpers;
 
 use Fhaculty\Graph\Edge\Base as Edge;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Generator;
 use Illuminate\Support\Collection;
-use PCForge\Compatibility\Contracts\ComparatorServiceContract;
-use PCForge\Compatibility\Contracts\ComponentRepositoryContract;
-use PCForge\Compatibility\Contracts\IncompatibilityGraphContract;
-use PCForge\Models\ComponentChild;
+use PCLab\Compatibility\Contracts\ComparatorServiceContract;
+use PCLab\Compatibility\Contracts\ComponentRepositoryContract;
+use PCLab\Compatibility\Contracts\IncompatibilityGraphContract;
+use PCLab\Models\ComponentChild;
 
 class IncompatibilityGraph implements IncompatibilityGraphContract
 {

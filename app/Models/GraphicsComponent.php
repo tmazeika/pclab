@@ -1,8 +1,8 @@
 <?php
 
-namespace PCForge\Models;
+namespace PCLab\Models;
 
-use PCForge\Presenters\GraphicsComponentPresenter;
+use PCLab\Presenters\GraphicsComponentPresenter;
 
 /**
  * @property int id

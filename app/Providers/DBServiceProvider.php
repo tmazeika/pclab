@@ -1,18 +1,18 @@
 <?php
 
-namespace PCForge\Providers;
+namespace PCLab\Providers;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
-use PCForge\Models\ChassisComponent;
-use PCForge\Models\CoolingComponent;
-use PCForge\Models\GraphicsComponent;
-use PCForge\Models\MemoryComponent;
-use PCForge\Models\MotherboardComponent;
-use PCForge\Models\PowerComponent;
-use PCForge\Models\ProcessorComponent;
-use PCForge\Models\StorageComponent;
+use PCLab\Models\ChassisComponent;
+use PCLab\Models\CoolingComponent;
+use PCLab\Models\GraphicsComponent;
+use PCLab\Models\MemoryComponent;
+use PCLab\Models\MotherboardComponent;
+use PCLab\Models\PowerComponent;
+use PCLab\Models\ProcessorComponent;
+use PCLab\Models\StorageComponent;
 
 class DBServiceProvider extends ServiceProvider
 {

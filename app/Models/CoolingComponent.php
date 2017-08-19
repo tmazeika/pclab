@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge\Models;
+namespace PCLab\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use PCForge\Presenters\CoolingComponentPresenter;
+use PCLab\Presenters\CoolingComponentPresenter;
 
 /**
  * @property int id

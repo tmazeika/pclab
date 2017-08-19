@@ -1,11 +1,11 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
-use PCForge\Compatibility\Contracts\SelectionContract;
-use PCForge\Models\ComponentChild;
-use PCForge\Models\MotherboardComponent;
-use PCForge\Models\StorageComponent;
+use PCLab\Compatibility\Contracts\SelectionContract;
+use PCLab\Models\ComponentChild;
+use PCLab\Models\MotherboardComponent;
+use PCLab\Models\StorageComponent;
 
 class MotherboardStorageComparator implements IncompatibilityComparator
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge\Models;
+namespace PCLab\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use PCForge\Presenters\ChassisComponentPresenter;
+use PCLab\Presenters\ChassisComponentPresenter;
 
 /**
  * @property int id

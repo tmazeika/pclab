@@ -1,9 +1,9 @@
 <?php
 
-namespace PCForge\Compatibility\Contracts;
+namespace PCLab\Compatibility\Contracts;
 
-use PCForge\Compatibility\Comparators\IncompatibilityComparator;
-use PCForge\Models\ComponentChild;
+use PCLab\Compatibility\Comparators\IncompatibilityComparator;
+use PCLab\Models\ComponentChild;
 
 interface ComparatorServiceContract
 {

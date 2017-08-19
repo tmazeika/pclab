@@ -1,8 +1,8 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
-use PCForge\Models\PowerComponent;
+use PCLab\Models\PowerComponent;
 
 class PowerPowerComparator implements IncompatibilityComparator
 {

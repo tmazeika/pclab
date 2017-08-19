@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Console\Commands;
+namespace PCLab\Console\Commands;
 
 use Illuminate\Console\Command;
 

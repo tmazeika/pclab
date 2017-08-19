@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Contracts;
+namespace PCLab\Contracts;
 
 interface BraintreeServiceContract
 {

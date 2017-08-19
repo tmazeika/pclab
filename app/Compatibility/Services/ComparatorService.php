@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge\Compatibility\Services;
+namespace PCLab\Compatibility\Services;
 
-use PCForge\Compatibility\Comparators\IncompatibilityComparator;
-use PCForge\Compatibility\Contracts\ComparatorServiceContract;
-use PCForge\Models\ComponentChild;
+use PCLab\Compatibility\Comparators\IncompatibilityComparator;
+use PCLab\Compatibility\Contracts\ComparatorServiceContract;
+use PCLab\Models\ComponentChild;
 
 class ComparatorService implements ComparatorServiceContract
 {
@@ -31,7 +31,7 @@ class ComparatorService implements ComparatorServiceContract
      */
     private function getComparator(ComponentChild $component1, ComponentChild $component2): ?IncompatibilityComparator
     {
-        $class = '\PCForge\Compatibility\Comparators\\'
+        $class = '\PCLab\Compatibility\Comparators\\'
             . $this->componentToType($component1)
             . $this->componentToType($component2)
             . 'Comparator';

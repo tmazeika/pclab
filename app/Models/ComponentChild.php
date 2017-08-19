@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Models;
+namespace PCLab\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -24,7 +24,7 @@ abstract class ComponentChild extends Model
     }
 
     /**
-     * Gets the type name of this component. E.g. "PCForge\Models\ProcessorComponent" becomes "processor".
+     * Gets the type name of this component. E.g. "PCLab\Models\ProcessorComponent" becomes "processor".
      *
      * @return string
      */

@@ -1,10 +1,10 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
-use PCForge\Models\ChassisComponent;
-use PCForge\Models\RadiatorConfiguration;
-use PCForge\Models\CoolingComponent;
+use PCLab\Models\ChassisComponent;
+use PCLab\Models\RadiatorConfiguration;
+use PCLab\Models\CoolingComponent;
 
 class ChassisCoolingComparator implements IncompatibilityComparator
 {

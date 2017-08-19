@@ -1,11 +1,11 @@
 <?php
 
-namespace PCForge\Compatibility\Helpers;
+namespace PCLab\Compatibility\Helpers;
 
 use Illuminate\Support\Collection;
-use PCForge\Compatibility\Contracts\ComponentRepositoryContract;
-use PCForge\Compatibility\Contracts\SelectionContract;
-use PCForge\Models\ComponentChild;
+use PCLab\Compatibility\Contracts\ComponentRepositoryContract;
+use PCLab\Compatibility\Contracts\SelectionContract;
+use PCLab\Models\ComponentChild;
 
 class Selection implements SelectionContract
 {

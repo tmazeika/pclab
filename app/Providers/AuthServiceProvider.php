@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Providers;
+namespace PCLab\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -12,7 +12,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'PCForge\Model' => 'PCForge\Policies\ModelPolicy',
+        'PCLab\Model' => 'PCLab\Policies\ModelPolicy',
     ];
 
     /**

@@ -1,9 +1,9 @@
 <?php
 
-namespace PCForge\Compatibility\Contracts;
+namespace PCLab\Compatibility\Contracts;
 
 use Illuminate\Support\Collection;
-use PCForge\Models\ComponentChild;
+use PCLab\Models\ComponentChild;
 
 interface ComponentRepositoryContract
 {

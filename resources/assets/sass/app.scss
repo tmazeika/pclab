@@ -1,3 +1,10 @@
 @import "modules/modules";
 @import "layouts/layouts";
 @import "partials/partials";
+
+html, body {
+  background-color: #262626;
+
+  margin: 0;
+  padding: 0;
+}

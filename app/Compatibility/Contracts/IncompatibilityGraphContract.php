@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Compatibility\Contracts;
+namespace PCLab\Compatibility\Contracts;
 
 use Fhaculty\Graph\Graph;
 use Illuminate\Support\Collection;

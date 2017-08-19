@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Presenters;
+namespace PCLab\Presenters;
 
 class CoolingComponentPresenter extends Presenter
 {

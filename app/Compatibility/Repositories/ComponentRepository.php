@@ -1,11 +1,11 @@
 <?php
 
-namespace PCForge\Compatibility\Repositories;
+namespace PCLab\Compatibility\Repositories;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
-use PCForge\Compatibility\Contracts\ComponentRepositoryContract;
-use PCForge\Models\ComponentChild;
+use PCLab\Compatibility\Contracts\ComponentRepositoryContract;
+use PCLab\Models\ComponentChild;
 
 class ComponentRepository implements ComponentRepositoryContract
 {

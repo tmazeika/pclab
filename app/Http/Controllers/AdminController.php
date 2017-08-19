@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Http\Controllers;
+namespace PCLab\Http\Controllers;
 
 class AdminController extends Controller
 {

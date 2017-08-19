@@ -1,18 +1,18 @@
 <?php
 
-namespace PCForge\Compatibility\Services;
+namespace PCLab\Compatibility\Services;
 
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Illuminate\Support\Collection;
-use PCForge\Compatibility\Contracts\ComponentIncompatibilityServiceContract;
-use PCForge\Compatibility\Contracts\ComponentRepositoryContract;
-use PCForge\Compatibility\Contracts\IncompatibilityGraphContract;
-use PCForge\Compatibility\Contracts\SelectionContract;
-use PCForge\Compatibility\Contracts\SelectionStorageServiceContract;
-use PCForge\Compatibility\Helpers\GraphUtils;
-use PCForge\Compatibility\Helpers\IncompatibilityGraph;
-use PCForge\Models\ComponentChild;
+use PCLab\Compatibility\Contracts\ComponentIncompatibilityServiceContract;
+use PCLab\Compatibility\Contracts\ComponentRepositoryContract;
+use PCLab\Compatibility\Contracts\IncompatibilityGraphContract;
+use PCLab\Compatibility\Contracts\SelectionContract;
+use PCLab\Compatibility\Contracts\SelectionStorageServiceContract;
+use PCLab\Compatibility\Helpers\GraphUtils;
+use PCLab\Compatibility\Helpers\IncompatibilityGraph;
+use PCLab\Models\ComponentChild;
 
 class ComponentIncompatibilityService implements ComponentIncompatibilityServiceContract
 {

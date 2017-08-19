@@ -1,8 +1,8 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
-use PCForge\Models\ChassisComponent;
+use PCLab\Models\ChassisComponent;
 
 class ChassisChassisComparator implements IncompatibilityComparator
 {

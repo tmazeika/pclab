@@ -1,9 +1,9 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
 
-use PCForge\Models\MotherboardComponent;
+use PCLab\Models\MotherboardComponent;
 
 class MotherboardMotherboardComparator implements IncompatibilityComparator
 {

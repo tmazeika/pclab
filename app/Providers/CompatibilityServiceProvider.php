@@ -1,23 +1,23 @@
 <?php
 
-namespace PCForge\Providers;
+namespace PCLab\Providers;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
-use PCForge\Compatibility\Contracts\ComparatorServiceContract;
-use PCForge\Compatibility\Contracts\ComponentIncompatibilityServiceContract;
-use PCForge\Compatibility\Contracts\ComponentRepositoryContract;
-use PCForge\Compatibility\Contracts\IncompatibilityGraphContract;
-use PCForge\Compatibility\Contracts\SelectionContract;
-use PCForge\Compatibility\Contracts\SelectionStorageServiceContract;
-use PCForge\Compatibility\Contracts\SystemContract;
-use PCForge\Compatibility\Helpers\IncompatibilityGraph;
-use PCForge\Compatibility\Helpers\System;
-use PCForge\Compatibility\Repositories\ComponentRepository;
-use PCForge\Compatibility\Services\ComparatorService;
-use PCForge\Compatibility\Services\ComponentIncompatibilityService;
-use PCForge\Compatibility\Services\SelectionStorageService;
+use PCLab\Compatibility\Contracts\ComparatorServiceContract;
+use PCLab\Compatibility\Contracts\ComponentIncompatibilityServiceContract;
+use PCLab\Compatibility\Contracts\ComponentRepositoryContract;
+use PCLab\Compatibility\Contracts\IncompatibilityGraphContract;
+use PCLab\Compatibility\Contracts\SelectionContract;
+use PCLab\Compatibility\Contracts\SelectionStorageServiceContract;
+use PCLab\Compatibility\Contracts\SystemContract;
+use PCLab\Compatibility\Helpers\IncompatibilityGraph;
+use PCLab\Compatibility\Helpers\System;
+use PCLab\Compatibility\Repositories\ComponentRepository;
+use PCLab\Compatibility\Services\ComparatorService;
+use PCLab\Compatibility\Services\ComponentIncompatibilityService;
+use PCLab\Compatibility\Services\SelectionStorageService;
 
 class CompatibilityServiceProvider extends ServiceProvider
 {

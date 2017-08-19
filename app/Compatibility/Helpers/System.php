@@ -1,14 +1,14 @@
 <?php
 
-namespace PCForge\Compatibility\Helpers;
+namespace PCLab\Compatibility\Helpers;
 
-use PCForge\Compatibility\Contracts\SelectionContract;
-use PCForge\Compatibility\Contracts\SelectionStorageServiceContract;
-use PCForge\Compatibility\Contracts\SystemContract;
-use PCForge\Models\ChassisComponent;
-use PCForge\Models\ComponentChild;
-use PCForge\Models\PowerComponent;
-use PCForge\Models\StorageComponent;
+use PCLab\Compatibility\Contracts\SelectionContract;
+use PCLab\Compatibility\Contracts\SelectionStorageServiceContract;
+use PCLab\Compatibility\Contracts\SystemContract;
+use PCLab\Models\ChassisComponent;
+use PCLab\Models\ComponentChild;
+use PCLab\Models\PowerComponent;
+use PCLab\Models\StorageComponent;
 
 class System implements SystemContract
 {

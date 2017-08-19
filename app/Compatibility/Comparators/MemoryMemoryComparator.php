@@ -1,9 +1,9 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
 
-use PCForge\Models\MemoryComponent;
+use PCLab\Models\MemoryComponent;
 
 class MemoryMemoryComparator implements IncompatibilityComparator
 {

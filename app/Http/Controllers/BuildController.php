@@ -1,14 +1,14 @@
 <?php
 
-namespace PCForge\Http\Controllers;
+namespace PCLab\Http\Controllers;
 
 use Fhaculty\Graph\Graph;
-use PCForge\Compatibility\Contracts\ComponentIncompatibilityServiceContract;
-use PCForge\Compatibility\Contracts\ComponentRepositoryContract;
-use PCForge\Compatibility\Contracts\IncompatibilityGraphContract;
-use PCForge\Compatibility\Contracts\SelectionContract;
-use PCForge\Http\Requests\SelectComponent;
-use PCForge\Models\ComponentChild;
+use PCLab\Compatibility\Contracts\ComponentIncompatibilityServiceContract;
+use PCLab\Compatibility\Contracts\ComponentRepositoryContract;
+use PCLab\Compatibility\Contracts\IncompatibilityGraphContract;
+use PCLab\Compatibility\Contracts\SelectionContract;
+use PCLab\Http\Requests\SelectComponent;
+use PCLab\Models\ComponentChild;
 
 class BuildController extends Controller
 {

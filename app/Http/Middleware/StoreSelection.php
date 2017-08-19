@@ -1,9 +1,9 @@
 <?php
 
-namespace PCForge\Http\Middleware;
+namespace PCLab\Http\Middleware;
 
 use Closure;
-use PCForge\Compatibility\Contracts\SelectionStorageServiceContract;
+use PCLab\Compatibility\Contracts\SelectionStorageServiceContract;
 
 class StoreSelection
 {

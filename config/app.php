@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'PCForge',
+    'name' => 'PCLab',
 
     /*
     |--------------------------------------------------------------------------
@@ -171,14 +171,14 @@ return [
         /*
          * Application Service Providers...
          */
-        PCForge\Providers\AppServiceProvider::class,
-        PCForge\Providers\AuthServiceProvider::class,
-        // PCForge\Providers\BroadcastServiceProvider::class,
-        PCForge\Providers\CompatibilityServiceProvider::class,
-        PCForge\Providers\DBServiceProvider::class,
-        PCForge\Providers\EventServiceProvider::class,
-        PCForge\Providers\RouteServiceProvider::class,
-        PCForge\Providers\ViewServiceProvider::class,
+        PCLab\Providers\AppServiceProvider::class,
+        PCLab\Providers\AuthServiceProvider::class,
+        // PCLab\Providers\BroadcastServiceProvider::class,
+        PCLab\Providers\CompatibilityServiceProvider::class,
+        PCLab\Providers\DBServiceProvider::class,
+        PCLab\Providers\EventServiceProvider::class,
+        PCLab\Providers\RouteServiceProvider::class,
+        PCLab\Providers\ViewServiceProvider::class,
 
     ],
 

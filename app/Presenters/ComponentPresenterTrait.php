@@ -1,9 +1,9 @@
 <?php
 
-namespace PCForge\Presenters;
+namespace PCLab\Presenters;
 
 use Illuminate\Database\Eloquent\Model;
-use PCForge\Compatibility\Contracts\SelectionContract;
+use PCLab\Compatibility\Contracts\SelectionContract;
 
 trait ComponentPresenterTrait
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Http\Requests;
+namespace PCLab\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

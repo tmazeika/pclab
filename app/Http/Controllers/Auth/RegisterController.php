@@ -1,11 +1,11 @@
 <?php
 
-namespace PCForge\Http\Controllers\Auth;
+namespace PCLab\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Validator;
-use PCForge\Http\Controllers\Controller;
-use PCForge\User;
+use PCLab\Http\Controllers\Controller;
+use PCLab\User;
 
 class RegisterController extends Controller
 {

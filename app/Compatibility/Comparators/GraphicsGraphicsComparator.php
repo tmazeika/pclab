@@ -1,9 +1,9 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
 
-use PCForge\Models\GraphicsComponent;
+use PCLab\Models\GraphicsComponent;
 
 class GraphicsGraphicsComparator implements IncompatibilityComparator
 {

@@ -4,15 +4,15 @@ namespace Tests\Unit;
 
 use Fhaculty\Graph\Graph;
 use Illuminate\Support\Collection;
-use PCForge\Compatibility\Helpers\IncompatibilityGraph;
-use PCForge\Compatibility\Repositories\ComponentRepository;
-use PCForge\Models\ChassisComponent;
-use PCForge\Models\Component;
-use PCForge\Models\ComponentType;
-use PCForge\Models\CoolingComponent;
-use PCForge\Models\GraphicsComponent;
-use PCForge\Models\MotherboardComponent;
-use PCForge\Models\ProcessorComponent;
+use PCLab\Compatibility\Helpers\IncompatibilityGraph;
+use PCLab\Compatibility\Repositories\ComponentRepository;
+use PCLab\Models\ChassisComponent;
+use PCLab\Models\Component;
+use PCLab\Models\ComponentType;
+use PCLab\Models\CoolingComponent;
+use PCLab\Models\GraphicsComponent;
+use PCLab\Models\MotherboardComponent;
+use PCLab\Models\ProcessorComponent;
 use Tests\TestCase;
 
 class IncompatibilityGraphTest extends TestCase

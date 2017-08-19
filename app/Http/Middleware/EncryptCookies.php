@@ -1,6 +1,6 @@
 <?php
 
-namespace PCForge\Http\Middleware;
+namespace PCLab\Http\Middleware;
 
 use Illuminate\Cookie\Middleware\EncryptCookies as BaseEncrypter;
 

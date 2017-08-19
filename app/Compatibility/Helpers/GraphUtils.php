@@ -1,14 +1,14 @@
 <?php
 
-namespace PCForge\Compatibility\Helpers;
+namespace PCLab\Compatibility\Helpers;
 
 use Exception;
 use Fhaculty\Graph\Edge\Base as Edge;
 use Fhaculty\Graph\Graph;
 use Fhaculty\Graph\Vertex;
 use Graphp\GraphViz\GraphViz;
-use PCForge\Models\Component;
-use PCForge\Models\ComponentChild;
+use PCLab\Models\Component;
+use PCLab\Models\ComponentChild;
 
 final class GraphUtils
 {

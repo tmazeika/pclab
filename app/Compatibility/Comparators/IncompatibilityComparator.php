@@ -1,8 +1,8 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
-use PCForge\Models\ComponentChild;
+use PCLab\Models\ComponentChild;
 
 interface IncompatibilityComparator
 {

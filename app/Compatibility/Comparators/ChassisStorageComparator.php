@@ -1,11 +1,11 @@
 <?php
 
-namespace PCForge\Compatibility\Comparators;
+namespace PCLab\Compatibility\Comparators;
 
-use PCForge\Compatibility\Contracts\SystemContract;
-use PCForge\Compatibility\Helpers\System;
-use PCForge\Models\ChassisComponent;
-use PCForge\Models\StorageComponent;
+use PCLab\Compatibility\Contracts\SystemContract;
+use PCLab\Compatibility\Helpers\System;
+use PCLab\Models\ChassisComponent;
+use PCLab\Models\StorageComponent;
 
 class ChassisStorageComparator implements IncompatibilityComparator
 {
