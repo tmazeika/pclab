@@ -1,0 +1,47 @@
+.lab-section {
+  @include page-section-container(false)
+}
+
+.lab-section-header {
+  border-bottom: 1px solid $dim-color;
+  font: italic 400 2em/1 'Source Sans Pro', sans-serif;
+
+  padding-bottom: 1rem;
+}
+
+.lab-section-content {
+  // flex
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.component {
+  border: 2px solid $dim-color;
+
+  transition: border-color $anim-time, box-shadow $anim-time, opacity $anim-time;
+
+  margin: 1em;
+  padding: 0.5em;
+
+  &:not(.disabled) {
+    cursor: pointer;
+
+    &:hover, &.selected {
+      border-color: $accent-color;
+      box-shadow: 0 0 10px $accent-color;
+    }
+
+    &:active {
+      border-color: $light-color;
+      box-shadow: 0 0 10px $light-color;
+    }
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+}
+
+.component-image {
+  width: 15em;
+}

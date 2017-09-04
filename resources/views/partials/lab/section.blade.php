@@ -1,11 +1,9 @@
 @php($typeName = $components->first()->parent->type->name)
 
-<section class="bar content-container">
-    <header>
-        <h3>{{ ucfirst($typeName) }}</h3>
-    </header>
+<section class="lab-section">
+    <h1 class="lab-section-header">{{ ucfirst($typeName) }}</h1>
 
-    <div class="content flex-container flex-grid">
+    <div class="lab-section-content">
         @each('partials.lab.component', $components, 'component')
     </div>
 </section>

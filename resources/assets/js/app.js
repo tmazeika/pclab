@@ -1,6 +1,6 @@
 window.$ = require('jquery');
 
-$('.product').on('click', function () {
+$('.component').on('click', function () {
     if ($(this).hasClass('disabled')) {
         return;
     }
@@ -19,7 +19,7 @@ $('.product').on('click', function () {
         },
         dataType: 'json'
     }).done((data) => {
-        $('.product').each(function (i, item) {
+        $('.component').each(function (i, item) {
             $(item).toggleClass('disabled', data.disable.indexOf(parseInt($(item).attr('data-component'))) !== -1);
         });
     })
