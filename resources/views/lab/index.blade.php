@@ -4,12 +4,12 @@
 @php($active = 'lab')
 
 @section('main')
-    <main>
+    <main class="lab">
         @each('partials.lab.section', $components, 'components')
 
-        {{--<a href="{{ url('lab/checkout') }}">--}}
-            {{--<button>Finished</button>--}}
-        {{--</a>--}}
+        <a href="{{ url('/lab/checkout') }}">
+            <button>Checkout</button>
+        </a>
     </main>
 @endsection
 

@@ -18,6 +18,8 @@ Route::get('/', function() {
 Route::group(['prefix' => 'lab'], function() {
     Route::get('/', 'LabController@index');
     Route::get('select', 'LabController@select');
+    Route::get('checkout', 'CheckoutController@index');
+    Route::post('checkout', 'CheckoutController@pay');
 });
 
 Route::group(['prefix' => 'admin'], function() {

@@ -19,8 +19,16 @@ $('.component').on('click', function () {
         },
         dataType: 'json'
     }).done((data) => {
+        let totalAmount = 0;
+
         $('.component').each(function (i, item) {
             $(item).toggleClass('disabled', data.disable.indexOf(parseInt($(item).attr('data-component'))) !== -1);
         });
+
+        $('.component.selected').each(function (i, item) {
+            totalAmount += parseInt($(item).attr('data-price'));
+        });
+
+        $('#checkout-button').attr('data-amount', parseInt(totalAmount));
     })
 });

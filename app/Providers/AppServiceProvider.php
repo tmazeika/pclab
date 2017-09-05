@@ -3,8 +3,8 @@
 namespace PCLab\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use PCLab\Contracts\BraintreeServiceContract;
-use PCLab\Services\BraintreeService;
+use PCLab\Contracts\StripeServiceContract;
+use PCLab\Services\StripeService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,8 +26,8 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(
-            BraintreeServiceContract::class,
-            BraintreeService::class
+            StripeServiceContract::class,
+            StripeService::class
         );
     }
 }

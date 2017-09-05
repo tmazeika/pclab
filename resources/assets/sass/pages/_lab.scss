@@ -1,5 +1,5 @@
-.lab-section {
-  @include page-section-container(false)
+.lab {
+  @include page-section-container(false);
 }
 
 .lab-section-header {
@@ -9,7 +9,7 @@
   padding-bottom: 1rem;
 }
 
-.lab-section-content {
+.lab-section {
   // flex
   display: flex;
   flex-wrap: wrap;
