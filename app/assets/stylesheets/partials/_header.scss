@@ -1,0 +1,40 @@
+.header {
+  border-bottom: 1px solid $darkish-color;
+
+  // flex
+  display: flex;
+}
+
+.header-item {
+  font-size: 1.6em;
+
+  transition: background-color $anim-time;
+
+  display: block;
+
+  &:hover {
+    background-color: $darkish-color;
+  }
+
+  &:not(:first-child) {
+    padding: 0 2rem;
+
+    // flex
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &.active {
+    color: $accent-color;
+  }
+}
+
+.header-logo-item {
+  padding: 1rem;
+}
+
+.header-logo {
+  display: block;
+  width: 60px;
+}

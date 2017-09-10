@@ -1,3 +1,13 @@
+@import "variables";
+@import "helpers";
+
+@import "partials/header";
+
 body {
+  @include monospace-font;
+
+  background-color: $dark-color;
+  color: $light-color;
+
   margin: 0;
 }

@@ -9,4 +9,8 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   def index = Action {
     Ok(views.html.index())
   }
+
+  def showcase = Action {
+    Ok(views.html.showcase())
+  }
 }
