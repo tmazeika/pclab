@@ -1,0 +1,27 @@
+.home-jumbo {
+  background: no-repeat center center fixed;
+  background-size: cover;
+
+  padding: 6em;
+  text-align: center;
+
+  // flex
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.home-jumbo-line {
+  @include sans-serif-font($size: 7em);
+
+  margin-bottom: 1.6rem;
+}
+
+.home-jumbo-subtitle {
+  box-shadow: 0 -20px 20px -20px $accent-color;
+  color: $lightish-color;
+  font-size: 3rem;
+
+  padding-top: 1rem;
+}

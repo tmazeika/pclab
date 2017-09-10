@@ -3,6 +3,12 @@
 
 @import "partials/header";
 
+@import "pages/home";
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   @include monospace-font;
 

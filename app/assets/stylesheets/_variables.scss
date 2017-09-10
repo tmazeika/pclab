@@ -4,6 +4,7 @@ $dark-color: #262626;
 $darkish-color: lighten($dark-color, 5%);
 $dim-color: #97a9b1;
 $light-color: #f9f9f9;
+$lightish-color: darken($light-color, 5%);
 
 // timings
 $anim-time: 0.1s;
