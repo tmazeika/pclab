@@ -4,10 +4,10 @@
     <a class="header-item header-logo-item" href="@routes.HomeController.index()">
         <img class="header-logo" src="@routes.Assets.versioned("images/logo.svg")"/>
     </a>
-    <a class="header-item @if(title equals "Showcase") { active }" href="@routes.HomeController.showcase()">
+    <a class="header-item @if(title == "Showcase") { active }" href="@routes.ShowcaseController.index()">
         Showcase
     </a>
-    <a class="header-item @if(title equals "Lab") { active }" href="@routes.LabController.index()">
+    <a class="header-item @if(title == "Lab") { active }" href="@routes.LabController.index()">
         Lab
     </a>
 </header>
