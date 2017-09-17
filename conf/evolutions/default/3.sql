@@ -14,5 +14,4 @@ CREATE TABLE cooling_solution_form_factor (
 
 # --- !Downs
 
-DROP TABLE chassis_form_factor;
-DROP TABLE cooling_solution_form_factor;
+DROP TABLE chassis_form_factor, cooling_solution_form_factor;

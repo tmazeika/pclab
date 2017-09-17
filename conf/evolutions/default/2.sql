@@ -2,10 +2,12 @@
 
 CREATE TABLE components (
   id SERIAL PRIMARY KEY,
+  brand VARCHAR(255) NOT NULL,
   name VARCHAR(255) NOT NULL,
+  model VARCHAR(255),
 
   -- market
-  is_available_immediately BOOLEAN NOT NULL,
+  is_available_immediately BOOLEAN NOT NULL DEFAULT TRUE,
   cost INT NOT NULL, -- pennies
 
   -- power_supplies
@@ -47,6 +49,8 @@ CREATE TABLE chassis (
 CREATE TABLE cooling_solutions (
   id SERIAL PRIMARY KEY,
 
+  tdp SMALLINT NOT NULL, -- watts
+
   -- physical
   height SMALLINT NOT NULL, -- millimeters
   max_memory_stick_height SMALLINT NOT NULL -- millimeters
@@ -54,6 +58,8 @@ CREATE TABLE cooling_solutions (
 
 CREATE TABLE graphics_cards (
   id SERIAL PRIMARY KEY,
+
+  family VARCHAR(255) NOT NULL,
 
   has_displayport_out BOOLEAN NOT NULL,
   has_dvi_out BOOLEAN NOT NULL,
@@ -100,7 +106,7 @@ CREATE TABLE motherboards (
   memory_gen SMALLINT NOT NULL,
   memory_pins SMALLINT NOT NULL,
   memory_slots SMALLINT NOT NULL,
-  
+
   -- power_supplies
   cpu_power_pins SMALLINT NOT NULL CHECK (cpu_power_pins IN (0, 4, 8)),
   main_power_pins SMALLINT NOT NULL CHECK (main_power_pins IN (20, 24)),
@@ -129,9 +135,6 @@ CREATE TABLE processors (
 
   socket_id INT NOT NULL REFERENCES sockets (id) ON DELETE RESTRICT,
 
-  -- cooling_solutions
-  tdp SMALLINT NOT NULL, -- watts
-
   -- graphics_cards
   has_apu BOOLEAN NOT NULL
 ) INHERITS (components);
@@ -147,12 +150,12 @@ CREATE TABLE storage_devices (
 
 # --- !Downs
 
-DROP TABLE components;
-DROP TABLE chassis;
-DROP TABLE cooling_solutions;
-DROP TABLE graphics_cards;
-DROP TABLE memory_sticks;
-DROP TABLE motherboards;
-DROP TABLE power_supplies;
-DROP TABLE processors;
-DROP TABLE storage_devices;
+DROP TABLE components,
+  chassis,
+  cooling_solutions,
+  graphics_cards,
+  memory_sticks,
+  motherboards,
+  power_supplies,
+  processors,
+  storage_devices;

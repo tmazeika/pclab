@@ -12,5 +12,4 @@ CREATE TABLE sockets (
 
 # --- !Downs
 
-DROP TABLE form_factors;
-DROP TABLE sockets;
+DROP TABLE form_factors, sockets;
