@@ -7,6 +7,7 @@
 
 .header-item {
   font-size: 1.6em;
+  letter-spacing: 1px;
 
   transition: background-color $anim-time;
 
@@ -23,18 +24,34 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+    @include mobile {
+      padding: 0 0.75rem;
+    }
   }
 
   &.active {
     color: $accent-color;
   }
+
+  @include mobile {
+    font-size: 1.2em;
+  }
 }
 
 .header-logo-item {
   padding: 1rem;
+
+  @include mobile {
+    padding: 0.5rem;
+  }
 }
 
 .header-logo {
   display: block;
   width: 60px;
+
+  @include mobile {
+    width: 40px;
+  }
 }

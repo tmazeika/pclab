@@ -4,15 +4,16 @@ version := "0.1"
       
 lazy val `pclab` = (project in file(".")).enablePlugins(PlayScala)
 
-resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
-      
-resolvers += "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/"
-      
-scalaVersion := "2.12.2"
+resolvers ++= Seq(
+  "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases",
+  "Akka Snapshot Repository" at "http://repo.akka.io/snapshots/")
 
-libraryDependencies ++= Seq( evolutions, jdbc , ehcache , ws , specs2 % Test , guice ,
-  "org.postgresql" % "postgresql" % "42.1.4" ,
-  "com.typesafe.play" %% "anorm" % "2.5.3" )
+scalaVersion := "2.12.3"
 
-unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
+libraryDependencies ++= Seq(evolutions, jdbc, ehcache, ws, specs2 % Test, guice,
+  "org.postgresql" % "postgresql" % "42.1.4",
+  "com.typesafe.play" %% "anorm" % "2.5.3",
+  "org.scala-graph" %% "graph-core" % "1.12.0")
+
+unmanagedResourceDirectories in Test <+= baseDirectory (_ /"target/web/public/test")
 

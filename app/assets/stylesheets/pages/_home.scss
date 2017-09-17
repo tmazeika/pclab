@@ -2,7 +2,7 @@
   background: no-repeat center center fixed;
   background-size: cover;
 
-  padding: 6em;
+  padding: 15em 1em;
   text-align: center;
 
   // flex
@@ -10,18 +10,30 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
+
+  @include mobile {
+    padding: 3em 1em;
+  }
 }
 
 .home-jumbo-line {
-  @include sans-serif-font($size: 7em);
+  letter-spacing: 3px;
+}
 
-  margin-bottom: 1.6rem;
+.home-jumbo-heading {
+  @include sans-serif-font($size: 3em);
+
+  @include desktop {
+    font-size: 7em;
+  }
 }
 
 .home-jumbo-subtitle {
-  box-shadow: 0 -20px 20px -20px $accent-color;
-  color: $lightish-color;
-  font-size: 3rem;
+  @include sans-serif-font($size: 1.5em);
 
-  padding-top: 1rem;
+  @include desktop {
+    color: $dim-color;
+    font-size: 3em;
+    letter-spacing: 5px;
+  }
 }
