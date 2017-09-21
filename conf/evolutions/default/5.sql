@@ -13,7 +13,7 @@ INSERT INTO chassis (
   max_power_supply_length, small_bays, small_cage_bays, usb2_headers,
   usb3_headers, uses_sata_power
 ) VALUES (
-    1, 8, 5, 1, 3, 0, 0, 300, 194, 420, 318, 2, 0, 0, 1, FALSE
+    1, 8, 5, 1, 3, 0, 0, 300, 194, 420, 318, 2, 0, 0, 1, TRUE
 ), (
     2, 8, 5, 1, 2, 0, 0, 310, 180, 440, 300, 2, 0, 1, 1, FALSE
 );
