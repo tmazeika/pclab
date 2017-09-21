@@ -1,86 +1,114 @@
 # --- !Ups
 
+-- chassis
+
+INSERT INTO components (id, brand, cost, model, name, power_cost, weight) VALUES
+    (1, 'Phanteks', 1900, 'Tempered Glass ATX', 'Enthoo EVOLV', 0, 10200),
+    (2, 'Fractal Design', 11000, NULL, 'Define R5', 0, 10300);
+
 INSERT INTO chassis (
-  brand, name, cost, power_usage, weight, max_cooling_fan_height,
-  max_graphics_card_length_blocked, max_graphics_card_length_full,
-  audio_headers, fan_headers, usb2_headers, usb3_headers, uses_sata_power,
-  max_power_supply_length, bays_2p5, bays_3p5, bays_adaptable, cage_bays_2p5,
-  cage_bays_3p5, cage_bays_adaptable
+  component_id, adapatable_bays, adapatable_cage_bays, audio_headers,
+  fan_headers, full_bays, full_cage_bays, max_blocked_graphics_card_length,
+  max_cooling_fan_height, max_full_graphics_card_length,
+  max_power_supply_length, small_bays, small_cage_bays, usb2_headers,
+  usb3_headers, uses_sata_power
 ) VALUES (
-  'Phanteks', 'Enthoo EVOLV Glass', 19000, 0, 10200, 194, 300, 420, 1, 3, 0, 1,
-  false, 318, 2, 0, 8, 0, 0, 5
+    1, 8, 5, 1, 3, 0, 0, 300, 194, 420, 318, 2, 0, 0, 1, FALSE
 ), (
-  'Fractal Design', 'Define R5', 11000, 0, 10300, 180, 310, 440, 1, 2, 1, 1,
-  false, 300, 2, 0, 8, 0, 0, 5
+    2, 8, 5, 1, 2, 0, 0, 310, 180, 440, 300, 2, 0, 1, 1, FALSE
 );
+
+-- cooling_solutions
+
+INSERT INTO components (id, brand, cost, model, name, power_cost, weight) VALUES
+    (3, 'Cooler Master', 3000, NULL, 'Hyper 212 EVO', 3, 580);
 
 INSERT INTO cooling_solutions (
-  brand, name, cost, power_usage, weight, tdp, height, max_memory_stick_height
+  component_id, height, max_memory_stick_height, tdp
 ) VALUES (
-  'Cooler Master', 'Hyper 212 EVO', 3000, 3, 580, 180, 159, 37
+    3, 159, 37, 180
 );
+
+-- graphics_cards
+
+INSERT INTO components (id, brand, cost, model, name, power_cost, weight) VALUES
+    (4, 'MSI', 54400, NULL, 'GTX 1080 ARMOR', 180, 907);
 
 INSERT INTO graphics_cards (
-  brand, name, cost, power_usage, weight, family, has_displayport_out,
-  has_dvi_out, has_hdmi_out, has_vga_out, supports_sli, length
+  component_id, family, has_displayport, has_dvi, has_hdmi, has_vga, length,
+  supports_sli
 ) VALUES (
-  'MSI', 'GTX 1080 ARMOR', 54400, 180, 907, 'NVIDIA', true, true, true, false,
-  true, 280
+    4, 'NVIDIA', TRUE, TRUE, TRUE, FALSE, 280, TRUE
 );
+
+-- memory_sticks
+
+INSERT INTO components (id, brand, cost, model, name, power_cost, weight) VALUES
+    (5, 'Crucial', 6800, NULL, 'Ballistix Sport LT', 10, 145),
+    (6, 'Crucial', 8000, NULL, 'Vengeance LPX', 10, 82);
 
 INSERT INTO memory_sticks (
-  brand, name, cost, power_usage, weight, capacity, gen, pins, height
+  component_id, capacity, generation, height, pins
 ) VALUES (
-  'Crucial', 'Ballistix Sport LT', 6800, 10, 145, 8000, 4, 288, 12
+    5, 8000, 4, 12, 288
 ), (
-  'Crucial', 'Vengeance LPX', 8000, 10, 82, 8, 4, 288, 10
+    6, 8000, 4, 10, 288
 );
+
+-- motherboards
+
+INSERT INTO components (id, brand, cost, model, name, power_cost, weight) VALUES
+    (7, 'ASUS', 14000, NULL, 'Z170-A', 0, 998),
+    (8, 'MSI', 10000, NULL, 'B350 TOMAHAWK', 0, 1270);
 
 INSERT INTO motherboards (
-  brand, name, cost, power_usage, weight, form_factor_id, has_displayport_out,
-  has_dvi_out, has_hdmi_out, has_vga_out, pcie3_slots, supports_sli,
-  audio_headers, fan_headers, usb2_headers, usb3_headers, max_memory_capacity,
-  memory_gen, memory_pins, memory_slots, cpu_power_pins, main_power_pins,
-  socket_id, sata_slots
+  component_id, audio_headers, cpu_power_4pins, cpu_power_8pins, fan_headers,
+  form_factor_id, has_displayport, has_dvi, has_hdmi, has_vga, main_power_pins,
+  max_memory_capacity, memory_generation, memory_pins, memory_slots,
+  pcie3_slots, sata_slots, socket_id, supports_sli, usb2_headers, usb3_headers
 ) VALUES (
-  'ASUS', 'Z170-A', 14000, 0, 998,
-  (SELECT id FROM form_factors WHERE name = 'ATX'), true, true, true, true, 3,
-  true, 1, 4, 2, 2, 64, 4, 288, 4, 8, 24,
-  (SELECT id FROM sockets WHERE name = 'LGA 1151'), 4
+    7, 1, 0, 1, 4, (SELECT id FROM form_factors WHERE name = 'ATX'), TRUE, TRUE,
+    TRUE, TRUE, 24, 64000, 4, 288, 4, 3, 4,
+    (SELECT id FROM sockets WHERE name = 'LGA 1151'), TRUE, 2, 2
 ), (
-  'MSI', 'B350 TOMAHAWK', 10000, 0, 1270,
-  (SELECT id FROM form_factors WHERE name = 'ATX'), false, true, true, true, 2,
-  false, 1, 4, 2, 2, 64, 4, 288, 4, 8, 24,
-  (SELECT id FROM sockets WHERE name = 'AM4'), 4
+    8, 1, 0, 1, 4, (SELECT id FROM form_factors WHERE name = 'ATX'), FALSE, TRUE,
+    TRUE, TRUE, 24, 64000, 4, 288, 4, 2, 4,
+    (SELECT id FROM sockets WHERE name = 'AM4'), FALSE, 2, 2
 );
+
+-- power_supplies
+
+INSERT INTO components (id, brand, cost, model, name, power_cost, weight) VALUES
+    (9, 'Corsair', 16000, NULL, 'HX750i', 0, 3227);
 
 INSERT INTO power_supplies (
-  brand, name, cost, power_usage, weight, cpu_pins, is_modular, main_pins, power_out,
-  length
+  component_id, cpu_4pins, cpu_8pins, cpu_adaptable, is_modular, length,
+  main_20pins, main_24pins, main_adaptable, power_output
 ) VALUES (
-  'Corsair', 'HX750i', 16000, 0, 3227, 8, true, 24, 750, 180
+    9, 0, 0, 2, TRUE, 180, 0, 0, 1, 750
 );
 
-INSERT INTO processors (
-  brand, name, model, cost, power_usage, weight, socket_id, has_apu
-) VALUES (
-  'Intel', 'Core i7', '7700K', 33500, 91, 95,
-  (SELECT id FROM sockets WHERE name = 'LGA 1151'), true
-), (
-  'Intel', 'Core i5', '6500', 20000, 35, 295,
-  (SELECT id FROM sockets WHERE name = 'LGA 1151'), true
-), (
-  'Intel', 'Core i3', '6100', 12000, 51, 272,
-  (SELECT id FROM sockets WHERE name = 'LGA 1151'), true
-), (
-  'AMD', 'Ryzen 7', '1800X', 43000, 95, 119,
-  (SELECT id FROM sockets WHERE name = 'AM4'), true
-);
+-- processors
 
-INSERT INTO storage_devices (
-  brand, name, cost, power_usage, weight, capacity, is_full_width
-) VALUES (
-  'Samsung', '850 EVO', 15000, 2, 54, 1000, false
+INSERT INTO components (id, brand, cost, model, name, power_cost, weight) VALUES
+    (10, 'Intel', 33500, '7700K', 'Core i7', 91, 95),
+    (11, 'Intel', 20000, '6500', 'Core i5', 35, 295),
+    (12, 'Intel', 12000, '6100', 'Core i3', 51, 272),
+    (13, 'AMD', 43000, '1800X', 'Ryzen 7', 95, 119);
+
+INSERT INTO processors (component_id, has_apu, socket_id) VALUES
+  (10, TRUE, (SELECT id FROM sockets WHERE name = 'LGA 1151')),
+  (11, TRUE, (SELECT id FROM sockets WHERE name = 'LGA 1151')),
+  (12, TRUE, (SELECT id FROM sockets WHERE name = 'LGA 1151')),
+  (13, TRUE, (SELECT id FROM sockets WHERE name = 'AM4'));
+
+-- storage_devices
+
+INSERT INTO components (id, brand, cost, model, name, power_cost, weight) VALUES
+  (14, 'Samsung', 15000, NULL, '850 EVO', 2, 54);
+
+INSERT INTO storage_devices (component_id, capacity, is_full_width) VALUES (
+    14, 1000000, FALSE
 );
 
 # --- !Downs

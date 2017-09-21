@@ -1,19 +1,52 @@
 package db
 
+/*
+Common
+ */
+
+case class FormFactor(
+  id: Option[Int],
+
+  name: String,
+)
+
+case class Socket(
+  id: Option[Int],
+
+  name: String,
+)
+
+/*
+Pivots
+ */
+
+case class ChassisFormFactor(
+  id: Option[Int],
+
+  chassisId: Int,
+  formFactorId: Int,
+)
+
+case class CoolingSolutionFormFactor(
+  id: Option[Int],
+
+  coolingSolutionId: Int,
+  socketId: Int,
+)
+
+/*
+Components
+ */
+
 case class Component(
   id: Option[Int],
+
   brand: String,
-  name: String,
-  model: String,
-
-  // market
-  isAvailableImmediately: Boolean,
   cost: Int, // pennies
-
-  // power
+  isAvailableImmediately: Boolean,
+  model: String,
+  name: String,
   powerUsage: Short, // watts
-
-  // physical
   weight: Int, // grams
 )
 
@@ -21,56 +54,43 @@ case class Chassis(
   id: Option[Int],
   componentId: Int,
 
-  // cooling
-  maxCoolingFanHeight: Short, // millimeters
-
-  // graphics
-  maxBlockedGraphicsCardLength: Short, // millimeters
-  maxFullGraphicsCardLength: Short, // millimeters
-
-  // motherboard
+  adaptableBays: Short,
+  adaptableCageBays: Short,
   audioHeaders: Short,
   fanHeaders: Short,
+  fullBays: Short,
+  fullCageBays: Short,
+  maxBlockedGraphicsCardLength: Short, // millimeters
+  maxCoolingFanHeight: Short, // millimeters
+  maxFullGraphicsCardLength: Short, // millimeters
+  maxPowerSupplyLength: Short, // millimeters
+  smallBays: Short,
+  smallCageBays: Short,
   usb2Headers: Short,
   usb3Headers: Short,
-
-  // power
   usesSataPower: Boolean,
-  maxPowerSupplyLength: Short, // millimeters
-
-  // storage
-  smallBays: Short,
-  fullBays: Short,
-  adaptableBays: Short,
-  smallCageBays: Short,
-  fullCageBays: Short,
-  adaptableCageBays: Short,
 )
 
 case class CoolingSolution(
   id: Option[Int],
   componentId: Int,
 
-  tdp: Short, // watts
-
-  // physical
   height: Short, // millimeters
   maxMemoryStickHeight: Short, // millimeters
+  tdp: Short, // watts
 )
 
 case class GraphicsCard(
   id: Option[Int],
   componentId: Int,
-  family: String,
 
+  family: String,
   hasDisplayPort: Boolean,
   hasDvi: Boolean,
   hasHdmi: Boolean,
   hasVga: Boolean,
-  supportsSli: Boolean,
-
-  // physical
   length: Short, // millimeters
+  supportsSli: Boolean,
 )
 
 case class MemoryStick(
@@ -79,60 +99,57 @@ case class MemoryStick(
 
   capacity: Int, // megabytes
   generation: Short,
-  pins: Short,
-
-  // physical
   height: Short, // millimeters
+  pins: Short,
 )
 
 case class Motherboard(
   id: Option[Int],
   componentId: Int,
 
+  audioHeaders: Short,
+  cpuPower4Pins: Short,
+  cpuPower8Pins: Short,
+  fanHeaders: Short,
   formFactorId: Int,
-
-  // graphics
   hasDisplayPort: Boolean,
   hasDvi: Boolean,
   hasHdmi: Boolean,
   hasVga: Boolean,
-  pcie3Slots: Short,
-  supportsSli: Boolean,
-
-  // headers
-  audioHeaders: Short,
-  fanHeaders: Short,
-  usb2Headers: Short,
-  usb3Headers: Short,
-
-  // memory
+  mainPowerPins: Short,
   maxMemoryCapacity: Int, // megabytes
   memoryGeneration: Short,
   memoryPins: Short,
   memorySlots: Short,
-
-  // power
-  cpuPowerPins: Short,
-  mainPowerPins: Short,
-
-  // processor
-  socketId: Int,
-
-  // storage
+  pcie3Slots: Short,
   sataSlots: Short,
+  socketId: Int,
+  supportsSli: Boolean,
+  usb2Headers: Short,
+  usb3Headers: Short,
 )
 
 case class PowerSupply(
   id: Option[Int],
   componentId: Int,
 
-  cpuPins: Short,
-  modular: Boolean,
-  mainPins: Short,
-  powerOutput: Short, // watts
-
-  // physical
+  cpu4Pins: Short,
+  cpu8Pins: Short,
+  cpuAdaptable: Short,
+  isModular: Boolean,
   length: Short, // millimeters
+  main20Pins: Short,
+  main24Pins: Short,
+  mainAdaptable: Short,
+  powerOutput: Short, // watts
+)
+
+case class Processor(
+  id: Option[Int],
+  componentId: Int,
+
+  hasApu: Boolean,
+  socketId: Int,
 )
 
 case class StorageDevice(
@@ -140,7 +157,5 @@ case class StorageDevice(
   componentId: Int,
 
   capacity: Int, // megabytes
-
-  // physical
-  fullWidth: Boolean,
+  isFullWidth: Boolean,
 )
