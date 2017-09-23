@@ -44,7 +44,7 @@ case class Component(
   brand: String,
   cost: Int, // pennies
   isAvailableImmediately: Boolean,
-  model: String,
+  model: Option[String],
   name: String,
   powerUsage: Short, // watts
   weight: Int, // grams

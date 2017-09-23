@@ -1,6 +1,13 @@
 package db
 
+import javax.inject.{Inject, Singleton}
+
+import db.ComponentRepository.All
+import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
+import slick.jdbc.PostgresProfile
 import slick.jdbc.PostgresProfile.api._
+
+import scala.concurrent.{ExecutionContext, Future}
 
 object ComponentRepository {
   trait EnumValue[M] extends Table[M] {
@@ -13,29 +20,29 @@ object ComponentRepository {
   Common
    */
 
-  class FormFactorsTable(tag: Tag) extends Table[FormFactor](tag, "form_factors") with EnumValue[FormFactor] {
+  class FormFactorTable(tag: Tag) extends Table[FormFactor](tag, "form_factors") with EnumValue[FormFactor] {
     override def * = (
       id.?,
       name,
     ) <> (FormFactor.tupled, FormFactor.unapply)
   }
 
-  val formFactorsTable = TableQuery[FormFactorsTable]
+  val formFactors = TableQuery[FormFactorTable]
 
-  class SocketsTable(tag: Tag) extends Table[Socket](tag, "sockets") with EnumValue[Socket] {
+  class SocketTable(tag: Tag) extends Table[Socket](tag, "sockets") with EnumValue[Socket] {
     override def * = (
       id.?,
       name,
     ) <> (Socket.tupled, Socket.unapply)
   }
 
-  val socketsTable = TableQuery[SocketsTable]
+  val sockets = TableQuery[SocketTable]
 
   /*
   Components
    */
 
-  class ComponentsTable(tag: Tag) extends Table[Component](tag, "components") {
+  class ComponentTable(tag: Tag) extends Table[Component](tag, "components") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
     def brand = column[String]("brand")
@@ -51,20 +58,20 @@ object ComponentRepository {
       brand,
       cost,
       isAvailableImmediately,
-      model,
+      model.?,
       name,
       powerCost,
       weight,
     ) <> (Component.tupled, Component.unapply)
   }
 
-  val componentsTable = TableQuery[ComponentsTable]
+  val components = TableQuery[ComponentTable]
 
   trait BelongsToComponentsTable[M] extends Table[M] {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
     def componentId = column[Int]("component_id", O.Unique)
-    def component = foreignKey("component_fk", componentId, componentsTable)(_.id, onDelete = ForeignKeyAction.Cascade)
+    def component = foreignKey("component_fk", componentId, components)(_.id, onDelete = ForeignKeyAction.Cascade)
   }
 
   class ChassisTable(tag: Tag) extends Table[Chassis](tag, "chassis") with BelongsToComponentsTable[Chassis] {
@@ -105,9 +112,9 @@ object ComponentRepository {
     ) <> (Chassis.tupled, Chassis.unapply)
   }
 
-  val chassisTable = TableQuery[ChassisTable]
+  val chassis = TableQuery[ChassisTable]
 
-  class CoolingSolutionsTable(tag: Tag) extends Table[CoolingSolution](tag, "cooling_solutions") with BelongsToComponentsTable[CoolingSolution] {
+  class CoolingSolutionTable(tag: Tag) extends Table[CoolingSolution](tag, "cooling_solutions") with BelongsToComponentsTable[CoolingSolution] {
     def height = column[Short]("height")
     def maxMemoryStickHeight = column[Short]("max_memory_stick_height")
     def tdp = column[Short]("tdp")
@@ -121,9 +128,9 @@ object ComponentRepository {
     ) <> (CoolingSolution.tupled, CoolingSolution.unapply)
   }
 
-  val coolingSolutionsTable = TableQuery[CoolingSolutionsTable]
+  val coolingSolutions = TableQuery[CoolingSolutionTable]
 
-  class GraphicsCardsTable(tag: Tag) extends Table[GraphicsCard](tag, "graphics_cards") with BelongsToComponentsTable[GraphicsCard] {
+  class GraphicsCardTable(tag: Tag) extends Table[GraphicsCard](tag, "graphics_cards") with BelongsToComponentsTable[GraphicsCard] {
     def family = column[String]("family")
     def hasDisplayPort = column[Boolean]("has_display_port")
     def hasDvi = column[Boolean]("has_dvi")
@@ -145,9 +152,9 @@ object ComponentRepository {
     ) <> (GraphicsCard.tupled, GraphicsCard.unapply)
   }
 
-  val graphicsCardsTable = TableQuery[GraphicsCardsTable]
+  val graphicsCards = TableQuery[GraphicsCardTable]
 
-  class MemorySticksTable(tag: Tag) extends Table[MemoryStick](tag, "memory_sticks") with BelongsToComponentsTable[MemoryStick] {
+  class MemoryStickTable(tag: Tag) extends Table[MemoryStick](tag, "memory_sticks") with BelongsToComponentsTable[MemoryStick] {
     def capacity = column[Int]("capacity")
     def generation = column[Short]("generation")
     def height = column[Short]("height")
@@ -163,7 +170,7 @@ object ComponentRepository {
     ) <> (MemoryStick.tupled, MemoryStick.unapply)
   }
 
-  val memorySticksTable = TableQuery[MemorySticksTable]
+  val memorySticks = TableQuery[MemoryStickTable]
 
   class MotherboardTable(tag: Tag) extends Table[Motherboard](tag, "motherboards") with BelongsToComponentsTable[Motherboard] {
     def audioHeaders = column[Short]("audio_headers")
@@ -172,7 +179,7 @@ object ComponentRepository {
     def fanHeaders = column[Short]("fan_headers")
 
     def formFactorId = column[Int]("form_factor_id")
-    def formFactor = foreignKey("form_factor_fk", formFactorId, formFactorsTable)(_.id, onDelete = ForeignKeyAction.Restrict)
+    def formFactor = foreignKey("form_factor_fk", formFactorId, formFactors)(_.id, onDelete = ForeignKeyAction.Restrict)
 
     def hasDisplayPort = column[Boolean]("has_displayport")
     def hasDvi = column[Boolean]("has_dvi")
@@ -187,7 +194,7 @@ object ComponentRepository {
     def sataSlots = column[Short]("sata_slots")
 
     def socketId = column[Int]("socket_id")
-    def socket = foreignKey("socket_fk", socketId, socketsTable)(_.id, onDelete = ForeignKeyAction.Restrict)
+    def socket = foreignKey("socket_fk", socketId, sockets)(_.id, onDelete = ForeignKeyAction.Restrict)
 
     def supportsSli = column[Boolean]("supports_sli")
     def usb2Headers = column[Short]("usb2_headers")
@@ -219,9 +226,9 @@ object ComponentRepository {
     ) <> (Motherboard.tupled, Motherboard.unapply)
   }
 
-  val motherboardTable = TableQuery[MotherboardTable]
+  val motherboards = TableQuery[MotherboardTable]
 
-  class PowerSuppliesTable(tag: Tag) extends Table[PowerSupply](tag, "power_supplies") with BelongsToComponentsTable[PowerSupply] {
+  class PowerSupplyTable(tag: Tag) extends Table[PowerSupply](tag, "power_supplies") with BelongsToComponentsTable[PowerSupply] {
     def cpu4Pins = column[Short]("cpu_4pins")
     def cpu8Pins = column[Short]("cpu_8pins")
     def cpuAdaptable = column[Short]("cpu_adaptable")
@@ -247,13 +254,13 @@ object ComponentRepository {
     ) <> (PowerSupply.tupled, PowerSupply.unapply)
   }
 
-  val powerSuppliesTable = TableQuery[PowerSuppliesTable]
+  val powerSupplies = TableQuery[PowerSupplyTable]
 
-  class ProcessorsTable(tag: Tag) extends Table[Processor](tag, "processors") with BelongsToComponentsTable[Processor] {
+  class ProcessorTable(tag: Tag) extends Table[Processor](tag, "processors") with BelongsToComponentsTable[Processor] {
     def hasApu = column[Boolean]("has_apu")
 
     def socketId = column[Int]("socket_id")
-    def socket = foreignKey("socket_fk", socketId, socketsTable)(_.id, onDelete = ForeignKeyAction.Restrict)
+    def socket = foreignKey("socket_fk", socketId, sockets)(_.id, onDelete = ForeignKeyAction.Restrict)
 
     override def * = (
       id.?,
@@ -263,9 +270,9 @@ object ComponentRepository {
     ) <> (Processor.tupled, Processor.unapply)
   }
 
-  val processorsTable = TableQuery[ProcessorsTable]
+  val processors = TableQuery[ProcessorTable]
 
-  class StorageDevicesTable(tag: Tag) extends Table[StorageDevice](tag, "storage_devices") with BelongsToComponentsTable[StorageDevice] {
+  class StorageDeviceTable(tag: Tag) extends Table[StorageDevice](tag, "storage_devices") with BelongsToComponentsTable[StorageDevice] {
     def capacity = column[Int]("capacity")
     def isFullWidth = column[Boolean]("is_full_width")
 
@@ -277,7 +284,7 @@ object ComponentRepository {
     ) <> (StorageDevice.tupled, StorageDevice.unapply)
   }
 
-  val storageDevicesTable = TableQuery[StorageDevicesTable]
+  val storageDevices = TableQuery[StorageDeviceTable]
 
   /*
   Pivots
@@ -287,10 +294,10 @@ object ComponentRepository {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
     def chassisId = column[Int]("chassis_id")
-    def chassis = foreignKey("chassis_fk", chassisId, chassisTable)(_.id, onDelete = ForeignKeyAction.Cascade)
+    def chassis = foreignKey("chassis_fk", chassisId, ComponentRepository.chassis)(_.id, onDelete = ForeignKeyAction.Cascade)
 
     def formFactorId = column[Int]("form_factor_id")
-    def formFactor = foreignKey("form_factor_fk", formFactorId, formFactorsTable)(_.id, onDelete = ForeignKeyAction.Restrict)
+    def formFactor = foreignKey("form_factor_fk", formFactorId, formFactors)(_.id, onDelete = ForeignKeyAction.Restrict)
 
     override def * = (
       id.?,
@@ -299,16 +306,16 @@ object ComponentRepository {
     ) <> (ChassisFormFactor.tupled, ChassisFormFactor.unapply)
   }
 
-  val chassisFormFactorTable = TableQuery[ChassisFormFactorTable]
+  val chassisFormFactor = TableQuery[ChassisFormFactorTable]
 
   class CoolingSolutionFormFactorTable(tag: Tag) extends Table[CoolingSolutionFormFactor](tag, "cooling_solution_form_factor") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
     def coolingSolutionId = column[Int]("cooling_solution_id")
-    def coolingSolution = foreignKey("cooling_solution_fk", coolingSolutionId, coolingSolutionsTable)(_.id, onDelete = ForeignKeyAction.Cascade)
+    def coolingSolution = foreignKey("cooling_solution_fk", coolingSolutionId, coolingSolutions)(_.id, onDelete = ForeignKeyAction.Cascade)
 
     def formFactorId = column[Int]("form_factor_id")
-    def formFactor = foreignKey("form_factor_fk", formFactorId, formFactorsTable)(_.id, onDelete = ForeignKeyAction.Restrict)
+    def formFactor = foreignKey("form_factor_fk", formFactorId, formFactors)(_.id, onDelete = ForeignKeyAction.Restrict)
 
     override def * = (
       id.?,
@@ -317,5 +324,24 @@ object ComponentRepository {
     ) <> (CoolingSolutionFormFactor.tupled, CoolingSolutionFormFactor.unapply)
   }
 
-  val coolingSolutionFormFactorTable = TableQuery[CoolingSolutionFormFactorTable]
+  val coolingSolutionFormFactor = TableQuery[CoolingSolutionFormFactorTable]
+
+  class All(
+    val chassis: Seq[(Chassis, Component, Seq[FormFactor])],
+    val coolingSolutions: Seq[(CoolingSolution, Component, Seq[FormFactor])],
+    val graphicsCards: Seq[(GraphicsCard, Component)],
+    val memorySticks: Seq[(MemoryStick, Component)],
+    val motherboards: Seq[(Motherboard, Component, FormFactor, Socket)],
+    val powerSupplies: Seq[(PowerSupply, Component)],
+    val processors: Seq[(Processor, Component, Socket)],
+    val storageDevices: Seq[(StorageDevice, Component)]
+  )
+}
+
+@Singleton
+class ComponentRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider)
+  (implicit ec: ExecutionContext)
+  extends HasDatabaseConfigProvider[PostgresProfile]
+{
+  import dbConfig.profile.api._
 }
