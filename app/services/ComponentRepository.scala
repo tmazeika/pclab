@@ -52,8 +52,8 @@ class ComponentRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider
     component ← components if component.id === chassis.componentId
   } yield (chassis, component)
 
-  private def allChassisFormFactors(chas: Chassis) = for {
-    pivot ← chassisFormFactor if pivot.chassisId === chas.id
+  private def allChassisFormFactors(chassis: Chassis) = for {
+    pivot ← chassisFormFactor if pivot.chassisId === chassis.id
     formFactor ← formFactors if formFactor.id === pivot.formFactorId
   } yield formFactor
 
@@ -62,8 +62,8 @@ class ComponentRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider
     component ← components if component.id === coolingSolution.componentId
   } yield (coolingSolution, component)
 
-  private def allCoolingSolutionSockets(cool: CoolingSolution) = for {
-    pivot ← coolingSolutionSocket if pivot.coolingSolutionId === cool.id
+  private def allCoolingSolutionSockets(coolingSolution: CoolingSolution) = for {
+    pivot ← coolingSolutionSocket if pivot.coolingSolutionId === coolingSolution.id
     socket ← sockets if socket.id === pivot.socketId
   } yield socket
 
