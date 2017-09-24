@@ -1,11 +1,3 @@
-@import db.{Component, Motherboard}
-
-@(components: Seq[(Motherboard, Component)])
-
 @master(title = "Lab") {
-    @for(c ← components) {
-        <div>
-            @c._2.id
-        </div>
-    }
+
 }
