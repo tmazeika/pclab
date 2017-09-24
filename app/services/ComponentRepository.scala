@@ -37,14 +37,14 @@ class ComponentRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider
     processors ← db run (allProcessors result)
     storageDevices ← db run (allStorageDevices result)
   } yield AllComponents(
-    chassis map { ChassisWithRelated tupled },
-    coolingSolutions map { CoolingSolutionWithRelated tupled },
-    graphicsCards map { GraphicsCardWithRelated tupled },
-    memorySticks map { MemoryStickWithRelated tupled },
-    motherboards map { MotherboardWithRelated tupled },
-    powerSupplies map { PowerSupplyWithRelated tupled },
-    processors map { ProcessorWithRelated tupled },
-    storageDevices map { StorageDeviceWithRelated tupled },
+    chassis map (ChassisWithRelated tupled),
+    coolingSolutions map (CoolingSolutionWithRelated tupled),
+    graphicsCards map (GraphicsCardWithRelated tupled),
+    memorySticks map (MemoryStickWithRelated tupled),
+    motherboards map (MotherboardWithRelated tupled),
+    powerSupplies map (PowerSupplyWithRelated tupled),
+    processors map (ProcessorWithRelated tupled),
+    storageDevices map (StorageDeviceWithRelated tupled),
   )
 
   private def allChassis = for {
