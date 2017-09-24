@@ -3,7 +3,7 @@ package services
 import javax.inject.{Inject, Singleton}
 
 import db.ComponentRepository._
-import db.models.components.{AllComponents, Chassis, CoolingSolution}
+import db.models.components._
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.PostgresProfile
 
@@ -37,14 +37,14 @@ class ComponentRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider
     processors ← db run (allProcessors result)
     storageDevices ← db run (allStorageDevices result)
   } yield AllComponents(
-    chassis,
-    coolingSolutions,
-    graphicsCards,
-    memorySticks,
-    motherboards,
-    powerSupplies,
-    processors,
-    storageDevices,
+    chassis map { ChassisWithRelated tupled },
+    coolingSolutions map { CoolingSolutionWithRelated tupled },
+    graphicsCards map { GraphicsCardWithRelated tupled },
+    memorySticks map { MemoryStickWithRelated tupled },
+    motherboards map { MotherboardWithRelated tupled },
+    powerSupplies map { PowerSupplyWithRelated tupled },
+    processors map { ProcessorWithRelated tupled },
+    storageDevices map { StorageDeviceWithRelated tupled },
   )
 
   private def allChassis = for {
