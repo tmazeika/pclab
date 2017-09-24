@@ -24,7 +24,7 @@ INSERT INTO chassis_form_factor (chassis_id, form_factor_id) VALUES
   (SELECT id FROM form_factors WHERE name = 'Mini-ITX')
 );
 
-INSERT INTO cooling_solution_form_factor (cooling_solution_id, socket_id) VALUES
+INSERT INTO cooling_solution_socket (cooling_solution_id, socket_id) VALUES
 (
   (SELECT cooling_solutions.id FROM cooling_solutions JOIN components ON component_id = components.id WHERE name = 'Hyper 212 EVO'),
   (SELECT id FROM sockets WHERE name = 'LGA 1150')
@@ -76,5 +76,5 @@ INSERT INTO cooling_solution_form_factor (cooling_solution_id, socket_id) VALUES
 
 TRUNCATE
   chassis_form_factor,
-  cooling_solution_form_factor
+  cooling_solution_socket
 CASCADE;

@@ -5,8 +5,7 @@ import javax.inject._
 import play.api.mvc._
 
 @Singleton
-class LabController @Inject()(cc: ControllerComponents) extends AbstractController(cc)
-{
+class LabController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
   def index = Action {
     Ok(views.html.lab())
   }

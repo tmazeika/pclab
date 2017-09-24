@@ -1,6 +1,6 @@
 package db.models.pivots
 
-case class CoolingSolutionFormFactor(
+case class CoolingSolutionSocket(
   id: Option[Int],
 
   coolingSolutionId: Int,

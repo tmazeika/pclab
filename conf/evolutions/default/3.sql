@@ -7,7 +7,7 @@ CREATE TABLE chassis_form_factor (
   form_factor_id INT NOT NULL REFERENCES form_factors (id) ON DELETE RESTRICT
 );
 
-CREATE TABLE cooling_solution_form_factor (
+CREATE TABLE cooling_solution_socket (
   id SERIAL PRIMARY KEY,
 
   cooling_solution_id INT NOT NULL REFERENCES cooling_solutions (id) ON DELETE CASCADE,
@@ -16,4 +16,4 @@ CREATE TABLE cooling_solution_form_factor (
 
 # --- !Downs
 
-DROP TABLE chassis_form_factor, cooling_solution_form_factor;
+DROP TABLE chassis_form_factor, cooling_solution_socket;

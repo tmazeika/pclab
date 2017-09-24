@@ -13,7 +13,7 @@ object ComponentRepository {
   }
 
   /*
-  Common
+  Properties
    */
 
   class FormFactorTable(tag: Tag) extends Table[FormFactor](tag, "form_factors") with EnumValue[FormFactor] {
@@ -304,21 +304,21 @@ object ComponentRepository {
 
   val chassisFormFactor = TableQuery[ChassisFormFactorTable]
 
-  class CoolingSolutionFormFactorTable(tag: Tag) extends Table[CoolingSolutionFormFactor](tag, "cooling_solution_form_factor") {
+  class CoolingSolutionSocketTable(tag: Tag) extends Table[CoolingSolutionSocket](tag, "cooling_solution_socket") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
     def coolingSolutionId = column[Int]("cooling_solution_id")
     def coolingSolution = foreignKey("cooling_solution_fk", coolingSolutionId, coolingSolutions)(_.id, onDelete = ForeignKeyAction.Cascade)
 
-    def formFactorId = column[Int]("form_factor_id")
-    def formFactor = foreignKey("form_factor_fk", formFactorId, formFactors)(_.id, onDelete = ForeignKeyAction.Restrict)
+    def socketId = column[Int]("socket_id")
+    def socket = foreignKey("socket_fk", socketId, sockets)(_.id, onDelete = ForeignKeyAction.Restrict)
 
     override def * = (
       id.?,
       coolingSolutionId,
-      formFactorId,
-    ) <> (CoolingSolutionFormFactor.tupled, CoolingSolutionFormFactor.unapply)
+      socketId,
+    ) <> (CoolingSolutionSocket.tupled, CoolingSolutionSocket.unapply)
   }
 
-  val coolingSolutionFormFactor = TableQuery[CoolingSolutionFormFactorTable]
+  val coolingSolutionFormFactor = TableQuery[CoolingSolutionSocketTable]
 }
