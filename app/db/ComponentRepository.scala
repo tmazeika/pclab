@@ -1,13 +1,9 @@
 package db
 
-import javax.inject.{Inject, Singleton}
-
-import db.ComponentRepository.All
-import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
-import slick.jdbc.PostgresProfile
+import db.models.components._
+import db.models.pivots._
+import db.models.properties._
 import slick.jdbc.PostgresProfile.api._
-
-import scala.concurrent.{ExecutionContext, Future}
 
 object ComponentRepository {
   trait EnumValue[M] extends Table[M] {
@@ -257,7 +253,7 @@ object ComponentRepository {
   val powerSupplies = TableQuery[PowerSupplyTable]
 
   class ProcessorTable(tag: Tag) extends Table[Processor](tag, "processors") with BelongsToComponentsTable[Processor] {
-    def hasApu = column[Boolean]("has_apu")
+    def hasGpu = column[Boolean]("has_gpu")
 
     def socketId = column[Int]("socket_id")
     def socket = foreignKey("socket_fk", socketId, sockets)(_.id, onDelete = ForeignKeyAction.Restrict)
@@ -265,7 +261,7 @@ object ComponentRepository {
     override def * = (
       id.?,
       componentId,
-      hasApu,
+      hasGpu,
       socketId,
     ) <> (Processor.tupled, Processor.unapply)
   }
@@ -325,23 +321,4 @@ object ComponentRepository {
   }
 
   val coolingSolutionFormFactor = TableQuery[CoolingSolutionFormFactorTable]
-
-  class All(
-    val chassis: Seq[(Chassis, Component, Seq[FormFactor])],
-    val coolingSolutions: Seq[(CoolingSolution, Component, Seq[FormFactor])],
-    val graphicsCards: Seq[(GraphicsCard, Component)],
-    val memorySticks: Seq[(MemoryStick, Component)],
-    val motherboards: Seq[(Motherboard, Component, FormFactor, Socket)],
-    val powerSupplies: Seq[(PowerSupply, Component)],
-    val processors: Seq[(Processor, Component, Socket)],
-    val storageDevices: Seq[(StorageDevice, Component)]
-  )
-}
-
-@Singleton
-class ComponentRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider)
-  (implicit ec: ExecutionContext)
-  extends HasDatabaseConfigProvider[PostgresProfile]
-{
-  import dbConfig.profile.api._
 }

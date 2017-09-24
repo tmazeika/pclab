@@ -110,7 +110,7 @@ CREATE TABLE processors (
   id SERIAL PRIMARY KEY,
   component_id INT NOT NULL UNIQUE REFERENCES components (id) ON DELETE CASCADE,
 
-  has_apu BOOLEAN NOT NULL,
+  has_gpu BOOLEAN NOT NULL,
   socket_id INT NOT NULL REFERENCES sockets (id) ON DELETE RESTRICT
 );
 

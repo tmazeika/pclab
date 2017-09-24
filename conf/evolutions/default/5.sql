@@ -96,7 +96,7 @@ INSERT INTO components (id, brand, cost, model, name, power_cost, weight) VALUES
     (12, 'Intel', 12000, '6100', 'Core i3', 51, 272),
     (13, 'AMD', 43000, '1800X', 'Ryzen 7', 95, 119);
 
-INSERT INTO processors (component_id, has_apu, socket_id) VALUES
+INSERT INTO processors (component_id, has_gpu, socket_id) VALUES
   (10, TRUE, (SELECT id FROM sockets WHERE name = 'LGA 1151')),
   (11, TRUE, (SELECT id FROM sockets WHERE name = 'LGA 1151')),
   (12, TRUE, (SELECT id FROM sockets WHERE name = 'LGA 1151')),
