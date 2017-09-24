@@ -320,5 +320,5 @@ object ComponentRepository {
     ) <> (CoolingSolutionSocket.tupled, CoolingSolutionSocket.unapply)
   }
 
-  val coolingSolutionFormFactor = TableQuery[CoolingSolutionSocketTable]
+  val coolingSolutionSocket = TableQuery[CoolingSolutionSocketTable]
 }

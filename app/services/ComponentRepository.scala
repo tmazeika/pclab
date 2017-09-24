@@ -63,7 +63,7 @@ class ComponentRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider
   } yield (coolingSolution, component)
 
   private def allCoolingSolutionSockets(cool: CoolingSolution) = for {
-    pivot ← coolingSolutionFormFactor if pivot.coolingSolutionId === cool.id
+    pivot ← coolingSolutionSocket if pivot.coolingSolutionId === cool.id
     socket ← sockets if socket.id === pivot.socketId
   } yield socket
 
