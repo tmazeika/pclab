@@ -7,7 +7,7 @@ INSERT INTO components (id, brand, cost, model, name, power_cost, weight) VALUES
     (2, 'Fractal Design', 11000, NULL, 'Define R5', 0, 10300);
 
 INSERT INTO chassis (
-  component_id, adapatable_bays, adapatable_cage_bays, audio_headers,
+  component_id, adaptable_bays, adaptable_cage_bays, audio_headers,
   fan_headers, full_bays, full_cage_bays, max_blocked_graphics_card_length,
   max_cooling_fan_height, max_full_graphics_card_length,
   max_power_supply_length, small_bays, small_cage_bays, usb2_headers,

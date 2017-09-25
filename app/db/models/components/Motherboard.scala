@@ -9,7 +9,7 @@ case class Motherboard(
   cpuPower8Pins: Short,
   fanHeaders: Short,
   formFactorId: Int,
-  hasDisplayPort: Boolean,
+  hasDisplayport: Boolean,
   hasDvi: Boolean,
   hasHdmi: Boolean,
   hasVga: Boolean,

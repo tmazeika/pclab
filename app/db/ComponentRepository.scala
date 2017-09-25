@@ -128,7 +128,7 @@ object ComponentRepository {
 
   class GraphicsCardTable(tag: Tag) extends Table[GraphicsCard](tag, "graphics_cards") with BelongsToComponentsTable[GraphicsCard] {
     def family = column[String]("family")
-    def hasDisplayPort = column[Boolean]("has_display_port")
+    def hasDisplayport = column[Boolean]("has_displayport")
     def hasDvi = column[Boolean]("has_dvi")
     def hasHdmi = column[Boolean]("has_hdmi")
     def hasVga = column[Boolean]("has_vga")
@@ -139,7 +139,7 @@ object ComponentRepository {
       id.?,
       componentId,
       family,
-      hasDisplayPort,
+      hasDisplayport,
       hasDvi,
       hasHdmi,
       hasVga,
@@ -177,7 +177,7 @@ object ComponentRepository {
     def formFactorId = column[Int]("form_factor_id")
     def formFactor = foreignKey("form_factor_fk", formFactorId, formFactors)(_.id, onDelete = ForeignKeyAction.Restrict)
 
-    def hasDisplayPort = column[Boolean]("has_displayport")
+    def hasDisplayport = column[Boolean]("has_displayport")
     def hasDvi = column[Boolean]("has_dvi")
     def hasHdmi = column[Boolean]("has_hdmi")
     def hasVga = column[Boolean]("has_vga")
@@ -204,7 +204,7 @@ object ComponentRepository {
       cpuPower8Pins,
       fanHeaders,
       formFactorId,
-      hasDisplayPort,
+      hasDisplayport,
       hasDvi,
       hasHdmi,
       hasVga,

@@ -14,46 +14,46 @@ case class AllComponents(
 )
 
 case class ChassisWithRelated(
-  chassis: Chassis,
-  component: Component,
+  self: Chassis,
+  parent: Component,
   formFactors: Seq[FormFactor],
 )
 
 case class CoolingSolutionWithRelated(
-  coolingSolution: CoolingSolution,
-  component: Component,
+  self: CoolingSolution,
+  parent: Component,
   sockets: Seq[Socket],
 )
 
 case class GraphicsCardWithRelated(
-  graphicsCard: GraphicsCard,
-  component: Component,
+  self: GraphicsCard,
+  parent: Component,
 )
 
 case class MemoryStickWithRelated(
-  memoryStick: MemoryStick,
-  component: Component,
+  self: MemoryStick,
+  parent: Component,
 )
 
 case class MotherboardWithRelated(
-  motherboard: Motherboard,
-  component: Component,
+  self: Motherboard,
+  parent: Component,
   formFactor: FormFactor,
   socket: Socket,
 )
 
 case class PowerSupplyWithRelated(
-  powerSupply: PowerSupply,
-  component: Component,
+  self: PowerSupply,
+  parent: Component,
 )
 
 case class ProcessorWithRelated(
-  processor: Processor,
-  component: Component,
+  self: Processor,
+  parent: Component,
   socket: Socket,
 )
 
 case class StorageDeviceWithRelated(
-  storageDevice: StorageDevice,
-  component: Component,
+  self: StorageDevice,
+  parent: Component,
 )

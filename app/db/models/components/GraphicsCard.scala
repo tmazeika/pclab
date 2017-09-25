@@ -5,7 +5,7 @@ case class GraphicsCard(
   componentId: Int,
 
   family: String,
-  hasDisplayPort: Boolean,
+  hasDisplayport: Boolean,
   hasDvi: Boolean,
   hasHdmi: Boolean,
   hasVga: Boolean,

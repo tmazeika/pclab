@@ -16,8 +16,8 @@ CREATE TABLE chassis (
   id SERIAL PRIMARY KEY,
   component_id INT NOT NULL UNIQUE REFERENCES components (id) ON DELETE CASCADE,
 
-  adapatable_bays SMALLINT NOT NULL,
-  adapatable_cage_bays SMALLINT NOT NULL,
+  adaptable_bays SMALLINT NOT NULL,
+  adaptable_cage_bays SMALLINT NOT NULL,
   audio_headers SMALLINT NOT NULL,
   fan_headers SMALLINT NOT NULL,
   full_bays SMALLINT NOT NULL,
