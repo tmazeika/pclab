@@ -1,2 +1,2 @@
 ---
-- include: postgresql.yml
+- include_tasks: postgresql.yml
