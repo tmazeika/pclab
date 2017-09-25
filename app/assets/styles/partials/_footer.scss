@@ -1,0 +1,33 @@
+.footer {
+  border-top: 1px solid $darkish-color;
+
+  padding: 1em 0.5em;
+
+  // flex
+  display: flex;
+
+  @include mobile {
+    padding: 0.5em 0;
+  }
+}
+
+.footer-item {
+  @include sans-serif-font($bold: true);
+
+  color: $dim-color;
+
+  display: block;
+  margin: 0 1em;
+
+  @include mobile {
+    margin: 0 0.5em;
+  }
+}
+
+.footer-link-item {
+  color: $accent-color;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

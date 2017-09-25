@@ -1,0 +1,20 @@
+@import "variables";
+@import "helpers";
+
+@import "partials/footer";
+@import "partials/header";
+
+@import "pages/home";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  @include monospace-font;
+
+  background-color: $dark-color;
+  color: $light-color;
+
+  margin: 0;
+}

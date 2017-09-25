@@ -1,0 +1,28 @@
+@mixin monospace-font($bold: false, $size: 1em, $line-height: 1) {
+  font: if($bold, 700, 400) $size/$line-height 'Inconsolata', monospace;
+}
+
+@mixin sans-serif-font($bold: false, $size: 1em, $line-height: 1) {
+  font: if($bold, 400, 200) $size/$line-height 'Source Sans Pro', sans-serif;
+}
+
+@mixin mobile($breakpoint: 40em) {
+  @media screen and (max-width: $breakpoint) {
+    @content
+  }
+}
+
+@mixin desktop($breakpoint: 40em) {
+  @media screen and (min-width: $breakpoint) {
+    @content
+  }
+}
+
+.flex-fill {
+  flex-grow: 1;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

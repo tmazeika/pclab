@@ -1,0 +1,39 @@
+.home-jumbo {
+  background: no-repeat center center fixed;
+  background-size: cover;
+
+  padding: 15em 1em;
+  text-align: center;
+
+  // flex
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  @include mobile {
+    padding: 3em 1em;
+  }
+}
+
+.home-jumbo-line {
+  letter-spacing: 3px;
+}
+
+.home-jumbo-heading {
+  @include sans-serif-font($size: 3em);
+
+  @include desktop {
+    font-size: 7em;
+  }
+}
+
+.home-jumbo-subtitle {
+  @include sans-serif-font($size: 1.5em);
+
+  @include desktop {
+    color: $dim-color;
+    font-size: 3em;
+    letter-spacing: 5px;
+  }
+}
