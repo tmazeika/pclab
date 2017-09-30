@@ -14,13 +14,13 @@ final case class Component(
 )
 
 sealed abstract class ComponentWithParent(
-  id: Option[Int],
-  componentId: Int,
+  val id: Option[Int],
+  val componentId: Int,
 )
 
 final case class Chassis(
-  id: Option[Int],
-  componentId: Int,
+  override val id: Option[Int],
+  override val componentId: Int,
 
   adaptableBays: Short,
   adaptableCageBays: Short,
@@ -40,8 +40,8 @@ final case class Chassis(
 ) extends ComponentWithParent(id, componentId)
 
 final case class CoolingSolution(
-  id: Option[Int],
-  componentId: Int,
+  override val id: Option[Int],
+  override val componentId: Int,
 
   height: Short, // millimeters
   maxMemoryStickHeight: Short, // millimeters
@@ -49,8 +49,8 @@ final case class CoolingSolution(
 ) extends ComponentWithParent(id, componentId)
 
 final case class GraphicsCard(
-  id: Option[Int],
-  componentId: Int,
+  override val id: Option[Int],
+  override val componentId: Int,
 
   family: String,
   hasDisplayport: Boolean,
@@ -62,8 +62,8 @@ final case class GraphicsCard(
 ) extends ComponentWithParent(id, componentId)
 
 final case class MemoryStick(
-  id: Option[Int],
-  componentId: Int,
+  override val id: Option[Int],
+  override val componentId: Int,
 
   capacity: Int, // megabytes
   generation: Short,
@@ -72,8 +72,8 @@ final case class MemoryStick(
 ) extends ComponentWithParent(id, componentId)
 
 final case class Motherboard(
-  id: Option[Int],
-  componentId: Int,
+  override val id: Option[Int],
+  override val componentId: Int,
 
   audioHeaders: Short,
   cpuPower4Pins: Short,
@@ -98,8 +98,8 @@ final case class Motherboard(
 ) extends ComponentWithParent(id, componentId)
 
 final case class PowerSupply(
-  id: Option[Int],
-  componentId: Int,
+  override val id: Option[Int],
+  override val componentId: Int,
 
   cpu4Pins: Short,
   cpu8Pins: Short,
@@ -113,16 +113,16 @@ final case class PowerSupply(
 ) extends ComponentWithParent(id, componentId)
 
 final case class Processor(
-  id: Option[Int],
-  componentId: Int,
+  override val id: Option[Int],
+  override val componentId: Int,
 
   hasGpu: Boolean,
   socketId: Int,
 ) extends ComponentWithParent(id, componentId)
 
 case class StorageDevice(
-  id: Option[Int],
-  componentId: Int,
+  override val id: Option[Int],
+  override val componentId: Int,
 
   capacity: Int, // megabytes
   isFullWidth: Boolean,

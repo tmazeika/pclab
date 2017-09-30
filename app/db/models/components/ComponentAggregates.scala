@@ -25,51 +25,51 @@ final case class Components(
 }
 
 sealed abstract class ComponentWithRelated[T] (
-  self: T,
-  parent: Component,
+  val self: T,
+  val parent: Component,
 )
 
 final case class ChassisWithRelated(
-  self: Chassis,
-  parent: Component,
+  override val self: Chassis,
+  override val parent: Component,
   formFactors: Seq[FormFactor],
 ) extends ComponentWithRelated(self, parent)
 
 final case class CoolingSolutionWithRelated(
-  self: CoolingSolution,
-  parent: Component,
+  override val self: CoolingSolution,
+  override val parent: Component,
   sockets: Seq[Socket],
 ) extends ComponentWithRelated(self, parent)
 
 final case class GraphicsCardWithRelated(
-  self: GraphicsCard,
-  parent: Component,
+  override val self: GraphicsCard,
+  override val parent: Component,
 ) extends ComponentWithRelated(self, parent)
 
 final case class MemoryStickWithRelated(
-  self: MemoryStick,
-  parent: Component,
+  override val self: MemoryStick,
+  override val parent: Component,
 ) extends ComponentWithRelated(self, parent)
 
 final case class MotherboardWithRelated(
-  self: Motherboard,
-  parent: Component,
+  override val self: Motherboard,
+  override val parent: Component,
   formFactor: FormFactor,
   socket: Socket,
 ) extends ComponentWithRelated(self, parent)
 
 final case class PowerSupplyWithRelated(
-  self: PowerSupply,
-  parent: Component,
+  override val self: PowerSupply,
+  override val parent: Component,
 ) extends ComponentWithRelated(self, parent)
 
 final case class ProcessorWithRelated(
-  self: Processor,
-  parent: Component,
+  override val self: Processor,
+  override val parent: Component,
   socket: Socket,
 ) extends ComponentWithRelated(self, parent)
 
 final case class StorageDeviceWithRelated(
-  self: StorageDevice,
-  parent: Component,
+  override val self: StorageDevice,
+  override val parent: Component,
 ) extends ComponentWithRelated(self, parent)

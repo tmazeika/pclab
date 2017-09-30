@@ -3,5 +3,7 @@
 @(c: Components)
 
 @master(title = "Lab") {
-
+    @for(x ← c.all) {
+        @x.parent.name<br/>
+    }
 }
