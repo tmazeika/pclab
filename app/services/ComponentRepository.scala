@@ -15,7 +15,7 @@ class ComponentRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider
 
   import profile.api._
 
-  def allComponents: Future[AllComponents] = for {
+  def all: Future[Components] = for {
     chassis ← db run (allChassis result) flatMap { chassis ⇒
       Future sequence (chassis map { c ⇒
         db run (allChassisFormFactors(c _1) result) map { formFactors ⇒
@@ -36,7 +36,7 @@ class ComponentRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider
     powerSupplies ← db run (allPowerSupplies result)
     processors ← db run (allProcessors result)
     storageDevices ← db run (allStorageDevices result)
-  } yield AllComponents(
+  } yield Components(
     chassis map (ChassisWithRelated tupled),
     coolingSolutions map (CoolingSolutionWithRelated tupled),
     graphicsCards map (GraphicsCardWithRelated tupled),
