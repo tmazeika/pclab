@@ -9,6 +9,7 @@ final case class Component(
   model: Option[String],
   name: String,
   powerUsage: Short, // watts
+  previewImgHash: String, // sha1
   weight: Int, // grams
 )
 

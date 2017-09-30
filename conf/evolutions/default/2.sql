@@ -9,6 +9,7 @@ CREATE TABLE components (
   model VARCHAR(255),
   name VARCHAR(255) NOT NULL,
   power_cost SMALLINT NOT NULL, -- watts
+  preview_img_hash VARCHAR(40) NOT NULL, -- sha1
   weight INT NOT NULL -- grams
 );
 

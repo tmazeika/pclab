@@ -9,7 +9,7 @@ object ComponentRepository {
   trait EnumValue[M] extends Table[M] {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
-    def name = column[String]("name")
+    def name = column[String]("name", O.Length(255))
   }
 
   /*
@@ -41,12 +41,13 @@ object ComponentRepository {
   class ComponentTable(tag: Tag) extends Table[Component](tag, "components") {
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
 
-    def brand = column[String]("brand")
+    def brand = column[String]("brand", O.Length(255))
     def cost = column[Int]("cost")
     def isAvailableImmediately = column[Boolean]("is_available_immediately")
-    def model = column[String]("model")
-    def name = column[String]("name")
+    def model = column[String]("model", O.Length(255))
+    def name = column[String]("name", O.Length(255))
     def powerCost = column[Short]("power_cost")
+    def previewImgHash = column[String]("preview_img_hash", O.Length(40))
     def weight = column[Int]("weight")
 
     override def * = (
@@ -57,6 +58,7 @@ object ComponentRepository {
       model.?,
       name,
       powerCost,
+      previewImgHash,
       weight,
     ) <> (Component.tupled, Component.unapply)
   }
@@ -127,7 +129,7 @@ object ComponentRepository {
   val coolingSolutions = TableQuery[CoolingSolutionTable]
 
   class GraphicsCardTable(tag: Tag) extends Table[GraphicsCard](tag, "graphics_cards") with BelongsToComponentsTable[GraphicsCard] {
-    def family = column[String]("family")
+    def family = column[String]("family", O.Length(255))
     def hasDisplayport = column[Boolean]("has_displayport")
     def hasDvi = column[Boolean]("has_dvi")
     def hasHdmi = column[Boolean]("has_hdmi")
