@@ -1,0 +1,73 @@
+$lab-tile-header-padding: 0.75em;
+$lab-transparency: 0.3;
+
+.lab-section {
+  // flex
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.lab-tile {
+  $size: 300px;
+
+  background-size: $size $size;
+  border-radius: 5px;
+  cursor: pointer;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  width: $size;
+  height: $size;
+  margin: 1em;
+  overflow: hidden;
+
+  &:hover {
+    .lab-tile-header {
+      background-color: transparentize($accent-color, $lab-transparency);
+    }
+
+    .lab-tile-brand {
+      color: $light-color;
+    }
+  }
+
+  &.active {
+    $border-width: 3px;
+
+    background-position: -#{$border-width} -#{$border-width};
+    border: $border-width solid transparentize($accent-color, $lab-transparency);
+
+    .lab-tile-header {
+      $padding: calc(#{$lab-tile-header-padding} - #{$border-width});
+
+      padding: {
+        top: $padding;
+        right: $padding;
+        left: $padding;
+      }
+    }
+  }
+}
+
+.lab-tile-header {
+  background-color: transparentize(#000, $lab-transparency);
+
+  transition: background-color $anim-time;
+
+  padding: $lab-tile-header-padding;
+}
+
+.lab-tile-text {
+  margin: 0;
+  line-height: 1.2;
+}
+
+.lab-tile-brand {
+  @include sans-serif-font($bold: true);
+
+  transition: color $anim-time;
+
+  color: $dim-color;
+  font-size: 1em;
+}

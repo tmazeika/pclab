@@ -1,9 +1,18 @@
-@import db.models.components.Components
+@@import db.models.components.Components
 
-@(c: Components)
+@(all: Components)
 
-@master(title = "Lab") {
-    @for(x ← c.all) {
-        @x.parent.name<br/>
-    }
+@master(title = "Lab", scripts = "lab.js") {
+    <section class="lab-section">
+        @for(c ← all.chassis) {
+            <chassis-tile inline-template>
+                <div class="lab-tile" :class="{ active: active }" v-on:click="select" style="background-image: url(@routes.Assets.versioned(s"images/components/${c.parent.previewImgHash}.jpg"))">
+                    <header class="lab-tile-header">
+                        <h2 class="lab-tile-text lab-tile-brand">@c.parent.brand</h2>
+                        <h1 class="lab-tile-text lab-tile-title">@c.parent.name</h1>
+                    </header>
+                </div>
+            </chassis-tile>
+        }
+    </section>
 }

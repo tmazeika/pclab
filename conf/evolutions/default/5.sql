@@ -3,8 +3,8 @@
 -- chassis
 
 INSERT INTO components (id, brand, cost, model, name, power_cost, preview_img_hash, weight) VALUES
-    (1, 'Phanteks', 1900, 'Tempered Glass ATX', 'Enthoo EVOLV', 0, 'b0852c33d4318bfd6add77108a2df0d98e246591', 10200),
-    (2, 'Fractal Design', 11000, NULL, 'Define R5', 0, 'dd9439d997ec988b304081bf1fd912806cf1dc84', 10300);
+    (1, 'Cooler Master', 9000, NULL, 'HAF XB EVO', 0, 'f35616c34e048cecfcae108ae4bc2e5122d24ddd', 8200),
+    (2, 'Phanteks', 1900, 'Tempered Glass ATX', 'Enthoo EVOLV', 0, 'b0852c33d4318bfd6add77108a2df0d98e246591', 10200);
 
 INSERT INTO chassis (
   component_id, adaptable_bays, adaptable_cage_bays, audio_headers,
@@ -13,9 +13,9 @@ INSERT INTO chassis (
   max_power_supply_length, small_bays, small_cage_bays, usb2_headers,
   usb3_headers, uses_sata_power
 ) VALUES (
-    1, 8, 5, 1, 3, 0, 0, 300, 194, 420, 318, 2, 0, 0, 1, TRUE
+    1, 4, 0, 1, 2, 0, 0, 334, 180, 334, 180, 0, 0, 0, 2, FALSE
 ), (
-    2, 8, 5, 1, 2, 0, 0, 310, 180, 440, 300, 2, 0, 1, 1, FALSE
+    2, 8, 5, 1, 3, 0, 0, 300, 194, 420, 318, 2, 0, 0, 1, TRUE
 );
 
 -- cooling_solutions

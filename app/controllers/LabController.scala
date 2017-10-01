@@ -8,10 +8,10 @@ import services.ComponentRepository
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class LabController @Inject()(cc: ControllerComponents, cRepo: ComponentRepository)(implicit ec: ExecutionContext) extends AbstractController(cc) {
+class LabController @Inject()(cc: ControllerComponents, repo: ComponentRepository)(implicit ec: ExecutionContext) extends AbstractController(cc) {
   def index = Action.async {
-    cRepo.all map { c ⇒
-      Ok(views.html lab c)
+    repo.all map { all ⇒
+      Ok(views.html lab all)
     }
   }
 }

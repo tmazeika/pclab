@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, scripts: String*)(content: Html)
 
 <!DOCTYPE html>
 
@@ -28,5 +28,13 @@
         </main>
 
         @partials.footer()
+
+        @if(scripts nonEmpty) {
+            <script src="https://vuejs.org/js/vue.js"></script>
+        }
+
+        @for(name ← scripts) {
+            <script src="@routes.Assets.versioned(s"scripts/$name")"></script>
+        }
     </body>
 </html>

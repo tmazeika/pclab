@@ -14,13 +14,13 @@ INSERT INTO chassis_form_factor (chassis_id, form_factor_id) VALUES
   (SELECT chassis.id FROM chassis JOIN components ON component_id = components.id WHERE name = 'Enthoo EVOLV'),
   (SELECT id FROM form_factors WHERE name = 'Mini-ITX')
 ), (
-  (SELECT chassis.id FROM chassis JOIN components ON component_id = components.id WHERE name = 'Define R5'),
+  (SELECT chassis.id FROM chassis JOIN components ON component_id = components.id WHERE name = 'HAF XB EVO'),
   (SELECT id FROM form_factors WHERE name = 'ATX')
 ), (
-  (SELECT chassis.id FROM chassis JOIN components ON component_id = components.id WHERE name = 'Define R5'),
+  (SELECT chassis.id FROM chassis JOIN components ON component_id = components.id WHERE name = 'HAF XB EVO'),
   (SELECT id FROM form_factors WHERE name = 'Micro-ATX')
 ), (
-  (SELECT chassis.id FROM chassis JOIN components ON component_id = components.id WHERE name = 'Define R5'),
+  (SELECT chassis.id FROM chassis JOIN components ON component_id = components.id WHERE name = 'HAF XB EVO'),
   (SELECT id FROM form_factors WHERE name = 'Mini-ITX')
 );
 
