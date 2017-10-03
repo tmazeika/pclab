@@ -1,0 +1,47 @@
+@import db.models.components.{ChassisWithRelated, ComponentWithParent, ComponentWithRelated, CoolingSolutionWithRelated, GraphicsCardWithRelated, MemoryStickWithRelated, MotherboardWithRelated, PowerSupplyWithRelated, ProcessorWithRelated, StorageDeviceWithRelated}
+@import db.models.properties.FormFactorUtils._
+
+@(title: String, component: String, components: Seq[ComponentWithRelated[_ <: ComponentWithParent]])
+
+<section class="lab-section">
+    <header class="lab-section-header">
+        @title
+    </header>
+
+    <main class="lab-section-tiles">
+        @for(c ← components) {
+            <div is="@component-tile" inline-template>
+                <div class="lab-tile" :class="{ active: active }" v-on:click="select" style="background-image: url(@routes.Assets.versioned(s"images/components/${c.parent.previewImgHash}.jpg"))">
+                    <header class="lab-tile-header">
+                        <h2 class="lab-tile-text lab-tile-brand">@c.parent.brand</h2>
+                        <h1 class="lab-tile-text lab-tile-title">@c.parent.name</h1>
+                    </header>
+
+                    <main class="lab-tile-details">
+                        <ul>
+                            @c match {
+                                case c: ChassisWithRelated => {
+                                    @*<li>Supports @c.formFactors.glue</li>*@
+                                }
+                                case p: ProcessorWithRelated => {
+                                }
+                                case m: MotherboardWithRelated => {
+                                }
+                                case g: GraphicsCardWithRelated => {
+                                }
+                                case m: MemoryStickWithRelated => {
+                                }
+                                case c: CoolingSolutionWithRelated => {
+                                }
+                                case s: StorageDeviceWithRelated => {
+                                }
+                                case p: PowerSupplyWithRelated => {
+                                }
+                            }
+                        </ul>
+                    </main>
+                </div>
+            </div>
+        }
+    </main>
+</section>

@@ -3,16 +3,12 @@
 @(all: Components)
 
 @master(title = "Lab", scripts = "lab.js") {
-    <section class="lab-section">
-        @for(c ← all.chassis) {
-            <chassis-tile inline-template>
-                <div class="lab-tile" :class="{ active: active }" v-on:click="select" style="background-image: url(@routes.Assets.versioned(s"images/components/${c.parent.previewImgHash}.jpg"))">
-                    <header class="lab-tile-header">
-                        <h2 class="lab-tile-text lab-tile-brand">@c.parent.brand</h2>
-                        <h1 class="lab-tile-text lab-tile-title">@c.parent.name</h1>
-                    </header>
-                </div>
-            </chassis-tile>
-        }
-    </section>
+    @partials.labSection("Chassis", "chassis", all.chassis)
+    @partials.labSection("Processor", "processor", all.processors)
+    @partials.labSection("Motherboard", "motherboard", all.motherboards)
+    @partials.labSection("Graphics", "graphics-card", all.graphicsCards)
+    @partials.labSection("Memory", "memory-stick", all.memorySticks)
+    @partials.labSection("Cooling", "cooling-solution", all.coolingSolutions)
+    @partials.labSection("Storage", "storage-device", all.storageDevices)
+    @partials.labSection("Power Supply", "power-supply", all.powerSupplies)
 }

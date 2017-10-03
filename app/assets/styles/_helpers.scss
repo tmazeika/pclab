@@ -1,9 +1,9 @@
-@mixin monospace-font($bold: false, $size: 1em, $line-height: 1) {
-  font: if($bold, 700, 400) $size/$line-height 'Inconsolata', monospace;
+@mixin monospace-font($bold: false, $size: 1em) {
+  font: if($bold, 700, 400) $size/1 'Inconsolata', monospace;
 }
 
-@mixin sans-serif-font($bold: false, $size: 1em, $line-height: 1) {
-  font: if($bold, 400, 200) $size/$line-height 'Source Sans Pro', sans-serif;
+@mixin sans-serif-font($bold: false, $size: 1em) {
+  font: if($bold, 400, 200) $size/1 'Source Sans Pro', sans-serif;
 }
 
 @mixin mobile($breakpoint: 40em) {

@@ -1,21 +1,40 @@
-$lab-tile-header-padding: 0.75em;
+$lab-tile-padding: 0.75em;
 $lab-transparency: 0.3;
 
-.lab-section {
+.lab-section-tiles {
   // flex
   display: flex;
   flex-wrap: wrap;
 }
 
+@mixin tile-contents-compensated($border-width) {
+  $padding-compensated: calc(#{$lab-tile-padding} - #{$border-width});
+
+  background-position: -#{$border-width} -#{$border-width};
+
+  .lab-tile-header {
+    padding: $padding-compensated $padding-compensated $lab-tile-padding $padding-compensated
+  }
+
+  .lab-tile-details {
+    padding: $lab-tile-padding $padding-compensated $padding-compensated $padding-compensated;
+  }
+}
+
 .lab-tile {
+  $border-width: 3px;
   $size: 300px;
 
+  background-position: -#{$border-width} -#{$border-width};
   background-size: $size $size;
+  border: $border-width solid transparentize(#000, $lab-transparency);
   border-radius: 5px;
   cursor: pointer;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
+  transition: border-color $anim-time;
 
   width: $size;
   height: $size;
@@ -23,30 +42,11 @@ $lab-transparency: 0.3;
   overflow: hidden;
 
   &:hover {
-    .lab-tile-header {
-      background-color: transparentize($accent-color, $lab-transparency);
-    }
-
-    .lab-tile-brand {
-      color: $light-color;
-    }
+    border-color: transparentize($accent-color, 1 - $lab-transparency);
   }
 
   &.active {
-    $border-width: 3px;
-
-    background-position: -#{$border-width} -#{$border-width};
-    border: $border-width solid transparentize($accent-color, $lab-transparency);
-
-    .lab-tile-header {
-      $padding: calc(#{$lab-tile-header-padding} - #{$border-width});
-
-      padding: {
-        top: $padding;
-        right: $padding;
-        left: $padding;
-      }
-    }
+    border-color: transparentize($accent-color, $lab-transparency);
   }
 }
 
@@ -55,7 +55,7 @@ $lab-transparency: 0.3;
 
   transition: background-color $anim-time;
 
-  padding: $lab-tile-header-padding;
+  padding: $lab-tile-padding;
 }
 
 .lab-tile-text {
@@ -69,5 +69,22 @@ $lab-transparency: 0.3;
   transition: color $anim-time;
 
   color: $dim-color;
-  font-size: 1em;
+}
+
+.lab-tile-details {
+  @include sans-serif-font($bold: true);
+  @extend .lab-tile-text;
+
+  padding: $lab-tile-padding;
+
+  ul {
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
+  }
+
+  li:not(:last-child) {
+    margin-bottom: 0.5em;
+  }
 }
