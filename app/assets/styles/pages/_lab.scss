@@ -1,5 +1,26 @@
-$lab-tile-padding: 0.75em;
+$lab-tile-padding: 0.5em;
 $lab-transparency: 0.3;
+
+.lab-section-header {
+  margin: 1rem;
+
+  // flex
+  display: flex;
+  align-items: center;
+}
+
+.lab-section-header-text {
+  @include monospace-font($size: 2em);
+
+  text-align: center;
+  margin: 0 1em;
+}
+
+.lab-section-header-line {
+  border-bottom: 1px solid $dim-color;
+
+  flex-grow: 1;
+}
 
 .lab-section-tiles {
   // flex
@@ -7,25 +28,11 @@ $lab-transparency: 0.3;
   flex-wrap: wrap;
 }
 
-@mixin tile-contents-compensated($border-width) {
-  $padding-compensated: calc(#{$lab-tile-padding} - #{$border-width});
-
-  background-position: -#{$border-width} -#{$border-width};
-
-  .lab-tile-header {
-    padding: $padding-compensated $padding-compensated $lab-tile-padding $padding-compensated
-  }
-
-  .lab-tile-details {
-    padding: $lab-tile-padding $padding-compensated $padding-compensated $padding-compensated;
-  }
-}
-
 .lab-tile {
   $border-width: 3px;
   $size: 300px;
 
-  background-position: -#{$border-width} -#{$border-width};
+  background-position: -#{$border-width};
   background-size: $size $size;
   border: $border-width solid transparentize(#000, $lab-transparency);
   border-radius: 5px;
