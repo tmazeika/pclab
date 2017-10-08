@@ -1,51 +1,50 @@
-@import db.models.components.{ChassisWithRelated, ComponentWithParent, ComponentWithRelated, CoolingSolutionWithRelated, GraphicsCardWithRelated, MemoryStickWithRelated, MotherboardWithRelated, PowerSupplyWithRelated, ProcessorWithRelated, StorageDeviceWithRelated}
+@import db.models.components.{ComponentWithParent, ComponentWithRelated}
 @import db.models.properties.FormFactorUtils._
 
-@(title: String, component: String, components: Seq[ComponentWithRelated[_ <: ComponentWithParent]])
+@(name: String, component: String, components: Seq[ComponentWithRelated[_ <: ComponentWithParent]])
 
 <section class="lab-section">
-    <header class="lab-section-header">
-        <div class="lab-section-header-line"></div>
-        <div class="lab-section-header-text">@title</div>
-        <div class="lab-section-header-line"></div>
+    <header>
+        <div class="line"></div>
+        <p>@name</p>
+        <div class="line"></div>
     </header>
 
-    <main class="lab-section-tiles">
+    <main>
         @for(c ← components) {
             <div is="@component-tile" inline-template>
-                <div class="lab-tile" :class="{ active: active }" v-on:click="select" style="background-image: url(@routes.Assets.versioned(s"images/components/${c.parent.previewImgHash}.jpg"))">
-                    <header class="lab-tile-header">
-                        <div class="lab-tile-header-title">
-                            <h2 class="lab-tile-text lab-tile-brand">@c.parent.brand</h2>
-                            <h1 class="lab-tile-text lab-tile-title">@c.parent.name</h1>
+                <div class="tile" :class="{ active: active }" v-on:click="select" style="background-image: url(@routes.Assets.versioned(s"images/components/${c.parent.previewImgHash}.jpg"))">
+                    <header>
+                        <div class="nametag">
+                            <h2 class="text brand">@c.parent.brand</h2>
+                            <h1 class="text name">@c.parent.name</h1>
                         </div>
                         <img src="@routes.Assets.versioned("images/arrow.svg")" height="20px"/>
                     </header>
-
-                    <main class="lab-tile-details">
-                        <ul>
-                            @c match {
-                                case c: ChassisWithRelated => {
-                                    @*<li>Supports @c.formFactors.glue</li>*@
-                                }
-                                case p: ProcessorWithRelated => {
-                                }
-                                case m: MotherboardWithRelated => {
-                                }
-                                case g: GraphicsCardWithRelated => {
-                                }
-                                case m: MemoryStickWithRelated => {
-                                }
-                                case c: CoolingSolutionWithRelated => {
-                                }
-                                case s: StorageDeviceWithRelated => {
-                                }
-                                case p: PowerSupplyWithRelated => {
-                                }
-                            }
-                        </ul>
-                    </main>
                 </div>
+
+                @*<main>*@
+                    @*<ul>*@
+                        @* @c match {*@
+                            @*case c: ChassisWithRelated => {*@
+                            @*}*@
+                            @*case p: ProcessorWithRelated => {*@
+                            @*}*@
+                            @*case m: MotherboardWithRelated => {*@
+                            @*}*@
+                            @*case g: GraphicsCardWithRelated => {*@
+                            @*}*@
+                            @*case m: MemoryStickWithRelated => {*@
+                            @*}*@
+                            @*case c: CoolingSolutionWithRelated => {*@
+                            @*}*@
+                            @*case s: StorageDeviceWithRelated => {*@
+                            @*}*@
+                            @*case p: PowerSupplyWithRelated => {*@
+                            @*}*@
+                        @*}*@
+                    @*</ul>*@
+                @*</main>*@
             </div>
         }
     </main>

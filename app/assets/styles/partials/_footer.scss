@@ -1,4 +1,4 @@
-.footer {
+body > footer {
   border-top: 1px solid $darkish-color;
 
   padding: 1em 0.5em;
@@ -9,25 +9,23 @@
   @include mobile {
     padding: 0.5em 0;
   }
-}
 
-.footer-item {
-  @include sans-serif-font($bold: true);
+  .item {
+    color: $dim-color;
 
-  color: $dim-color;
+    display: block;
+    margin: 0 1em;
 
-  display: block;
-  margin: 0 1em;
-
-  @include mobile {
-    margin: 0 0.5em;
+    @include mobile {
+      margin: 0 0.5em;
+    }
   }
-}
 
-.footer-link-item {
-  color: $accent-color;
+  a.item {
+    color: $accent-color;
 
-  &:hover {
-    text-decoration: underline;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

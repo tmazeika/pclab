@@ -12,7 +12,7 @@
 }
 
 body {
-  @include monospace-font;
+  @include sans-serif-font;
 
   background-color: $dark-color;
   color: $light-color;

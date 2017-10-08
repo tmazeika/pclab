@@ -14,26 +14,28 @@
   @include mobile {
     padding: 3em 1em;
   }
-}
 
-.home-jumbo-line {
-  letter-spacing: 3px;
-}
+  .line {
+    @include sans-serif-font($bold: false);
 
-.home-jumbo-heading {
-  @include sans-serif-font($size: 3em);
-
-  @include desktop {
-    font-size: 7em;
+    letter-spacing: 3px;
   }
-}
 
-.home-jumbo-subtitle {
-  @include sans-serif-font($size: 1.5em);
-
-  @include desktop {
-    color: $dim-color;
+  .large {
     font-size: 3em;
-    letter-spacing: 5px;
+
+    @include desktop {
+      font-size: 7em;
+    }
+  }
+
+  .small {
+    font-size: 1.5em;
+
+    @include desktop {
+      color: $dim-color;
+      font-size: 3em;
+      letter-spacing: 5px;
+    }
   }
 }

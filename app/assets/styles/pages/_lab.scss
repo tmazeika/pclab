@@ -1,105 +1,90 @@
-$lab-tile-padding: 0.5em;
-$lab-transparency: 0.3;
+.lab-section {
+  $transparency: 0.3;
 
-.lab-section-header {
-  margin: 1rem;
+  > header {
+    margin: 1em;
 
-  // flex
-  display: flex;
-  align-items: center;
-}
+    // flex
+    display: flex;
+    align-items: center;
 
-.lab-section-header-text {
-  @include monospace-font($size: 2em);
+    .line {
+      border-bottom: 1px solid $dim-color;
 
-  text-align: center;
-  margin: 0 1em;
-}
+      flex-grow: 1;
+    }
 
-.lab-section-header-line {
-  border-bottom: 1px solid $dim-color;
+    p {
+      @include monospace-font($size: 2em);
 
-  flex-grow: 1;
-}
-
-.lab-section-tiles {
-  // flex
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.lab-tile {
-  $border-width: 3px;
-  $size: 300px;
-
-  background-position: -#{$border-width};
-  background-size: $size $size;
-  border: $border-width solid transparentize(#000, $lab-transparency);
-  border-radius: 5px;
-  cursor: pointer;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
-  transition: border-color $anim-time;
-
-  width: $size;
-  height: $size;
-  margin: 1em;
-  overflow: hidden;
-
-  &:hover {
-    border-color: transparentize($accent-color, 1 - $lab-transparency);
+      margin: 0 1em;
+    }
   }
 
-  &.active {
-    border-color: transparentize($accent-color, $lab-transparency);
-  }
-}
+  > main {
+    // flex
+    display: flex;
+    flex-wrap: wrap;
 
-.lab-tile-header {
-  background-color: transparentize(#000, $lab-transparency);
+    .tile {
+      $border-width: 3px;
+      $size: 300px;
 
-  transition: background-color $anim-time;
+      background-position: -#{$border-width};
+      background-size: $size;
+      border: $border-width solid transparentize(#000, $transparency);
+      border-radius: 5px;
+      cursor: pointer;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
 
-  padding: $lab-tile-padding;
+      transition: border-color $anim-time;
 
-  // flex
-  display: flex;
-  align-items: center;
-}
+      width: $size;
+      height: $size;
+      margin: 1em;
+      overflow: hidden;
 
-.lab-tile-header-title {
-  flex-grow: 1;
-}
+      &:hover {
+        border-color: transparentize($accent-color, 1 - $transparency);
+      }
+    }
 
-.lab-tile-text {
-  margin: 0;
-  line-height: 1.2;
-}
+    .tile > header {
+      background-color: transparentize(#000, $transparency);
 
-.lab-tile-brand {
-  @include sans-serif-font($bold: true);
+      transition: background-color $anim-time;
 
-  transition: color $anim-time;
+      padding: 0.5em;
 
-  color: $dim-color;
-}
+      // flex
+      display: flex;
+      align-items: center;
 
-.lab-tile-details {
-  @include sans-serif-font($bold: true);
-  @extend .lab-tile-text;
+      .nametag {
+        flex-grow: 1;
+      }
 
-  padding: $lab-tile-padding;
+      .nametag .text {
+        margin: 0;
+      }
 
-  ul {
-    list-style: none;
+      .nametag .brand {
+        @include monospace-font;
 
-    margin: 0;
-    padding: 0;
-  }
+        color: $dim-color;
 
-  li:not(:last-child) {
-    margin-bottom: 0.5em;
+        margin-bottom: 0.25em;
+      }
+
+      .nametag .name {
+        @include monospace-font($bold: true, $size: 1.5em);
+      }
+    }
+
+    .tile.active {
+      border-color: transparentize($accent-color, $transparency);
+    }
   }
 }
