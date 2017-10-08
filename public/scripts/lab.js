@@ -1,4 +1,5 @@
 const tileComponent = {
+  props: ['componentId'],
   data: function() {
     return {
       active: false,
@@ -8,6 +9,14 @@ const tileComponent = {
   methods: {
     select: function() {
       this.active = !this.active;
+
+      axios.get('/lab/select', {
+        params: {
+          id: this.componentId
+        }
+      }).then(function (response) {
+
+      })
     }
   }
 };

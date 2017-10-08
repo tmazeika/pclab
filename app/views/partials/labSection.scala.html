@@ -12,7 +12,7 @@
 
     <main>
         @for(c ← components) {
-            <div is="@component-tile" inline-template>
+            <div is="@component-tile" component-id="@c.parent.id" inline-template>
                 <div class="tile" :class="{ active: active }" v-on:click="select" style="background-image: url(@routes.Assets.versioned(s"images/components/${c.parent.previewImgHash}.jpg"))">
                     <header>
                         <div class="nametag">

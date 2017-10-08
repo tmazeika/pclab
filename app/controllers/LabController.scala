@@ -14,4 +14,8 @@ class LabController @Inject()(cc: ControllerComponents, repo: ComponentRepositor
       Ok(views.html lab all)
     }
   }
+
+  def select = Action {
+    Ok("")
+  }
 }
