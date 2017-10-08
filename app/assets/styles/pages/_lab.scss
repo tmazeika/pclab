@@ -86,5 +86,13 @@
     .tile.active {
       border-color: transparentize($accent-color, $transparency);
     }
+
+    .tile.incompatible {
+      border-color: transparentize($red-color, 1 - $transparency);
+
+      &:hover {
+        border-color: transparentize($red-color, $transparency);
+      }
+    }
   }
 }
