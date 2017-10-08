@@ -63,6 +63,14 @@ $lab-transparency: 0.3;
   transition: background-color $anim-time;
 
   padding: $lab-tile-padding;
+
+  // flex
+  display: flex;
+  align-items: center;
+}
+
+.lab-tile-header-title {
+  flex-grow: 1;
 }
 
 .lab-tile-text {
