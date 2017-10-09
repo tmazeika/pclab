@@ -127,3 +127,4 @@ case class StorageDevice(
   capacity: Int, // megabytes
   isFullWidth: Boolean,
 ) extends ComponentWithParent(id, componentId)
+

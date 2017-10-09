@@ -1,35 +1,32 @@
-const tileComponent = {
-  props: ['componentId'],
+// TODO: display AJAX's components
+
+Vue.component('tile', {
   data: function() {
     return {
       active: false,
-      hovering: false
-    }
+      brand: "Brand",
+      name: "Name"
+    };
   },
   methods: {
     select: function() {
       this.active = !this.active;
-
-      axios.get('/lab/select', {
-        params: {
-          id: this.componentId
-        }
-      }).then(function (response) {
-
-      })
     }
   }
-};
-
-Vue.component('chassis-tile', tileComponent);
-Vue.component('processor-tile', tileComponent);
-Vue.component('motherboard-tile', tileComponent);
-Vue.component('graphics-card-tile', tileComponent);
-Vue.component('memory-stick-tile', tileComponent);
-Vue.component('cooling-solution-tile', tileComponent);
-Vue.component('storage-device-tile', tileComponent);
-Vue.component('power-supply-tile', tileComponent);
+});
 
 const app = new Vue({
-  el: '.main'
+  el: 'body > main',
+  data: {
+    sections: [
+      'Chassis',
+      'Processor',
+      'Motherboard',
+      'Graphics',
+      'Memory',
+      'Cooling',
+      'Storage',
+      'Power'
+    ]
+  }
 });

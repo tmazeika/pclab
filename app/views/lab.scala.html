@@ -1,14 +1,23 @@
-@import db.models.components.Components
-
-@(all: Components)
-
 @master(title = "Lab", scripts = "lab.js") {
-    @partials.labSection("Chassis", "chassis", all.chassis)
-    @partials.labSection("Processor", "processor", all.processors)
-    @partials.labSection("Motherboard", "motherboard", all.motherboards)
-    @partials.labSection("Graphics", "graphics-card", all.graphicsCards)
-    @partials.labSection("Memory", "memory-stick", all.memorySticks)
-    @partials.labSection("Cooling", "cooling-solution", all.coolingSolutions)
-    @partials.labSection("Storage", "storage-device", all.storageDevices)
-    @partials.labSection("Power Supply", "power-supply", all.powerSupplies)
+    <section v-cloak class="lab-section" v-for="section in sections">
+        <header>
+            <div class="line"></div>
+            <p>{{ section }}</p>
+            <div class="line"></div>
+        </header>
+
+        <main>
+            <tile inline-template>
+                <div class="tile" :class="{ active: active }" v-on:click="select">
+                    <header>
+                        <div class="nametag">
+                            <h2 class="text brand">{{ brand }}</h2>
+                            <h1 class="text name">{{ name }}</h1>
+                        </div>
+                        <img src="@routes.Assets.versioned("images/arrow.svg")" height="20px"/>
+                    </header>
+                </div>
+            </tile>
+        </main>
+    </section>
 }
