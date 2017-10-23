@@ -1,6 +1,15 @@
-// TODO: display AJAX's components
+Vue.component('lab-section', {
+  template: '#lab-section-template',
+  props: ['section'],
+  data: function() {
+    return {
+
+    }
+  }
+});
 
 Vue.component('tile', {
+  template: '#tile-template',
   data: function() {
     return {
       active: false,
@@ -15,18 +24,37 @@ Vue.component('tile', {
   }
 });
 
+const components = JSON.parse(document.getElementById('components').innerHTML);
+
 const app = new Vue({
   el: 'body > main',
   data: {
     sections: [
-      'Chassis',
-      'Processor',
-      'Motherboard',
-      'Graphics',
-      'Memory',
-      'Cooling',
-      'Storage',
-      'Power'
+      {
+        name: 'Chassis',
+        components: components.chassis
+      }, {
+        name: 'Processor',
+        components: components.processors
+      }, {
+        name: 'Motherboard',
+        components: components.motherboards
+      }, {
+        name: 'Graphics',
+        components: components.graphics_cards
+      }, {
+        name: 'Memory',
+        components: components.memory_sticks
+      }, {
+        name: 'Cooling',
+        components: components.cooling_solutions
+      }, {
+        name: 'Storage',
+        components: components.storage_devices
+      }, {
+        name: 'Power',
+        components: components.power_supplies
+      }
     ]
   }
 });

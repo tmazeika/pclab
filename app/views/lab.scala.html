@@ -1,23 +1,33 @@
-@master(title = "Lab", scripts = "lab.js") {
-    <section v-cloak class="lab-section" v-for="section in sections">
-        <header>
-            <div class="line"></div>
-            <p>{{ section }}</p>
-            <div class="line"></div>
-        </header>
+@(componentsJson: String)
 
-        <main>
-            <tile inline-template>
-                <div class="tile" :class="{ active: active }" v-on:click="select">
-                    <header>
-                        <div class="nametag">
-                            <h2 class="text brand">{{ brand }}</h2>
-                            <h1 class="text name">{{ name }}</h1>
-                        </div>
-                        <img src="@routes.Assets.versioned("images/arrow.svg")" height="20px"/>
-                    </header>
+@master(title = "Lab", scripts = "lab.js") {
+    <template id="tile-template">
+        <div class="tile" :class="{ active: active }" v-on:click="select">
+            <header>
+                <div class="nametag">
+                    <h2 class="text brand">{{ brand }}</h2>
+                    <h1 class="text name">{{ name }}</h1>
                 </div>
-            </tile>
-        </main>
-    </section>
+                <img src="@routes.Assets.versioned("images/arrow.svg")" height="20px"/>
+            </header>
+        </div>
+    </template>
+
+    <template id="lab-section-template">
+        <section class="lab-section">
+            <header>
+                <div class="line"></div>
+                <p>{{ section.name }}</p>
+                <div class="line"></div>
+            </header>
+
+            <main>
+                <tile></tile>
+            </main>
+        </section>
+    </template>
+
+    <lab-section v-for="section in sections" :key="section.name" :section="section"></lab-section>
+
+    <script type="application/json" id="components">@Html(componentsJson)</script>
 }

@@ -10,13 +10,9 @@ import scala.concurrent.ExecutionContext
 
 @Singleton
 class LabController @Inject()(cc: ControllerComponents, repo: ComponentRepository)(implicit ec: ExecutionContext) extends AbstractController(cc) {
-  def index = Action {
-    Ok(views.html.lab())
-  }
-
-  def get = Action.async {
+  def index = Action.async {
     repo.all map { all ⇒
-      Ok(Json toJson all)
+      Ok(views.html.lab(Json toJson all toString))
     }
   }
 
