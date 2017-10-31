@@ -16,7 +16,7 @@ class LabController @Inject()(cc: ControllerComponents, repo: ComponentRepositor
     }
   }
 
-  def select = Action {
-    Ok("")
+  def select(ids: Seq[Int]) = Action {
+    Ok(ids mkString ", ")
   }
 }
