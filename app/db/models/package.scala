@@ -70,6 +70,7 @@ package object models {
     override def writes(c: Components): JsObject = obj(
       "chassis" → c.chassis,
       "cooling_solutions" → c.coolingSolutions,
+      "graphics_cards" → c.graphicsCards,
       "memory_sticks" → c.memorySticks,
       "motherboards" → c.motherboards,
       "power_supplies" → c.powerSupplies,
