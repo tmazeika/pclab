@@ -6,6 +6,7 @@ final case class Component(
   brand: String,
   cost: Int, // pennies
   isAvailableImmediately: Boolean,
+  isRequired: Boolean,
   model: Option[String],
   name: String,
   powerUsage: Short, // watts

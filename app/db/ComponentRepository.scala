@@ -44,6 +44,7 @@ object ComponentRepository {
     def brand = column[String]("brand", O.Length(255))
     def cost = column[Int]("cost")
     def isAvailableImmediately = column[Boolean]("is_available_immediately")
+    def isRequired = column[Boolean]("is_required")
     def model = column[String]("model", O.Length(255))
     def name = column[String]("name", O.Length(255))
     def powerCost = column[Short]("power_cost")
@@ -55,6 +56,7 @@ object ComponentRepository {
       brand,
       cost,
       isAvailableImmediately,
+      isRequired,
       model.?,
       name,
       powerCost,

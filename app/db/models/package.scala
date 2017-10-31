@@ -84,6 +84,7 @@ package object models {
     "brand" → c.brand,
     "cost" → c.cost,
     "is_available_immediately" → c.isAvailableImmediately,
+    "is_required" → c.isRequired,
     "model" → c.model,
     "name" → c.name,
     "preview_img_url" → routes.Assets.versioned(s"images/components/${c.previewImgHash}.jpg").url,

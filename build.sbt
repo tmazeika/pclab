@@ -14,7 +14,7 @@ libraryDependencies ++= Seq(ehcache, ws, specs2 % Test, guice,
   "org.postgresql" % "postgresql" % "42.1.4",
   "com.typesafe.play" %% "play-slick" % "3.0.1",
   "com.typesafe.play" %% "play-slick-evolutions" % "3.0.2",
-  "org.scala-graph" %% "graph-core" % "1.12.0")
+  "org.scala-graph" %% "graph-core" % "1.12.1")
 
 unmanagedResourceDirectories in Test <+= baseDirectory (_ /"target/web/public/test")
 

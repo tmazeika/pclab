@@ -6,6 +6,7 @@ CREATE TABLE components (
   brand VARCHAR(255) NOT NULL,
   cost INT NOT NULL, -- pennies
   is_available_immediately BOOLEAN NOT NULL DEFAULT TRUE,
+  is_required BOOLEAN NOT NULL,
   model VARCHAR(255),
   name VARCHAR(255) NOT NULL,
   power_cost SMALLINT NOT NULL, -- watts
