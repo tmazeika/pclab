@@ -2,11 +2,11 @@
 
 @master(title = "Lab", scripts = "lab.js") {
     <template id="tile-template">
-        <div class="tile" :class="{ active: active }" v-on:click="select">
+        <div class="tile" :class="{ active: active }" v-on:click="select" :style="{ backgroundImage: 'url(' + component.preview_img_url + ')' }">
             <header>
                 <div class="nametag">
-                    <h2 class="text brand">{{ brand }}</h2>
-                    <h1 class="text name">{{ name }}</h1>
+                    <h2 class="text brand">{{ component.brand }}</h2>
+                    <h1 class="text name">{{ component.name }}</h1>
                 </div>
                 <img src="@routes.Assets.versioned("images/arrow.svg")" height="20px"/>
             </header>
@@ -22,12 +22,14 @@
             </header>
 
             <main>
-                <tile></tile>
+                <tile v-for="c in section.components" :key="c.id" :component="c"></tile>
             </main>
         </section>
     </template>
 
-    <lab-section v-for="section in sections" :key="section.name" :section="section"></lab-section>
+    <div id="vue">
+        <lab-section v-for="s in sections" :key="s.name" :section="s"></lab-section>
+    </div>
 
     <script type="application/json" id="components">@Html(componentsJson)</script>
 }

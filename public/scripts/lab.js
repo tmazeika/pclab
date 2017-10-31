@@ -1,20 +1,14 @@
 Vue.component('lab-section', {
   template: '#lab-section-template',
-  props: ['section'],
-  data: function() {
-    return {
-
-    }
-  }
+  props: ['section']
 });
 
 Vue.component('tile', {
   template: '#tile-template',
+  props: ['component'],
   data: function() {
     return {
-      active: false,
-      brand: "Brand",
-      name: "Name"
+      active: false
     };
   },
   methods: {
@@ -27,7 +21,7 @@ Vue.component('tile', {
 const components = JSON.parse(document.getElementById('components').innerHTML);
 
 const app = new Vue({
-  el: 'body > main',
+  el: '#vue',
   data: {
     sections: [
       {
