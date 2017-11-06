@@ -24,7 +24,7 @@ final case class Components(
   ).flatten
 }
 
-sealed abstract class ComponentWithRelated[T <: ComponentWithParent] (
+sealed abstract class ComponentWithRelated[T <: ComponentWithParent](
   val self: T,
   val parent: Component,
 )

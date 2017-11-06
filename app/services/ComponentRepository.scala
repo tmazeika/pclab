@@ -18,15 +18,15 @@ class ComponentRepository @Inject()(val dbConfigProvider: DatabaseConfigProvider
   def all: Future[Components] = for {
     chassis ← db run (allChassis result) flatMap { chassis ⇒
       Future sequence (chassis map { c ⇒
-        db run (allChassisFormFactors(c _1) result) map { formFactors ⇒
-          (c _1, c _2, formFactors)
+        db run (allChassisFormFactors(c._1) result) map { formFactors ⇒
+          (c._1, c._2, formFactors)
         }
       })
     }
     coolingSolutions ← db run (allCoolingSolutions result) flatMap { coolingSolutions ⇒
       Future sequence (coolingSolutions map { c ⇒
-        db run (allCoolingSolutionSockets(c _1) result) map { sockets ⇒
-          (c _1, c _2, sockets)
+        db run (allCoolingSolutionSockets(c._1) result) map { sockets ⇒
+          (c._1, c._2, sockets)
         }
       })
     }

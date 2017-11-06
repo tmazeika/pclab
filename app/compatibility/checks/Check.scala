@@ -1,8 +1,9 @@
 package compatibility.checks
 
-import db.models.components.ComponentWithRelated
+import compatibility.CompatibilityService.Component
 
-trait Check[A <: ComponentWithRelated[_], B <: ComponentWithRelated[_]] {
+trait Check[A <: Component, B <: Component] {
+
   /**
     * Gets whether the given components are directly incompatible with each other. The arguments must not be equal.
     *
@@ -11,5 +12,6 @@ trait Check[A <: ComponentWithRelated[_], B <: ComponentWithRelated[_]] {
     *
     * @return the existence of at least one direct incompatibility
     */
-  def isIncompatible(component1: A, component2: B): Boolean
+  def isIncompatible(component1: A, component2: B)(implicit system: System): Boolean
+
 }

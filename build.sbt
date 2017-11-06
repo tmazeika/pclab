@@ -11,6 +11,7 @@ resolvers ++= Seq(
 scalaVersion := "2.12.3"
 
 libraryDependencies ++= Seq(ehcache, ws, specs2 % Test, guice,
+  "org.scalaz" %% "scalaz-core" % "7.2.16",
   "org.postgresql" % "postgresql" % "42.1.4",
   "com.typesafe.play" %% "play-slick" % "3.0.1",
   "com.typesafe.play" %% "play-slick-evolutions" % "3.0.2",

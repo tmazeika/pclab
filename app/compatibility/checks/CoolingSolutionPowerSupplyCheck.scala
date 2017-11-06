@@ -2,8 +2,9 @@ package compatibility.checks
 
 import db.models.components.{CoolingSolutionWithRelated, PowerSupplyWithRelated}
 
-// TODO: use injection
-class CoolingSolutionPowerSupplyCheck(system: System) extends Check[CoolingSolutionWithRelated, PowerSupplyWithRelated] {
-  override def isIncompatible(coolingSolution: CoolingSolutionWithRelated, powerSupply: PowerSupplyWithRelated): Boolean =
+object CoolingSolutionPowerSupplyCheck extends Check[CoolingSolutionWithRelated, PowerSupplyWithRelated] {
+
+  override def isIncompatible(coolingSolution: CoolingSolutionWithRelated, powerSupply: PowerSupplyWithRelated)(implicit system: System): Boolean =
     system notEnoughPower(coolingSolution, powerSupply)
+
 }

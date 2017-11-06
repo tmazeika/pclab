@@ -2,8 +2,9 @@ package compatibility.checks
 
 import db.models.components.{PowerSupplyWithRelated, ProcessorWithRelated}
 
-// TODO: use injection
-class PowerSupplyProcessorCheck(system: System) extends Check[PowerSupplyWithRelated, ProcessorWithRelated] {
-  override def isIncompatible(powerSupply: PowerSupplyWithRelated, processor: ProcessorWithRelated): Boolean =
+object PowerSupplyProcessorCheck extends Check[PowerSupplyWithRelated, ProcessorWithRelated] {
+
+  override def isIncompatible(powerSupply: PowerSupplyWithRelated, processor: ProcessorWithRelated)(implicit system: System): Boolean =
     system notEnoughPower(processor, powerSupply)
+
 }

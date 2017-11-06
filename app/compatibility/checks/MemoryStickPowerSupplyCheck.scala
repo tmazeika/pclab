@@ -2,8 +2,7 @@ package compatibility.checks
 
 import db.models.components._
 
-// TODO: use injection
-class MemoryStickPowerSupplyCheck(system: System) extends Check[MemoryStickWithRelated, PowerSupplyWithRelated] {
-  override def isIncompatible(memoryStick: MemoryStickWithRelated, powerSupply: PowerSupplyWithRelated): Boolean =
+object MemoryStickPowerSupplyCheck extends Check[MemoryStickWithRelated, PowerSupplyWithRelated] {
+  override def isIncompatible(memoryStick: MemoryStickWithRelated, powerSupply: PowerSupplyWithRelated)(implicit system: System): Boolean =
     system notEnoughPower(memoryStick, powerSupply)
 }
